@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Explorer — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .barra-busqueda { display: flex; max-width: 560px; margin-bottom: 1.5rem; }
+    .input-busqueda { flex: 1; background: var(--surface); border: 1px solid var(--borde); border-right: none; color: var(--texto); padding: 0.8rem 1.2rem; font-family: 'Crimson Pro', serif; font-size: 1rem; border-radius: 4px 0 0 4px; outline: none; transition: border-color 0.2s; }
+    .input-busqueda:focus { border-color: var(--acento); }
+    .input-busqueda::placeholder { color: var(--texto-dim); }
+    .btn-buscar { background: var(--acento); border: none; color: var(--bg); padding: 0.8rem 1.4rem; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.9rem; font-weight: 600; border-radius: 0 4px 4px 0; transition: opacity 0.2s; }
+    .btn-buscar:hover { opacity: 0.85; }
+    .filtros-grupo { margin-bottom: 0.6rem; }
+    .filtros-grupo-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--texto-apagado); margin-bottom: 0.4rem; }
+    .filtros { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+    .btn-filtro { background: var(--surface); border: 1px solid var(--borde); color: var(--texto-apagado); padding: 0.35rem 1rem; border-radius: 20px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.85rem; transition: all 0.2s; white-space: nowrap; }
+    .btn-filtro.activo, .btn-filtro:hover { border-color: var(--acento); color: var(--acento); background: rgba(200,164,90,0.06); }
+    .btn-filtro.activo-periodo { border-color: var(--acento2); color: var(--acento2); background: rgba(125,191,168,0.06); }
+    .btn-filtro.activo-tipo { border-color: var(--acento3); color: var(--acento3); background: rgba(212,112,74,0.06); }
+    .contador-resultados { font-size: 0.8rem; color: var(--texto-apagado); margin-bottom: 1.2rem; }
+    .contador-resultados span { color: var(--acento); font-weight: 600; }
+    .grid-animales { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.2rem; }
+    .card-animal { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; overflow: hidden; cursor: pointer; transition: all 0.25s; }
+    .card-animal:hover { border-color: var(--acento); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(200,164,90,0.1); }
+    .card-emoji { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; background: var(--surface2); }
+    .card-info { padding: 1rem; }
+    .card-nombre { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .card-cientifico { font-size: 0.78rem; color: var(--texto-apagado); font-style: italic; margin-bottom: 0.5rem; }
+    .sin-resultados { text-align: center; padding: 4rem 2rem; color: var(--texto-apagado); font-style: italic; display: none; }
+    .vista-detalle { display: none; }
+    .vista-detalle.visible { display: block; }
+    .vista-lista.oculta { display: none; }
+    .btn-volver { background: none; border: 1px solid var(--borde); color: var(--texto-apagado); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.9rem; margin-bottom: 2rem; transition: all 0.2s; }
+    .btn-volver:hover { border-color: var(--acento); color: var(--acento); }
+    .detalle-cabecera { display: grid; grid-template-columns: auto 1fr; gap: 2rem; margin-bottom: 2rem; align-items: start; }
+    .detalle-emoji { width: 130px; height: 130px; background: var(--surface2); border: 1px solid var(--borde); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4.5rem; }
+    .detalle-titulo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; }
+    .detalle-sci { font-style: italic; color: var(--texto-apagado); margin-bottom: 0.8rem; }
+    .detalle-desc { font-size: 0.95rem; color: var(--texto-apagado); font-style: italic; max-width: 600px; margin-top: 0.8rem; }
+    .detalle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .campo { background: var(--surface); border: 1px solid var(--borde); padding: 0.8rem 1rem; border-radius: 4px; }
+    .campo-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--texto-apagado); margin-bottom: 0.3rem; }
+    .campo-valor { font-size: 0.92rem; }
+    .clasificacion-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem; }
+    .tag-clasificacion { background: var(--surface2); border: 1px solid var(--borde); padding: 0.2rem 0.7rem; border-radius: 3px; font-size: 0.8rem; color: var(--texto-apagado); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="activo" id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="vista-lista" id="vistaLista">
+      <div class="barra-busqueda">
+        <input class="input-busqueda" type="text" id="campoBusqueda" oninput="filtrarAnimales()">
+        <button class="btn-buscar" id="btn-buscar"></button>
+      </div>
+
+      <div class="filtros-grupo">
+        <div class="filtros-grupo-label" id="label-estado"></div>
+        <div class="filtros" id="filtros-estado"></div>
+      </div>
+
+      <div class="filtros-grupo">
+        <div class="filtros-grupo-label" id="label-periodo"></div>
+        <div class="filtros" id="filtros-periodo"></div>
+      </div>
+
+      <div class="filtros-grupo">
+        <div class="filtros-grupo-label" id="label-dieta"></div>
+        <div class="filtros" id="filtros-dieta"></div>
+      </div>
+
+      <div class="contador-resultados" id="contador"></div>
+      <div class="grid-animales" id="gridAnimales"></div>
+      <div class="sin-resultados" id="sinResultados"></div>
+    </div>
+
+    <div class="vista-detalle" id="vistaDetalle">
+      <button class="btn-volver" id="btn-volver" onclick="cerrarDetalle()"></button>
+      <div id="contenidoDetalle"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    // Clasificación de períodos por animal (basado en data.js)
+    const PERIODO_MAP = {
+      'Triásico':    a => a.periodo.toLowerCase().includes('triás'),
+      'Jurásico':    a => a.periodo.toLowerCase().includes('jurás'),
+      'Cretácico':   a => a.periodo.toLowerCase().includes('cretác'),
+      'Paleozoico':  a => a.periodo.toLowerCase().includes('pérmico') || a.periodo.toLowerCase().includes('devónico') || a.periodo.toLowerCase().includes('carbon'),
+      'Cenozoico':   a => a.periodo.toLowerCase().includes('pleisto') || a.periodo.toLowerCase().includes('mioceno') || a.periodo.toLowerCase().includes('plioceno') || a.periodo.toLowerCase().includes('holoceno') || a.periodo.toLowerCase().includes('actual'),
+    };
+
+    const DIETA_MAP = {
+      'Carnívoro':  a => a.dieta.toLowerCase().includes('carnív'),
+      'Herbívoro':  a => a.dieta.toLowerCase().includes('herbív'),
+      'Omnívoro':   a => a.dieta.toLowerCase().includes('omnívo'),
+    };
+
+    let filtroEstado  = 'todos';
+    let filtroPeriodo = 'todos';
+    let filtroDieta   = 'todos';
+
+    function renderPagina() {
+      const lang = getLang();
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('activo');
+      });
+
+      document.getElementById('seccion-label').textContent  = t('explorer_label');
+      document.getElementById('seccion-titulo').textContent = t('explorer_titulo');
+      document.getElementById('seccion-sub').textContent    = t('explorer_sub');
+      document.getElementById('campoBusqueda').placeholder  = t('explorer_placeholder');
+      document.getElementById('btn-buscar').textContent     = t('explorer_buscar');
+      document.getElementById('sinResultados').textContent  = t('explorer_sin_result');
+      document.getElementById('btn-volver').textContent     = t('explorer_volver');
+      document.getElementById('footer-copy').textContent    = t('footer_copy');
+
+      document.getElementById('label-estado').textContent  = lang === 'fr' ? 'État' : 'Estado';
+      document.getElementById('label-periodo').textContent = lang === 'fr' ? 'Période géologique' : 'Período geológico';
+      document.getElementById('label-dieta').textContent   = lang === 'fr' ? 'Régime alimentaire' : 'Dieta';
+
+      // Filtros estado
+      document.getElementById('filtros-estado').innerHTML = [
+        ['todos',    t('explorer_todos')],
+        ['extinto',  t('explorer_extintos')],
+        ['viviente', t('explorer_vivientes')],
+      ].map(([val, label]) => `
+        <button class="btn-filtro ${filtroEstado===val?'activo':''}"
+          onclick="setFiltroEstado('${val}',this)">${label}</button>
+      `).join('');
+
+      // Filtros período
+      document.getElementById('filtros-periodo').innerHTML = [
+        ['todos',      lang === 'fr' ? 'Tous' : 'Todos'],
+        ['Triásico',   lang === 'fr' ? 'Triasique' : 'Triásico'],
+        ['Jurásico',   lang === 'fr' ? 'Jurassique' : 'Jurásico'],
+        ['Cretácico',  lang === 'fr' ? 'Crétacé' : 'Cretácico'],
+        ['Paleozoico', lang === 'fr' ? 'Paléozoïque' : 'Paleozoico'],
+        ['Cenozoico',  lang === 'fr' ? 'Cénozoïque' : 'Cenozoico'],
+      ].map(([val, label]) => `
+        <button class="btn-filtro ${filtroPeriodo===val?'activo-periodo':''} ${filtroPeriodo===val?'activo':''}"
+          onclick="setFiltroPeriodo('${val}',this)">${label}</button>
+      `).join('');
+
+      // Filtros dieta
+      document.getElementById('filtros-dieta').innerHTML = [
+        ['todos',      lang === 'fr' ? 'Tous' : 'Todos'],
+        ['Carnívoro',  lang === 'fr' ? 'Carnivore' : 'Carnívoro'],
+        ['Herbívoro',  lang === 'fr' ? 'Herbivore' : 'Herbívoro'],
+        ['Omnívoro',   lang === 'fr' ? 'Omnivore' : 'Omnívoro'],
+      ].map(([val, label]) => `
+        <button class="btn-filtro ${filtroDieta===val?'activo-tipo':''} ${filtroDieta===val?'activo':''}"
+          onclick="setFiltroDieta('${val}',this)">${label}</button>
+      `).join('');
+
+      filtrarAnimales();
+    }
+
+    function setFiltroEstado(val)  { filtroEstado  = val; renderPagina(); }
+    function setFiltroPeriodo(val) { filtroPeriodo = val; renderPagina(); }
+    function setFiltroDieta(val)   { filtroDieta   = val; renderPagina(); }
+
+    function filtrarAnimales() {
+      const q = document.getElementById('campoBusqueda').value.toLowerCase();
+      let lista = ANIMALES;
+
+      if (filtroEstado !== 'todos')
+        lista = lista.filter(a => a.estado === filtroEstado);
+
+      if (filtroPeriodo !== 'todos' && PERIODO_MAP[filtroPeriodo])
+        lista = lista.filter(PERIODO_MAP[filtroPeriodo]);
+
+      if (filtroDieta !== 'todos' && DIETA_MAP[filtroDieta])
+        lista = lista.filter(DIETA_MAP[filtroDieta]);
+
+      if (q)
+        lista = lista.filter(a =>
+          a.nombre.toLowerCase().includes(q) ||
+          a.cientifico.toLowerCase().includes(q)
+        );
+
+      document.getElementById('contador').innerHTML =
+        `Mostrando <span>${lista.length}</span> de ${ANIMALES.length} animales`;
+
+      renderizarAnimales(lista);
+    }
+
+    function renderizarAnimales(lista) {
+      const grid = document.getElementById('gridAnimales');
+      const sin  = document.getElementById('sinResultados');
+      if (lista.length === 0) { grid.innerHTML = ''; sin.style.display = 'block'; return; }
+      sin.style.display = 'none';
+      grid.innerHTML = lista.map(a => `
+        <div class="card-animal" onclick="verAnimal(${a.id})">
+          <div class="card-emoji">${a.emoji}</div>
+          <div class="card-info">
+            <div class="card-nombre">${a.nombre}</div>
+            <div class="card-cientifico">${a.cientifico}</div>
+            <span class="etiqueta etiqueta-${a.estado}">
+              ${a.estado === 'extinto' ? t('explorer_extinto') : t('explorer_viviente')}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function verAnimal(id) {
+      const a = ANIMALES.find(x => x.id === id);
+      document.getElementById('vistaLista').classList.add('oculta');
+      document.getElementById('vistaDetalle').classList.add('visible');
+      document.getElementById('btn-volver').textContent = t('explorer_volver');
+      window.scrollTo(0, 0);
+      document.getElementById('contenidoDetalle').innerHTML = `
+        <div class="detalle-cabecera animar">
+          <div class="detalle-emoji">${a.emoji}</div>
+          <div>
+            <h2 class="detalle-titulo">${a.nombre}</h2>
+            <div class="detalle-sci">${a.cientifico}</div>
+            <span class="etiqueta etiqueta-${a.estado}">
+              ${a.estado === 'extinto' ? t('explorer_extinto') : t('explorer_viviente')}
+            </span>
+            <p class="detalle-desc">${a.descripcion}</p>
+          </div>
+        </div>
+        <div class="detalle-grid">
+          <div class="campo"><div class="campo-label">${t('campo_dieta')}</div><div class="campo-valor">${a.dieta}</div></div>
+          <div class="campo"><div class="campo-label">${t('campo_tamaño')}</div><div class="campo-valor">${a.tamaño}</div></div>
+          <div class="campo"><div class="campo-label">${t('campo_peso')}</div><div class="campo-valor">${a.peso}</div></div>
+          <div class="campo"><div class="campo-label">${t('campo_habitat')}</div><div class="campo-valor">${a.habitat}</div></div>
+          <div class="campo"><div class="campo-label">${t('campo_periodo')}</div><div class="campo-valor">${a.periodo}</div></div>
+          ${a.añoDescubrimiento ? `<div class="campo"><div class="campo-label">${t('campo_año')}</div><div class="campo-valor">${a.añoDescubrimiento}</div></div>` : ''}
+          ${a.lugarFosil !== '—' ? `<div class="campo"><div class="campo-label">${t('campo_fosil')}</div><div class="campo-valor">${a.lugarFosil}</div></div>` : ''}
+          <div class="campo"><div class="campo-label">${t('campo_cientifico')}</div><div class="campo-valor">${a.cientifico2}</div></div>
+        </div>
+        <div>
+          <div class="campo-label">${t('campo_clasificacion')}</div>
+          <div class="clasificacion-tags">
+            ${a.clasificacion.map(tag => `<span class="tag-clasificacion">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function cerrarDetalle() {
+      document.getElementById('vistaLista').classList.remove('oculta');
+      document.getElementById('vistaDetalle').classList.remove('visible');
+      window.scrollTo(0, 0);
+    }
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

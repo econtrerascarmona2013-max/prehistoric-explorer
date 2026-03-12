@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fossil Science — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .grid-fossil { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; margin-bottom: 3rem; }
+    .card-fossil { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; padding: 1.6rem; transition: border-color 0.2s; }
+    .card-fossil:hover { border-color: var(--acento3); }
+    .fossil-icono { font-size: 2.2rem; margin-bottom: 0.8rem; }
+    .fossil-titulo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .fossil-texto { font-size: 0.88rem; color: var(--texto-apagado); line-height: 1.7; margin-bottom: 1rem; }
+    .fossil-detalle { font-size: 0.8rem; color: var(--texto-apagado); border-top: 1px solid var(--borde); padding-top: 0.8rem; margin-top: 0.8rem; }
+    .fossil-detalle strong { color: var(--acento); }
+    .seccion-titulo-2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; margin-top: 1rem; }
+    .timeline { position: relative; max-width: 700px; }
+    .timeline::before { content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--acento), var(--borde)); }
+    .timeline-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start; }
+    .timeline-punto { width: 36px; height: 36px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--acento); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; position: relative; z-index: 1; }
+    .timeline-contenido { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; padding: 1rem 1.2rem; flex: 1; transition: border-color 0.2s; }
+    .timeline-contenido:hover { border-color: var(--acento); }
+    .timeline-paso { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento); margin-bottom: 0.3rem; }
+    .timeline-titulo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .timeline-desc { font-size: 0.87rem; color: var(--texto-apagado); line-height: 1.6; }
+    .dato-destacado { background: var(--surface2); border: 1px solid var(--borde); border-left: 3px solid var(--acento); border-radius: 0 6px 6px 0; padding: 1.2rem 1.5rem; margin: 2rem 0; max-width: 600px; }
+    .dato-destacado .dato-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--acento); margin-bottom: 0.4rem; }
+    .dato-destacado p { font-size: 0.95rem; color: var(--texto-apagado); font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="index.html" class="activo" id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="grid-fossil">
+      <div class="card-fossil">
+        <div class="fossil-icono">🪨</div>
+        <h3 class="fossil-titulo" id="f1-titulo"></h3>
+        <p class="fossil-texto" id="f1-texto"></p>
+        <div class="fossil-detalle" id="f1-detalle"></div>
+      </div>
+      <div class="card-fossil">
+        <div class="fossil-icono">⛏️</div>
+        <h3 class="fossil-titulo" id="f2-titulo"></h3>
+        <p class="fossil-texto" id="f2-texto"></p>
+        <div class="fossil-detalle" id="f2-detalle"></div>
+      </div>
+      <div class="card-fossil">
+        <div class="fossil-icono">🧬</div>
+        <h3 class="fossil-titulo" id="f3-titulo"></h3>
+        <p class="fossil-texto" id="f3-texto"></p>
+        <div class="fossil-detalle" id="f3-detalle"></div>
+      </div>
+      <div class="card-fossil">
+        <div class="fossil-icono">🖨️</div>
+        <h3 class="fossil-titulo" id="f4-titulo"></h3>
+        <p class="fossil-texto" id="f4-texto"></p>
+        <div class="fossil-detalle" id="f4-detalle"></div>
+      </div>
+    </div>
+
+    <div class="divisor"></div>
+
+    <div class="dato-destacado">
+      <div class="dato-label">⏱️ Dato científico</div>
+      <p id="dato-cientifico"></p>
+    </div>
+
+    <h2 class="seccion-titulo-2" id="como-titulo"></h2>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const CONTENIDO = {
+      es: {
+        f1_titulo: "¿Qué es un fósil?",
+        f1_texto: "Los fósiles son restos o huellas de organismos antiguos preservados en roca sedimentaria. Pueden ser huesos, dientes, huellas, impresiones de piel o incluso ADN parcialmente conservado.",
+        f1_detalle: "<strong>Tipos:</strong> Fósiles corporales · Huellas · Ámbar · Momificación natural · Moldes e impresiones",
+        f2_titulo: "Cómo se descubren",
+        f2_texto: "Los paleontólogos trabajan en excavaciones usando pinceles finos, cinceles y escáneres. Primero cartografían el yacimiento y luego extraen los fósiles con extremo cuidado.",
+        f2_detalle: "<strong>Técnicas:</strong> Excavación manual · Georradar · Fotogrametría 3D · Tomografía computarizada",
+        f3_titulo: "ADN antiguo",
+        f3_texto: "En condiciones frías y secas, el ADN puede conservarse miles o incluso millones de años. Se ha secuenciado ADN de mamuts, neandertales y aves extintas del Pleistoceno.",
+        f3_detalle: "<strong>Récord actual:</strong> ADN de 2 millones de años (mamíferos del Ártico, 2022)",
+        f4_titulo: "Tecnología científica",
+        f4_texto: "Los escáneres CT permiten ver el interior de un fósil sin dañarlo. Las impresoras 3D crean réplicas exactas. Las simulaciones por ordenador reconstruyen movimientos y comportamientos.",
+        f4_detalle: "<strong>Herramientas:</strong> CT scan · Impresión 3D · Microscopía electrónica · Simulación biomecánica",
+        dato: "Solo se fosilizan menos del 0,01% de todos los organismos que han existido. Lo que conocemos del pasado es una fracción ínfima de la vida real que hubo.",
+        como: "¿Cómo se forma un fósil?",
+        pasos: [
+          { emoji: "💀", paso: "Paso 1", titulo: "El organismo muere", desc: "El animal o planta muere y cae en un entorno donde puede ser enterrado rápidamente, como el fondo de un lago o una duna de arena." },
+          { emoji: "🌊", paso: "Paso 2", titulo: "Enterramiento rápido", desc: "Los restos quedan cubiertos por sedimento antes de descomponerse completamente. Las partes blandas desaparecen; los huesos y dientes resisten más." },
+          { emoji: "⏳", paso: "Paso 3", titulo: "Mineralización", desc: "Durante millones de años, el agua subterránea reemplaza los minerales de los huesos por minerales de la roca circundante. El hueso se convierte en piedra." },
+          { emoji: "🏔️", paso: "Paso 4", titulo: "Exposición geológica", desc: "La erosión del viento y el agua acaban exponiendo el fósil en la superficie, donde un paleontólogo puede encontrarlo." },
+          { emoji: "🔬", paso: "Paso 5", titulo: "Excavación y estudio", desc: "El fósil se extrae, consolida con resinas especiales, se lleva al laboratorio y se analiza con escáneres y técnicas de datación radiométrica." }
+        ]
+      },
+      fr: {
+        f1_titulo: "Qu'est-ce qu'un fossile ?",
+        f1_texto: "Les fossiles sont des restes ou des traces d'organismes anciens préservés dans la roche sédimentaire. Ils peuvent être des os, des dents, des empreintes ou même de l'ADN partiellement conservé.",
+        f1_detalle: "<strong>Types :</strong> Fossiles corporels · Empreintes · Ambre · Momification · Moulages",
+        f2_titulo: "Comment les découvre-t-on ?",
+        f2_texto: "Les paléontologues travaillent sur des fouilles avec des pinceaux fins et des scanners. Ils cartographient d'abord le site puis extraient les fossiles avec soin.",
+        f2_detalle: "<strong>Techniques :</strong> Fouille manuelle · Géoradar · Photogrammétrie 3D · Tomodensitométrie",
+        f3_titulo: "ADN ancien",
+        f3_texto: "Dans des conditions froides et sèches, l'ADN peut se conserver des milliers voire des millions d'années. On a séquencé l'ADN de mammouths et de Néandertaliens.",
+        f3_detalle: "<strong>Record actuel :</strong> ADN de 2 millions d'années (mammifères de l'Arctique, 2022)",
+        f4_titulo: "Technologie scientifique",
+        f4_texto: "Les scanners CT permettent de voir l'intérieur d'un fossile sans l'endommager. Les imprimantes 3D créent des répliques exactes pour les musées.",
+        f4_detalle: "<strong>Outils :</strong> Scanner CT · Impression 3D · Microscopie électronique · Simulation biomécanique",
+        dato: "Moins de 0,01% de tous les organismes qui ont existé se sont fossilisés. Ce que nous connaissons du passé est une infime fraction de la vie réelle.",
+        como: "Comment se forme un fossile ?",
+        pasos: [
+          { emoji: "💀", paso: "Étape 1", titulo: "L'organisme meurt", desc: "L'animal ou la plante meurt dans un environnement propice à un enterrement rapide, comme le fond d'un lac ou une dune de sable." },
+          { emoji: "🌊", paso: "Étape 2", titulo: "Enfouissement rapide", desc: "Les restes sont couverts de sédiments avant de se décomposer complètement. Les parties molles disparaissent ; les os et dents résistent mieux." },
+          { emoji: "⏳", paso: "Étape 3", titulo: "Minéralisation", desc: "Pendant des millions d'années, les eaux souterraines remplacent les minéraux des os. L'os se transforme en pierre." },
+          { emoji: "🏔️", paso: "Étape 4", titulo: "Exposition géologique", desc: "L'érosion du vent et de l'eau finit par exposer le fossile en surface, où un paléontologue peut le trouver." },
+          { emoji: "🔬", paso: "Étape 5", titulo: "Fouille et étude", desc: "Le fossile est extrait, consolidé avec des résines spéciales, amené au laboratoire et analysé avec des scanners et des techniques de datation." }
+        ]
+      }
+    };
+
+    function renderPagina() {
+      const lang = getLang();
+      const c = CONTENIDO[lang] || CONTENIDO.es;
+
+      // Nav
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('activo');
+      });
+
+      // Cabecera
+      document.getElementById('seccion-label').textContent  = t('fossil_label');
+      document.getElementById('seccion-titulo').textContent = t('fossil_titulo');
+      document.getElementById('seccion-sub').textContent    = t('fossil_sub');
+      document.getElementById('footer-copy').textContent    = t('footer_copy');
+
+      // Tarjetas
+      ['f1','f2','f3','f4'].forEach(f => {
+        document.getElementById(f+'-titulo').textContent  = c[f+'_titulo'];
+        document.getElementById(f+'-texto').textContent   = c[f+'_texto'];
+        document.getElementById(f+'-detalle').innerHTML   = c[f+'_detalle'];
+      });
+
+      // Dato
+      document.getElementById('dato-cientifico').textContent = c.dato;
+      document.getElementById('como-titulo').textContent     = c.como;
+
+      // Timeline
+      document.getElementById('timeline').innerHTML = c.pasos.map((p, i) => `
+        <div class="timeline-item">
+          <div class="timeline-punto">${p.emoji}</div>
+          <div class="timeline-contenido">
+            <div class="timeline-paso">${p.paso}</div>
+            <div class="timeline-titulo">${p.titulo}</div>
+            <div class="timeline-desc">${p.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

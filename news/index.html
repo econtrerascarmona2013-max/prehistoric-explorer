@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Science News — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .filtros { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .btn-filtro { background: var(--surface); border: 1px solid var(--borde); color: var(--texto-apagado); padding: 0.4rem 1.1rem; border-radius: 20px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.88rem; transition: all 0.2s; }
+    .btn-filtro.activo, .btn-filtro:hover { border-color: var(--acento); color: var(--acento); background: rgba(200,164,90,0.06); }
+    .grid-noticias { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
+    .card-noticia { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; padding: 1.5rem; transition: all 0.25s; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+    .card-noticia:hover { border-color: var(--acento); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(200,164,90,0.08); }
+    .noticia-fecha { font-size: 0.72rem; color: var(--texto-apagado); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .noticia-cat { display: inline-block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.5rem; border-radius: 2px; margin-bottom: 0.8rem; }
+    .cat-descubrimiento { background: rgba(200,164,90,0.1); color: var(--acento); border: 1px solid rgba(200,164,90,0.25); }
+    .cat-ciencia { background: rgba(125,191,168,0.1); color: var(--acento2); border: 1px solid rgba(125,191,168,0.25); }
+    .cat-curiosidad { background: rgba(212,112,74,0.1); color: var(--acento3); border: 1px solid rgba(212,112,74,0.25); }
+    .noticia-titulo { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.3; flex: 1; }
+    .noticia-resumen { font-size: 0.87rem; color: var(--texto-apagado); line-height: 1.6; margin-bottom: 0.8rem; }
+    .noticia-fuente { font-size: 0.72rem; color: var(--acento); letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.3rem; }
+    .noticia-fuente::before { content: '↗'; }
+    .sin-resultados { text-align: center; padding: 4rem 2rem; color: var(--texto-apagado); font-style: italic; display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="index.html" class="activo" id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav> 
+
+  <div> class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="filtros" id="filtros"></div>
+    <div class="grid-noticias" id="gridNoticias"></div>
+    <div class="sin-resultados" id="sinResultados"></div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const NOTICIAS_EXTRA = [
+      {
+        id: 3,
+        titulo: "Los saurópodos usaban el cuello de forma lateral, no vertical",
+        fecha: "Noviembre 2024",
+        categoria: "curiosidad",
+        resumen: "Un nuevo estudio biomecánico sugiere que los dinosaurios de cuello largo alcanzaban vegetación a los lados, no en lo alto de los árboles como se creía.",
+        fuente: null
+      },
+      {
+        id: 4,
+        titulo: "Fósiles de tiburón de 6 metros del Oligoceno hallados en Marruecos",
+        fecha: "Octubre 2024",
+        categoria: "descubrimiento",
+        resumen: "La nueva especie llena un hueco evolutivo entre los tiburones blancos modernos y sus parientes extintos del Eoceno.",
+        fuente: null
+      },
+      {
+        id: 5,
+        titulo: "Reconstruyen el color de un pterosaurio por primera vez",
+        fecha: "Septiembre 2024",
+        categoria: "ciencia",
+        resumen: "Melanosomas en fósiles de Tupuxuara revelan una coloración rojiza en la cresta, posiblemente usada para señalización visual entre individuos.",
+        fuente: null
+      },
+      {
+        id: 6,
+        titulo: "¿Por qué los insectos del Carbonífero eran gigantes?",
+        fecha: "Agosto 2024",
+        categoria: "curiosidad",
+        resumen: "Con un 35% de oxígeno atmosférico, los insectos podían crecer sin límite. Las libélulas llegaban a 70 cm de envergadura.",
+        fuente: null
+      },
+      {
+        id: 7,
+        titulo: "Koleken inakayali: el nuevo carnívoro patagónico con brazos aún más cortos que el T. rex",
+        fecha: "Mayo 2024",
+        categoria: "descubrimiento",
+        resumen: "Descubierto en la Formación La Colonia de Argentina, este abelisáurido es una especie completamente nueva. Sus extremidades anteriores apenas sobresalían del cuerpo, incluso menos que las del tiranosaurio.",
+        fuente: "https://www.nationalgeographic.com/premium/article/new-carnivorous-dinosaur-patagonia-argentina"
+      },
+      {
+        id: 8,
+        titulo: "Titanomachya gimenezi: el titanosaurio enano del fin del Cretácico",
+        fecha: "Abril 2024",
+        categoria: "descubrimiento",
+        resumen: "Hallado en Patagonia, este saurópodo sorprendentemente pequeño podría haber reducido su tamaño para adaptarse a la reducción de tierra firme por la transgresión del océano Atlántico.",
+        fuente: "https://www.nationalgeographic.com/science/article/new-dinosaur-titanosaur-patagonia-fossils"
+      },
+      {
+        id: 9,
+        titulo: "Fona herzogae: el dinosaurio que cavaba su propia madriguera",
+        fecha: "Julio 2024",
+        categoria: "descubrimiento",
+        resumen: "Este herbívoro del Cretácico de Utah vivía en madrigueras subterráneas. Gracias a ese hábito, sus fósiles se conservaron en cantidad inusual: varios esqueletos completos en la misma capa rocosa.",
+        fuente: "https://www.nationalgeographic.com/science/article/dinosaur-burrow-fossil-new-species"
+      },
+      {
+        id: 10,
+        titulo: "Spinosaurus mirabilis: nueva especie del depredador más largo de la historia",
+        fecha: "Febrero 2025",
+        categoria: "descubrimiento",
+        resumen: "Una cresta ósea en forma de cimitarra encontrada en Níger pertenece a una especie completamente nueva de Spinosaurus. El animal superaba los 15 metros de longitud y habitaba ecosistemas fluviales hace 95 millones de años.",
+        fuente: "https://www.nationalgeographic.com/science/article/spinosaurus-scimitar-head-crest"
+      },
+      {
+        id: 11,
+        titulo: "Chadititan calvoi: un nuevo titanosaurio de 78 millones de años en Patagonia",
+        fecha: "Marzo 2025",
+        categoria: "descubrimiento",
+        resumen: "Descubierto en una cantera de Neuquén junto a más de 400 fósiles de tortugas, peces y cocodrilos, este titanosaurio de 7 metros arroja nueva luz sobre la biodiversidad del Cretácico tardío en el hemisferio sur.",
+        fuente: "https://www.nationalgeographic.com/science/article/new-titanosaur-dinosaur-fossils-patagonia"
+      },
+      {
+        id: 12,
+        titulo: "Confirmado: Nanotyrannus era una especie real, no un T. rex joven",
+        fecha: "Enero 2026",
+        categoria: "ciencia",
+        resumen: "Después de 40 años de debate, una nueva investigación aporta la evidencia más sólida hasta la fecha de que Nanotyrannus lancensis era una especie independiente de tiranosáurido y no simplemente un Tyrannosaurus rex juvenil.",
+        fuente: "https://www.nationalgeographic.com/history/article/dead-world-nanotyrannus-video"
+      },
+      {
+        id: 13,
+        titulo: "Se descubren más de 50 nuevas especies de dinosaurio al año — y el ritmo no para",
+        fecha: "2024",
+        categoria: "curiosidad",
+        resumen: "Gracias a la apertura de países como China, Argentina y Mongolia a la paleontología, el ritmo de descubrimientos no tiene precedentes: una especie nueva cada semana de media.",
+        fuente: "https://www.nationalgeographic.com/science/article/why-now-is-the-best-time-ever-for-dinosaur-discoveries"
+      },
+    ];
+
+    const TODAS_NOTICIAS = [...NOTICIAS, ...NOTICIAS_EXTRA];
+    let filtroActual = 'todos';
+
+    function renderPagina() {
+      const lang = getLang();
+
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('activo');
+      });
+
+      document.getElementById('seccion-label').textContent  = t('news_label');
+      document.getElementById('seccion-titulo').textContent = t('news_titulo');
+      document.getElementById('seccion-sub').textContent    = t('news_sub');
+      document.getElementById('footer-copy').textContent    = t('footer_copy');
+      document.getElementById('sinResultados').textContent  = t('news_sin_result');
+
+      document.getElementById('filtros').innerHTML = `
+        <button class="btn-filtro ${filtroActual==='todos'?'activo':''}"
+          onclick="filtrarNoticias('todos',this)">${t('news_todas')}</button>
+        <button class="btn-filtro ${filtroActual==='descubrimiento'?'activo':''}"
+          onclick="filtrarNoticias('descubrimiento',this)">${t('news_descubrimiento')}</button>
+        <button class="btn-filtro ${filtroActual==='ciencia'?'activo':''}"
+          onclick="filtrarNoticias('ciencia',this)">${t('news_ciencia')}</button>
+        <button class="btn-filtro ${filtroActual==='curiosidad'?'activo':''}"
+          onclick="filtrarNoticias('curiosidad',this)">${t('news_curiosidad')}</button>
+      `;
+
+      renderizarNoticias(filtroActual === 'todos' ? TODAS_NOTICIAS : TODAS_NOTICIAS.filter(n => n.categoria === filtroActual));
+    }
+
+    function renderizarNoticias(lista) {
+      const grid = document.getElementById('gridNoticias');
+      const sin  = document.getElementById('sinResultados');
+      if (lista.length === 0) { grid.innerHTML = ''; sin.style.display = 'block'; return; }
+      sin.style.display = 'none';
+      const cats = { descubrimiento: t('cat_descubrimiento'), ciencia: t('cat_ciencia'), curiosidad: t('cat_curiosidad') };
+      grid.innerHTML = lista.map(n => {
+        const tag = n.fuente ? 'a' : 'div';
+        const attrs = n.fuente ? `href="${n.fuente}" target="_blank" rel="noopener"` : '';
+        const fuente = n.fuente ? `<span class="noticia-fuente">National Geographic</span>` : '';
+        return `
+          <${tag} class="card-noticia" ${attrs}>
+            <div class="noticia-fecha">${n.fecha}</div>
+            <span class="noticia-cat cat-${n.categoria}">${cats[n.categoria]}</span>
+            <h3 class="noticia-titulo">${n.titulo}</h3>
+            <p class="noticia-resumen">${n.resumen}</p>
+            ${fuente}
+          </${tag}>
+        `;
+      }).join('');
+    }
+
+    function filtrarNoticias(cat, btn) {
+      filtroActual = cat;
+      document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      const lista = cat === 'todos' ? TODAS_NOTICIAS : TODAS_NOTICIAS.filter(n => n.categoria === cat);
+      renderizarNoticias(lista);
+    }
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

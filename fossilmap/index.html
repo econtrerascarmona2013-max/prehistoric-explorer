@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fossil Map — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
+    body { overflow: hidden; height: 100vh; }
+
+    /* ── MAPA ── */
+    #mapa {
+      position: fixed;
+      inset: 0;
+      top: 54px;
+      bottom: 0;
+      z-index: 0;
+      filter: saturate(0.7) brightness(0.85);
+    }
+
+    /* Oscurecer tiles para que encaje con el tema */
+    .leaflet-tile { filter: invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.75); }
+
+    /* ── CONTROLES SUPERIORES ── */
+    #controles {
+      position: fixed;
+      top: 70px;
+      left: 1.5rem;
+      z-index: 200;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      max-width: 600px;
+    }
+
+    .filtro-btn {
+      background: rgba(10,12,15,0.88);
+      border: 1px solid var(--borde);
+      color: var(--texto-apagado);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .filtro-btn:hover { border-color: var(--acento); color: var(--acento); }
+    .filtro-btn.activo { border-color: var(--acento); color: var(--acento); background: rgba(200,164,90,0.1); }
+
+    /* ── CONTADOR ── */
+    #contador {
+      position: fixed;
+      top: 70px;
+      right: 1.5rem;
+      z-index: 200;
+      background: rgba(10,12,15,0.88);
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      color: var(--texto-apagado);
+      backdrop-filter: blur(8px);
+    }
+    #contador span { color: var(--acento); font-weight: 600; }
+
+    /* ── MARCADORES CUSTOM ── */
+    .marker-custom {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.6);
+      box-shadow: 0 0 8px currentColor;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .marker-custom:hover { transform: scale(1.5); }
+
+    /* ── PANEL LATERAL ── */
+    #panel {
+      position: fixed;
+      top: 54px;
+      right: 0;
+      bottom: 0;
+      z-index: 300;
+      width: 360px;
+      background: var(--surface);
+      border-left: 1px solid var(--borde);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--borde) transparent;
+    }
+    #panel.visible { transform: translateX(0); }
+
+    .panel-foto {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: var(--surface2);
+    }
+    .panel-foto-fallback {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--surface2), var(--surface));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .panel-body { padding: 1.5rem; }
+
+    .panel-era-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.6rem;
+      border-radius: 2px;
+      border: 1px solid;
+      margin-bottom: 0.8rem;
+    }
+    .panel-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .panel-pais {
+      font-size: 0.82rem;
+      color: var(--texto-apagado);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .panel-divisor {
+      height: 1px;
+      background: var(--borde);
+      margin: 1rem 0;
+    }
+    .panel-seccion {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.6rem;
+    }
+    .panel-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--texto-apagado);
+      margin-bottom: 1.2rem;
+    }
+    .hallazgo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      color: var(--texto-apagado);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--borde);
+      line-height: 1.4;
+    }
+    .hallazgo-item:last-child { border-bottom: none; }
+    .hallazgo-emoji { font-size: 1rem; flex-shrink: 0; }
+
+    .panel-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--acento);
+      border: 1px solid rgba(200,164,90,0.3);
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .panel-link:hover { background: rgba(200,164,90,0.08); }
+
+    .panel-cerrar {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(10,12,15,0.7);
+      border: 1px solid var(--borde);
+      color: var(--texto-apagado);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    .panel-cerrar:hover { border-color: var(--acento); color: var(--acento); }
+
+    /* ── LEYENDA ── */
+    #leyenda {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 200;
+      background: rgba(10,12,15,0.88);
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      backdrop-filter: blur(8px);
+      font-size: 0.75rem;
+    }
+    .ley-titulo { color: var(--texto-apagado); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .ley-item { display: flex; align-items: center; gap: 0.5rem; color: var(--texto-apagado); margin-bottom: 0.3rem; }
+    .ley-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Popup Leaflet custom */
+    .leaflet-popup-content-wrapper {
+      background: var(--surface) !important;
+      border: 1px solid var(--borde) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+      color: var(--texto) !important;
+      font-family: 'Crimson Pro', serif !important;
+    }
+    .leaflet-popup-tip { background: var(--surface) !important; }
+    .leaflet-popup-content { margin: 0.8rem 1rem !important; font-size: 0.88rem !important; }
+    .popup-nombre { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+    .popup-pais { font-size: 0.75rem; color: var(--texto-apagado); margin-bottom: 0.4rem; }
+    .popup-btn {
+      display: inline-block; margin-top: 0.5rem;
+      font-size: 0.75rem; color: var(--acento); cursor: pointer;
+      border-bottom: 1px dashed rgba(200,164,90,0.4);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+  <ul class="nav-links">
+    <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+    <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+    <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+    <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+    <li><a href="../news/index.html"       id="nav-news"></a></li>
+    <li><a href="../books/index.html"      id="nav-books"></a></li>
+    <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+    <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+    <li><a href="../timeline/index.html"   id="nav-timeline"></a></li>
+    <li><a href="index.html" class="activo" id="nav-fossilmap"></a></li>
+  </ul>
+  <div class="selector-idioma">
+    <button class="btn-idioma" onclick="setLang('es')">ES</button>
+    <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+  </div>
+  <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+</nav>
+
+<div id="mapa"></div>
+
+<div id="controles">
+  <button class="filtro-btn activo" onclick="filtrar('todos',this)">Todos</button>
+  <button class="filtro-btn" onclick="filtrar('Triásico',this)">Triásico</button>
+  <button class="filtro-btn" onclick="filtrar('Jurásico',this)">Jurásico</button>
+  <button class="filtro-btn" onclick="filtrar('Cretácico',this)">Cretácico</button>
+  <button class="filtro-btn" onclick="filtrar('Paleozoico',this)">Paleozoico</button>
+  <button class="filtro-btn" onclick="filtrar('Cenozoico',this)">Cenozoico</button>
+</div>
+
+<div id="contador">Mostrando <span id="cnt">0</span> yacimientos</div>
+
+<div id="panel">
+  <button class="panel-cerrar" onclick="cerrarPanel()">✕</button>
+  <div id="panel-foto-wrap"></div>
+  <div class="panel-body">
+    <div id="p-badge" class="panel-era-badge"></div>
+    <div id="p-nombre" class="panel-nombre"></div>
+    <div id="p-pais"   class="panel-pais"></div>
+    <div class="panel-divisor"></div>
+    <div class="panel-seccion">Descripción</div>
+    <div id="p-desc"   class="panel-desc"></div>
+    <div class="panel-seccion">Hallazgos principales</div>
+    <div id="p-hallazgos"></div>
+    <div id="p-link"></div>
+  </div>
+</div>
+
+<div id="leyenda">
+  <div class="ley-titulo">Era geológica</div>
+  <div class="ley-item"><div class="ley-dot" style="background:#c85030"></div> Triásico</div>
+  <div class="ley-item"><div class="ley-dot" style="background:#2a9a40"></div> Jurásico</div>
+  <div class="ley-item"><div class="ley-dot" style="background:#3aaa30"></div> Cretácico</div>
+  <div class="ley-item"><div class="ley-dot" style="background:#c8a030"></div> Paleozoico</div>
+  <div class="ley-item"><div class="ley-dot" style="background:#5a8aaa"></div> Cenozoico</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="../data.js"></script>
+<script>
+
+// ════════════════════════════════════════════
+//  DATOS — YACIMIENTOS
+// ════════════════════════════════════════════
+const YACIMIENTOS = [
+  {
+    id: 1,
+    nombre: "Hell Creek Formation",
+    pais: "🇺🇸 Montana, EE.UU.",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 47.3, lng: -106.5,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Hell_Creek_Badlands.jpg/640px-Hell_Creek_Badlands.jpg",
+    desc: "Uno de los yacimientos más famosos del mundo. Datado en 66-68 Ma, preserva la fauna del final del Cretácico justo antes del impacto del asteroide.",
+    hallazgos: [
+      { e: "🦖", t: "Tyrannosaurus rex — múltiples especímenes completos" },
+      { e: "🦕", t: "Triceratops horridus — cráneo y esqueleto completo" },
+      { e: "🦕", t: "Edmontosaurus — hadrosauro gigante" },
+      { e: "🦴", t: "Ankylosaurus magniventris" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Hell_Creek_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 2,
+    nombre: "Solnhofen Limestone",
+    pais: "🇩🇪 Baviera, Alemania",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 48.9, lng: 11.0,
+    emoji: "🐦",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/480px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg",
+    desc: "Calizas de aguas poco profundas del Jurásico tardío (~150 Ma). La excepcional preservación permite ver impresiones de plumas y tejidos blandos.",
+    hallazgos: [
+      { e: "🐦", t: "Archaeopteryx lithographica — el fósil más famoso del mundo" },
+      { e: "🦅", t: "Rhamphorhynchus — pterosaurio con cola larga" },
+      { e: "🐟", t: "Peces y medusas preservados en detalle" },
+      { e: "🦎", t: "Compsognathus longipes — dinosaurio pequeño" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Solnhofen_Limestone",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 3,
+    nombre: "Burgess Shale",
+    pais: "🇨🇦 Columbia Británica, Canadá",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 51.4, lng: -116.5,
+    emoji: "🦐",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Burgess_shale_anomalocaris.jpg/480px-Burgess_shale_anomalocaris.jpg",
+    desc: "Patrimonio Mundial UNESCO. Pizarras del Cámbrico Medio (~508 Ma) con una preservación extraordinaria de tejidos blandos. Ventana única a la Explosión Cámbrica.",
+    hallazgos: [
+      { e: "🦑", t: "Anomalocaris — mayor depredador del Cámbrico" },
+      { e: "🐌", t: "Hallucigenia — criatura con espinas en la espalda" },
+      { e: "👁️", t: "Opabinia — 5 ojos y garra frontal" },
+      { e: "🦀", t: "Marrella splendens — el fósil más abundante del sitio" }
+    ],
+    link: "https://www.pc.gc.ca/en/lhn-nhs/bc/burgess",
+    linkText: "Parks Canada"
+  },
+  {
+    id: 4,
+    nombre: "Gobi Desert — Flaming Cliffs",
+    pais: "🇲🇳 Ömnögovi, Mongolia",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 44.1, lng: 100.5,
+    emoji: "🥚",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bayanzag_Flaming_Cliffs.jpg/640px-Bayanzag_Flaming_Cliffs.jpg",
+    desc: "Bayanzag — los Acantilados en Llamas. Roy Chapman Andrews descubrió aquí los primeros nidos de huevos de dinosaurio en 1923. Formación Djadokhta, 75 Ma.",
+    hallazgos: [
+      { e: "🥚", t: "Primeros nidos de huevos de dinosaurio descubiertos" },
+      { e: "🦖", t: "Velociraptor mongoliensis — espécimen original" },
+      { e: "🦕", t: "Protoceratops — ceratópsido primitivo abundante" },
+      { e: "🦴", t: "Oviraptor philoceratops" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Flaming_Cliffs",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 5,
+    nombre: "Liaoning Formation",
+    pais: "🇨🇳 Liaoning, China",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 41.5, lng: 120.8,
+    emoji: "🐦",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Microraptor_gui_holotype.jpg/480px-Microraptor_gui_holotype.jpg",
+    desc: "Yacimientos del Cretácico inferior (~130 Ma) con preservación excepcional de plumas. Revolucionó la comprensión de la evolución de las aves desde los dinosaurios.",
+    hallazgos: [
+      { e: "🐦", t: "Microraptor gui — dinosaurio con 4 alas emplumadas" },
+      { e: "🦖", t: "Sinosauropteryx — primer dinosaurio con plumas confirmadas" },
+      { e: "🌸", t: "Archaefructus — primera planta con flores" },
+      { e: "🦎", t: "Psittacosaurus — ceratópsido primitivo" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Yixian_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 6,
+    nombre: "Morrison Formation",
+    pais: "🇺🇸 Wyoming/Colorado, EE.UU.",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 41.8, lng: -108.5,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Morrison_Formation_layers.jpg/640px-Morrison_Formation_layers.jpg",
+    desc: "La formación jurásica más productiva de Norteamérica. 150 Ma, se extiende por 13 estados. Fue el epicentro de la Bone Wars entre Cope y Marsh en el siglo XIX.",
+    hallazgos: [
+      { e: "🦕", t: "Diplodocus longus — saurópodo de 27m" },
+      { e: "🦕", t: "Brachiosaurus altithorax — cuello de 9m de altura" },
+      { e: "🦖", t: "Allosaurus fragilis — mayor depredador del Jurásico" },
+      { e: "🦕", t: "Stegosaurus armatus" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Morrison_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 7,
+    nombre: "Tendaguru",
+    pais: "🇹🇿 Lindi, Tanzania",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: -10.0, lng: 39.0,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Giraffatitan_brancai_mounted_NHM_Berlin.jpg/480px-Giraffatitan_brancai_mounted_NHM_Berlin.jpg",
+    desc: "El yacimiento jurásico más importante de África. Expediciones alemanas (1909-1913) extrajeron 225 toneladas de fósiles. El Giraffatitan del Museo de Berlín proviene de aquí.",
+    hallazgos: [
+      { e: "🦕", t: "Giraffatitan brancai — esqueleto completo en el Museum für Naturkunde" },
+      { e: "🦕", t: "Dicraeosaurus hansemanni — saurópodo con espinas" },
+      { e: "🦖", t: "Elaphrosaurus bambergi — terópodo esbelto" },
+      { e: "🦴", t: "Kentrosaurus aethiopicus — estegosáurido africano" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Tendaguru_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 8,
+    nombre: "Ischigualasto (Valle de la Luna)",
+    pais: "🇦🇷 San Juan, Argentina",
+    era: "Triásico",
+    color: "#c85030",
+    lat: -29.9, lng: -67.9,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Ischigualasto_Valle_de_la_Luna.jpg/640px-Ischigualasto_Valle_de_la_Luna.jpg",
+    desc: "Patrimonio Mundial UNESCO. Formación del Triásico tardío (~231 Ma) con algunos de los dinosaurios más primitivos conocidos. El yacimiento triásico más completo del mundo.",
+    hallazgos: [
+      { e: "🦖", t: "Eoraptor lunensis — uno de los primeros dinosaurios conocidos" },
+      { e: "🦖", t: "Herrerasaurus ischigualastensis — dinosaurio carnívoro primitivo" },
+      { e: "🦎", t: "Eodromaeus murphi — pequeño terópodo" },
+      { e: "🦴", t: "Pisanosaurus mertii — primer ornitísquio" }
+    ],
+    link: "https://whc.unesco.org/en/list/966",
+    linkText: "UNESCO"
+  },
+  {
+    id: 9,
+    nombre: "Messel Pit",
+    pais: "🇩🇪 Hesse, Alemania",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: 49.9, lng: 8.75,
+    emoji: "🐴",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Messel_pit_from_above.jpg/640px-Messel_pit_from_above.jpg",
+    desc: "Patrimonio Mundial UNESCO. Antiguo lago volcánico del Eoceno (~47 Ma) con preservación excepcional. El contenido estomacal, piel y pelo de los animales están preservados.",
+    hallazgos: [
+      { e: "🐴", t: "Propalaeotherium — caballo primitivo del tamaño de un zorro" },
+      { e: "🐍", t: "Messelophis variabilis — serpiente con patas vestigiales" },
+      { e: "🦅", t: "Gastornis — ave gigante depredadora de 2m" },
+      { e: "🦎", t: "Darwinius masillae — primate ancestral" }
+    ],
+    link: "https://whc.unesco.org/en/list/720",
+    linkText: "UNESCO"
+  },
+  {
+    id: 10,
+    nombre: "Ediacara Hills",
+    pais: "🇦🇺 Australia del Sur, Australia",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: -31.2, lng: 138.6,
+    emoji: "🫧",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Dickinsonia_costata.jpg/480px-Dickinsonia_costata.jpg",
+    desc: "El yacimiento que dio nombre al período Ediacárico (~550 Ma). Aquí se descubrieron los primeros organismos multicelulares complejos conocidos, la Biota de Ediacara.",
+    hallazgos: [
+      { e: "🫧", t: "Dickinsonia costata — organismo enigmático de hasta 1m" },
+      { e: "🫧", t: "Charniodiscus — organismo similar a una hoja" },
+      { e: "🫧", t: "Spriggina floundersi — posible ancestro de los artrópodos" },
+      { e: "🫧", t: "Tribrachidium — organismo con simetría triple" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Ediacara_Hills",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 11,
+    nombre: "La Brea Tar Pits",
+    pais: "🇺🇸 California, EE.UU.",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: 34.06, lng: -118.36,
+    emoji: "🐆",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/La_Brea_Tar_Pits_Lake_Pit.jpg/640px-La_Brea_Tar_Pits_Lake_Pit.jpg",
+    desc: "Depósitos de alquitrán del Pleistoceno (10.000-50.000 años) en pleno Los Ángeles. Más de 3,5 millones de fósiles extraídos, incluida la mayor colección de megafauna del Pleistoceno.",
+    hallazgos: [
+      { e: "🐆", t: "Smilodon fatalis — diente de sable más completo del mundo" },
+      { e: "🦁", t: "Panthera atrox — león americano extinto" },
+      { e: "🦣", t: "Mammuthus columbi — mamut colombino" },
+      { e: "🦅", t: "Teratornis merriami — ave voladora de 3,5m de envergadura" }
+    ],
+    link: "https://tarpits.org",
+    linkText: "La Brea Tar Pits"
+  },
+  {
+    id: 12,
+    nombre: "Dinosaur Provincial Park",
+    pais: "🇨🇦 Alberta, Canadá",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 50.75, lng: -111.5,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dinosaur_Provincial_Park_hoodoos.jpg/640px-Dinosaur_Provincial_Park_hoodoos.jpg",
+    desc: "Patrimonio Mundial UNESCO. Badlands de Alberta con la mayor concentración de fósiles del Cretácico tardío (~75 Ma). Más de 40 especies de dinosaurios identificadas.",
+    hallazgos: [
+      { e: "🦕", t: "Centrosaurus apertus — ceratópsido en manada" },
+      { e: "🦖", t: "Gorgosaurus libratus — tiranosáurido" },
+      { e: "🦴", t: "Corythosaurus casuarius — hadrosáurido con cresta" },
+      { e: "🦕", t: "Styracosaurus albertensis" }
+    ],
+    link: "https://whc.unesco.org/en/list/71",
+    linkText: "UNESCO"
+  },
+  {
+    id: 13,
+    nombre: "Chengjiang Biota",
+    pais: "🇨🇳 Yunnan, China",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 24.7, lng: 102.9,
+    emoji: "🦑",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Chengjiang_fossil_site_maotianshan_shales.jpg/640px-Chengjiang_fossil_site_maotianshan_shales.jpg",
+    desc: "Patrimonio Mundial UNESCO. Pizarras del Cámbrico Inferior (~520 Ma), 10 Ma más antiguo que Burgess Shale. Preserva la diversificación animal más temprana conocida.",
+    hallazgos: [
+      { e: "🐟", t: "Myllokunmingia — posible pez más primitivo conocido" },
+      { e: "🦑", t: "Amplectobelua — pariente de Anomalocaris" },
+      { e: "👁️", t: "Fuxianhuia — artrópodo primitivo con cerebro preservado" },
+      { e: "🦴", t: "Haikouichthys — vertebrado más antiguo conocido" }
+    ],
+    link: "https://whc.unesco.org/en/list/1388",
+    linkText: "UNESCO"
+  },
+  {
+    id: 14,
+    nombre: "Joggins Fossil Cliffs",
+    pais: "🇨🇦 Nova Scotia, Canadá",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 45.7, lng: -64.4,
+    emoji: "🌳",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Joggins_Fossil_Cliffs.jpg/640px-Joggins_Fossil_Cliffs.jpg",
+    desc: "Patrimonio Mundial UNESCO. Acantilados del Carbonífero (~310 Ma), el 'Carboniferous Rainforest'. Darwin los llamó el lugar más notable del mundo para la geología.",
+    hallazgos: [
+      { e: "🌳", t: "Lepidodendron — árbol de 30m preservado en posición vertical" },
+      { e: "🦎", t: "Hylonomus lyelli — reptil más antiguo conocido" },
+      { e: "🦟", t: "Arthropleura — ciempiés gigante de 2,5m" },
+      { e: "🌿", t: "Bosque carbonífero completo in situ" }
+    ],
+    link: "https://whc.unesco.org/en/list/1285",
+    linkText: "UNESCO"
+  },
+  {
+    id: 15,
+    nombre: "Patagonia — Neuquén",
+    pais: "🇦🇷 Neuquén, Argentina",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: -38.5, lng: -68.0,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Argentinosaurus_BW.jpg/480px-Argentinosaurus_BW.jpg",
+    desc: "La región con mayor concentración de saurópodos gigantes del mundo. El Cretácico de Neuquén ha producido los animales más grandes que jamás caminaron sobre la Tierra.",
+    hallazgos: [
+      { e: "🦕", t: "Argentinosaurus huinculensis — posiblemente el animal más grande de la historia" },
+      { e: "🦖", t: "Giganotosaurus carolinii — mayor carnívoro del Cretácico" },
+      { e: "🦕", t: "Patagotitan mayorum — titanosaurio de 70 toneladas" },
+      { e: "🥚", t: "Sauropod nesting sites — miles de huevos" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Neuqu%C3%A9n_Group",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 16,
+    nombre: "Olduvai Gorge",
+    pais: "🇹🇿 Arusha, Tanzania",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: -2.99, lng: 35.35,
+    emoji: "🧑",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Olduvai_Gorge%2C_Tanzania.jpg/640px-Olduvai_Gorge%2C_Tanzania.jpg",
+    desc: "La 'Cuna de la Humanidad'. Los Leakey descubrieron aquí fósiles de homininos de 1,8 Ma. Cambió para siempre la comprensión de la evolución humana.",
+    hallazgos: [
+      { e: "🧑", t: "Homo habilis — primera especie del género Homo" },
+      { e: "🦴", t: "Paranthropus boisei — robusto australopitecino" },
+      { e: "🪨", t: "Industria lítica Olduvayense — herramientas de 1,8 Ma" },
+      { e: "🧑", t: "Homo erectus — múltiples especímenes" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Olduvai_Gorge",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 17,
+    nombre: "Ghost Ranch",
+    pais: "🇺🇸 Nuevo México, EE.UU.",
+    era: "Triásico",
+    color: "#c85030",
+    lat: 36.32, lng: -106.48,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Ghost_Ranch_Landscape.jpg/640px-Ghost_Ranch_Landscape.jpg",
+    desc: "Formación Chinle del Triásico tardío (~210 Ma). En 1947 se descubrió una acumulación masiva de miles de esqueletos de Coelophysis, posiblemente la mayor en la historia.",
+    hallazgos: [
+      { e: "🦖", t: "Coelophysis bauri — miles de esqueletos en un solo depósito" },
+      { e: "🦎", t: "Hesperosuchus agilis — cocodrilomorfo primitivo" },
+      { e: "🦴", t: "Chindesaurus bryansmalli — dinosaurio saurísquio primitivo" },
+      { e: "🌿", t: "Flora del Triásico tardío preservada" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Ghost_Ranch",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 18,
+    nombre: "Riversleigh",
+    pais: "🇦🇺 Queensland, Australia",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: -19.1, lng: 138.7,
+    emoji: "🦘",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Riversleigh_Fossil_Site.jpg/640px-Riversleigh_Fossil_Site.jpg",
+    desc: "Patrimonio Mundial UNESCO. Registro fósil del Oligoceno al Pleistoceno (~25-0 Ma) de la fauna australiana. Documenta la evolución de los marsupiales australianos.",
+    hallazgos: [
+      { e: "🦘", t: "Procoptodon goliah — canguro gigante de 2m" },
+      { e: "🦁", t: "Thylacoleo carnifex — 'leon marsupial' de 100 kg" },
+      { e: "🐊", t: "Quinkana — cocodrilo terrestre" },
+      { e: "🦆", t: "Dromornis stirtoni — ave no voladora de 500 kg" }
+    ],
+    link: "https://whc.unesco.org/en/list/586",
+    linkText: "UNESCO"
+  }
+];
+
+const ERA_COLORES = {
+  "Triásico":   "#c85030",
+  "Jurásico":   "#2a9a40",
+  "Cretácico":  "#3aaa30",
+  "Paleozoico": "#c8a030",
+  "Cenozoico":  "#5a8aaa"
+};
+
+// ════════════════════════════════════════════
+//  MAPA LEAFLET
+// ════════════════════════════════════════════
+const mapa = L.map('mapa', {
+  center: [20, 10],
+  zoom: 2,
+  minZoom: 2,
+  maxZoom: 10,
+  zoomControl: true,
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors',
+  maxZoom: 19,
+}).addTo(mapa);
+
+// ── MARCADORES ──
+let marcadores = [];
+let filtroActivo = 'todos';
+
+function crearIcono(color) {
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width:14px;height:14px;border-radius:50%;
+      background:${color};border:2px solid rgba(255,255,255,0.7);
+      box-shadow:0 0 10px ${color},0 0 4px rgba(0,0,0,0.5);
+      cursor:pointer;transition:transform 0.15s;
+    "></div>`,
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
+  });
+}
+
+function renderMarcadores() {
+  // Limpiar marcadores existentes
+  marcadores.forEach(m => mapa.removeLayer(m));
+  marcadores = [];
+
+  const visibles = filtroActivo === 'todos'
+    ? YACIMIENTOS
+    : YACIMIENTOS.filter(y => y.era === filtroActivo);
+
+  document.getElementById('cnt').textContent = visibles.length;
+
+  visibles.forEach(y => {
+    const m = L.marker([y.lat, y.lng], { icon: crearIcono(y.color) })
+      .addTo(mapa)
+      .bindPopup(`
+        <div class="popup-nombre">${y.emoji} ${y.nombre}</div>
+        <div class="popup-pais">${y.pais}</div>
+        <div style="font-size:0.72rem;color:${y.color};letter-spacing:0.1em;text-transform:uppercase">${y.era}</div>
+        <div class="popup-btn" onclick="abrirPanel(${y.id})">Ver detalles →</div>
+      `, { maxWidth: 220 });
+
+    m.on('click', () => m.openPopup());
+    marcadores.push(m);
+  });
+}
+
+function filtrar(era, btn) {
+  filtroActivo = era;
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
+  btn.classList.add('activo');
+  cerrarPanel();
+  renderMarcadores();
+}
+
+// ════════════════════════════════════════════
+//  PANEL LATERAL
+// ════════════════════════════════════════════
+function abrirPanel(id) {
+  const y = YACIMIENTOS.find(x => x.id === id);
+  if (!y) return;
+
+  // Foto o fallback
+  const fotoWrap = document.getElementById('panel-foto-wrap');
+  fotoWrap.innerHTML = y.foto
+    ? `<img class="panel-foto" src="${y.foto}" alt="${y.nombre}" onerror="this.parentElement.innerHTML='<div class=panel-foto-fallback>${y.emoji}</div>'">`
+    : `<div class="panel-foto-fallback">${y.emoji}</div>`;
+
+  // Badge era
+  const badge = document.getElementById('p-badge');
+  badge.textContent = y.era;
+  badge.style.color       = y.color;
+  badge.style.borderColor = y.color;
+  badge.style.background  = `${y.color}18`;
+
+  document.getElementById('p-nombre').textContent = y.nombre;
+  document.getElementById('p-pais').innerHTML     = `<span>${y.pais}</span>`;
+  document.getElementById('p-desc').textContent   = y.desc;
+
+  document.getElementById('p-hallazgos').innerHTML = y.hallazgos.map(h => `
+    <div class="hallazgo-item">
+      <span class="hallazgo-emoji">${h.e}</span>
+      <span>${h.t}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('p-link').innerHTML = y.link
+    ? `<a class="panel-link" href="${y.link}" target="_blank">${y.linkText} ↗</a>` : '';
+
+  document.getElementById('panel').classList.add('visible');
+  mapa.flyTo([y.lat, y.lng], 5, { duration: 1.2 });
+}
+
+function cerrarPanel() {
+  document.getElementById('panel').classList.remove('visible');
+}
+
+// Cerrar panel al clicar en el mapa
+mapa.on('click', () => cerrarPanel());
+
+// ════════════════════════════════════════════
+//  NAV + IDIOMA + MODO
+// ════════════════════════════════════════════
+function renderNav() {
+  const lang = getLang();
+  const ids = ['explorer','landscapes','fossil','gallery','news','books','updates','comparator'];
+  ids.forEach(id => {
+    const el = document.getElementById('nav-' + id);
+    if (el) el.textContent = t('nav_' + id);
+  });
+  const tl = document.getElementById('nav-timeline');
+  if (tl) tl.textContent = lang === 'fr' ? 'Chronologie' : 'Timeline';
+  const fm = document.getElementById('nav-fossilmap');
+  if (fm) fm.textContent = lang === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+  document.querySelectorAll('.btn-idioma').forEach(b =>
+    b.classList.toggle('activo', b.textContent.trim() === lang.toUpperCase())
+  );
+}
+
+(function() {
+  const modo = localStorage.getItem('modo') || 'oscuro';
+  if (modo === 'claro') document.body.classList.add('claro');
+  document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+})();
+function toggleModo() {
+  const esClaro = document.body.classList.toggle('claro');
+  localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+  document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+renderNav();
+renderMarcadores();
+
+</script>
+</body>
+</html>

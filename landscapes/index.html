@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ancient Landscapes — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .tabs { display: flex; gap: 0.3rem; border-bottom: 1px solid var(--borde); margin-bottom: 2rem; }
+    .tab-btn {
+      background: none; border: none; color: var(--texto-apagado);
+      padding: 0.6rem 1.2rem; cursor: pointer;
+      font-family: 'Crimson Pro', serif; font-size: 0.95rem;
+      border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s;
+    }
+    .tab-btn.activo { color: var(--acento); border-bottom-color: var(--acento); }
+    .tab-btn:hover { color: var(--acento); }
+    .tab-contenido { display: none; }
+    .tab-contenido.activo { display: block; }
+    .grid-biomas { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .card-bioma { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; overflow: hidden; transition: all 0.25s; }
+    .card-bioma:hover { border-color: var(--acento2); transform: translateY(-3px); }
+    .bioma-visual { height: 90px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .bioma-cuerpo { padding: 1.3rem; }
+    .bioma-nombre { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .bioma-periodo { font-size: 0.72rem; color: var(--acento); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+    .bioma-desc { font-size: 0.88rem; color: var(--texto-apagado); margin-bottom: 1rem; line-height: 1.6; }
+    .bioma-datos { display: flex; flex-direction: column; gap: 0.3rem; }
+    .bioma-dato { font-size: 0.8rem; color: var(--texto-apagado); display: flex; gap: 0.5rem; }
+    .bioma-dato strong { color: var(--texto); font-weight: 600; }
+    .grid-reconstrucciones { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .card-reconstruccion {
+      aspect-ratio: 4/3; background: var(--surface2); border: 1px solid var(--borde);
+      border-radius: 4px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 0.5rem; padding: 1rem; position: relative; transition: all 0.25s; cursor: pointer;
+    }
+    .card-reconstruccion:hover { border-color: var(--acento); transform: scale(1.02); }
+    .recon-tipo {
+      position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.1rem 0.4rem;
+      border-radius: 2px; background: rgba(200,164,90,0.15); color: var(--acento);
+      border: 1px solid rgba(200,164,90,0.2);
+    }
+    .recon-emoji { font-size: 3rem; }
+    .recon-label { font-size: 0.8rem; color: var(--texto-apagado); text-align: center; }
+    .tabla-comparacion { width: 100%; border-collapse: collapse; }
+    .tabla-comparacion th {
+      background: var(--surface2); padding: 0.8rem 1rem; text-align: left;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--acento); border-bottom: 1px solid var(--borde);
+      font-family: 'Crimson Pro', serif; font-weight: 600;
+    }
+    .tabla-comparacion td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--borde); font-size: 0.9rem; color: var(--texto-apagado); }
+    .tabla-comparacion tr:hover td { background: var(--surface); }
+    .tabla-comparacion td:first-child { color: var(--texto); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="index.html" class="activo" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="tab-contenido activo" id="tab-biomas">
+      <div class="grid-biomas" id="gridBiomas"></div>
+    </div>
+    <div class="tab-contenido" id="tab-reconstrucciones">
+      <div class="grid-reconstrucciones">
+        <div class="card-reconstruccion"><div class="recon-tipo">3D</div><div class="recon-emoji">🌊</div><div class="recon-label">Océano del Cretácico</div></div>
+        <div class="card-reconstruccion"><div class="recon-tipo">Pintura</div><div class="recon-emoji">🌿</div><div class="recon-label">Selva del Jurásico</div></div>
+        <div class="card-reconstruccion"><div class="recon-tipo">3D</div><div class="recon-emoji">🏜️</div><div class="recon-label">Desierto del Triásico</div></div>
+        <div class="card-reconstruccion"><div class="recon-tipo">Pintura</div><div class="recon-emoji">❄️</div><div class="recon-label">Tundra del Pleistoceno</div></div>
+        <div class="card-reconstruccion"><div class="recon-tipo">3D</div><div class="recon-emoji">🌋</div><div class="recon-label">Pangea en el Pérmico</div></div>
+        <div class="card-reconstruccion"><div class="recon-tipo">Pintura</div><div class="recon-emoji">🌫️</div><div class="recon-label">Pantanos del Carbonífero</div></div>
+      </div>
+    </div>
+    <div class="tab-contenido" id="tab-comparacion">
+      <table class="tabla-comparacion">
+        <thead><tr>
+          <th id="th-lugar"></th>
+          <th id="th-hace"></th>
+          <th id="th-entonces"></th>
+          <th id="th-hoy"></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Sahara</td><td>~10.000 años</td><td>🌿 Sabana verde con ríos y lagos</td><td>🏜️ Desierto árido</td></tr>
+          <tr><td>Antártida</td><td>~34 millones de años</td><td>🌳 Bosques templados con fauna</td><td>❄️ Capa de hielo de 2 km</td></tr>
+          <tr><td>Europa Central</td><td>~20.000 años</td><td>❄️ Tundra glacial con mamuts</td><td>🌲 Bosques caducifolios</td></tr>
+          <tr><td>Mar del Norte</td><td>~8.000 años</td><td>🌱 Planicie habitada (Doggerland)</td><td>🌊 Mar inundado</td></tr>
+          <tr><td>India</td><td>~65 millones de años</td><td>🏝️ Isla volcánica separada de Asia</td><td>🗺️ Subcontinente colisionado</td></tr>
+          <tr><td>España</td><td>~100 millones de años</td><td>🌊 Archipiélago tropical bajo el mar</td><td>🏔️ Península con cordilleras</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const BIOMAS = [
+      { nombre: "Bosques del Carbonífero", periodo: "358–299 Ma", emoji: "🌿", fondo: "rgba(34,85,34,0.2)", clima: "Cálido y húmedo, ~30°C", flora: "Helechos arborescentes de 30m, licópsidos", fauna: "Libélulas gigantes, escorpiones de 70cm", desc: "Selvas tropicales que cubrían Europa y América del Norte. La materia orgánica no se descomponía, creando los depósitos de carbón que usamos hoy." },
+      { nombre: "Desiertos del Triásico", periodo: "252–201 Ma", emoji: "🏜️", fondo: "rgba(180,100,30,0.2)", clima: "Árido y caluroso, hasta 50°C", flora: "Coníferas, cicadáceas, helechos", fauna: "Primeros dinosaurios, reptiles arcosaurios", desc: "El interior de Pangea era un desierto donde las temperaturas superaban los 50°C. Aquí surgieron los primeros dinosaurios." },
+      { nombre: "Océanos del Cretácico", periodo: "145–66 Ma", emoji: "🌊", fondo: "rgba(10,60,120,0.2)", clima: "Tropical, 30–35°C superficial", flora: "Algas, primeras angiospermas costeras", fauna: "Mosasaurios, plesiosaurios, Archelon", desc: "Los mares cubrían el 80% del planeta. El nivel del mar era 200m más alto. Plagados de reptiles marinos gigantes." },
+      { nombre: "Tundra del Pleistoceno", periodo: "2,6 Ma – 11.700 a.C.", emoji: "❄️", fondo: "rgba(80,100,160,0.2)", clima: "Frío intenso, -20°C de media", flora: "Gramíneas, musgos, árboles enanos", fauna: "Mamuts, rinocerontes lanudos, tigres dientes de sable", desc: "La megafauna del Pleistoceno coexistió con los humanos modernos. La extinción fue combinación de caza y cambio climático." },
+      { nombre: "Mares del Ordovícico", periodo: "485–443 Ma", emoji: "🐚", fondo: "rgba(0,80,100,0.2)", clima: "Cálido, luego glaciación terminal", flora: "Algas marinas, plantas terrestres primitivas", fauna: "Trilobites, cefalópodos, primeros vertebrados", desc: "La vida animal explotó en diversidad. El período terminó con una de las 5 grandes extinciones masivas." },
+      { nombre: "Pantanos del Carbonífero", periodo: "320–300 Ma", emoji: "🌫️", fondo: "rgba(40,70,40,0.2)", clima: "Húmedo tropical, alta humedad", flora: "Sigillaria, Lepidodendron (30m), Calamites", fauna: "Hylonomus (1er reptil), Arthropleura (milpiés de 2m)", desc: "Los pantanos carboníferos son la fuente del carbón que el mundo usa hoy. El oxígeno era tan alto que los incendios eran constantes." }
+    ];
+
+    let tabActual = 'biomas';
+
+    function renderPagina() {
+      // Nav
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === getLang().toUpperCase()) b.classList.add('activo');
+      });
+
+      // Cabecera
+      document.getElementById('seccion-label').textContent = t('landscapes_label');
+      document.getElementById('seccion-titulo').textContent = t('landscapes_titulo');
+      document.getElementById('seccion-sub').textContent   = t('landscapes_sub');
+      document.getElementById('footer-copy').textContent   = t('footer_copy');
+
+      // Tabs
+      document.getElementById('tabs').innerHTML = `
+        <button class="tab-btn ${tabActual==='biomas'?'activo':''}" onclick="cambiarTab('biomas',this)">${t('tab_biomas')}</button>
+        <button class="tab-btn ${tabActual==='reconstrucciones'?'activo':''}" onclick="cambiarTab('reconstrucciones',this)">${t('tab_recon')}</button>
+        <button class="tab-btn ${tabActual==='comparacion'?'activo':''}" onclick="cambiarTab('comparacion',this)">${t('tab_comparacion')}</button>
+      `;
+
+      // Cabeceras tabla
+      document.getElementById('th-lugar').textContent   = t('tabla_lugar');
+      document.getElementById('th-hace').textContent    = t('tabla_hace');
+      document.getElementById('th-entonces').textContent = t('tabla_entonces');
+      document.getElementById('th-hoy').textContent     = t('tabla_hoy');
+
+      // Biomas
+      document.getElementById('gridBiomas').innerHTML = BIOMAS.map(b => `
+        <div class="card-bioma">
+          <div class="bioma-visual" style="background:${b.fondo}">${b.emoji}</div>
+          <div class="bioma-cuerpo">
+            <div class="bioma-nombre">${b.nombre}</div>
+            <div class="bioma-periodo">${b.periodo}</div>
+            <p class="bioma-desc">${b.desc}</p>
+            <div class="bioma-datos">
+              <div class="bioma-dato">🌡️ <strong>${t('bioma_clima')}:</strong> ${b.clima}</div>
+              <div class="bioma-dato">🌿 <strong>${t('bioma_flora')}:</strong> ${b.flora}</div>
+              <div class="bioma-dato">🦕 <strong>${t('bioma_fauna')}:</strong> ${b.fauna}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function cambiarTab(id, btn) {
+      tabActual = id;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('activo'));
+      document.querySelectorAll('.tab-contenido').forEach(c => c.classList.remove('activo'));
+      btn.classList.add('activo');
+      document.getElementById('tab-' + id).classList.add('activo');
+    }
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

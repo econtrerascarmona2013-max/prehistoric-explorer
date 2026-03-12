@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .home-fondo {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,164,90,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(125,191,168,0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .home-dino-fondo {
+      position: fixed;
+      right: -1rem;
+      bottom: 0;
+      font-size: clamp(10rem, 22vw, 18rem);
+      opacity: 0.04;
+      user-select: none;
+      line-height: 1;
+      z-index: 0;
+    }
+    .home-contenido {
+      position: relative;
+      z-index: 1;
+      padding-top: 140px;
+    }
+    .home-badge {
+      display: inline-block;
+      background: rgba(200,164,90,0.1);
+      border: 1px solid rgba(200,164,90,0.3);
+      color: var(--acento);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .home-titulo {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      margin-bottom: 1.5rem;
+    }
+    .home-titulo .linea2 { color: var(--acento); display: block; }
+    .home-titulo .linea3 { color: var(--acento2); display: block; font-style: italic; }
+    .home-descripcion {
+      font-size: 1.1rem;
+      color: var(--texto-apagado);
+      max-width: 520px;
+      margin-bottom: 3rem;
+      font-style: italic;
+    }
+    .stats-bar {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--acento);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--texto-apagado);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .secciones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .seccion-card {
+      background: var(--surface);
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--texto);
+      transition: all 0.25s;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .seccion-card:hover {
+      border-color: var(--acento);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(200,164,90,0.08);
+      color: var(--texto);
+    }
+    .seccion-icono { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+    .seccion-card-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .seccion-card-desc { font-size: 0.82rem; color: var(--texto-apagado); line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <span>🦕</span> Edu's Prehistoric Explorer
+    </a>
+    <ul class="nav-links">
+      <li><a href="explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="news/index.html"       id="nav-news"></a></li>
+      <li><a href="books/index.html"      id="nav-books"></a></li>
+      <li><a href="updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+  <div class="home-fondo"></div>
+  <div class="home-dino-fondo">🦖</div>
+
+  <div class="contenedor">
+    <div class="home-contenido animar">
+      <div class="home-badge" id="home-badge"></div>
+      <h1 class="home-titulo">
+        Edu's<br>
+        <span class="linea2">Prehistoric</span>
+        <span class="linea3">Explorer</span>
+      </h1>
+      <p class="home-descripcion" id="home-desc"></p>
+
+      <div class="stats-bar" id="statsBar"></div>
+
+      <div class="secciones-grid" id="seccionesGrid"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script>
+    function renderPagina() {
+      // Navegación
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+
+      // Botones idioma
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === getLang().toUpperCase()) b.classList.add('activo');
+      });
+
+      // Home
+      document.getElementById('home-badge').textContent = t('home_badge');
+      document.getElementById('home-desc').textContent  = t('home_desc');
+      document.getElementById('footer-copy').textContent = t('footer_copy');
+
+      // Stats
+      document.getElementById('statsBar').innerHTML = `
+        <div class="stat">
+          <div class="stat-num">${ANIMALES.length}</div>
+          <div class="stat-label">${t('home_stat_animales')}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">${NOTICIAS.length}</div>
+          <div class="stat-label">${t('home_stat_noticias')}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">${LIBROS.length}</div>
+          <div class="stat-label">${t('home_stat_libros')}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">${SITE_CONFIG.version}</div>
+          <div class="stat-label">${t('home_stat_version')}</div>
+        </div>
+      `;
+
+      // Secciones
+      document.getElementById('seccionesGrid').innerHTML = `
+        <a class="seccion-card" href="explorer/index.html">
+          <div class="seccion-icono">🦕</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_explorer_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_explorer_desc')}</div>
+          </div>
+        </a>
+        <a class="seccion-card" href="landscapes/index.html">
+          <div class="seccion-icono">🌋</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_landscapes_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_landscapes_desc')}</div>
+          </div>
+        </a>
+        <a class="seccion-card" href="fossil/index.html">
+          <div class="seccion-icono">🦴</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_fossil_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_fossil_desc')}</div>
+          </div>
+        </a>
+        <a class="seccion-card" href="gallery/index.html">
+          <div class="seccion-icono">🎨</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_gallery_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_gallery_desc')}</div>
+          </div>
+        </a>
+        <a class="seccion-card" href="news/index.html">
+          <div class="seccion-icono">📰</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_news_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_news_desc')}</div>
+          </div>
+        </a>
+        <a class="seccion-card" href="books/index.html">
+          <div class="seccion-icono">📚</div>
+          <div>
+            <div class="seccion-card-titulo">${t('home_card_books_titulo')}</div>
+            <div class="seccion-card-desc">${t('home_card_books_desc')}</div>
+          </div>
+        </a>
+      `;
+    }
+
+    // Inicio
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

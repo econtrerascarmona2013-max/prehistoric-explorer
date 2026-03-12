@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books & Resources — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .tabs { display: flex; gap: 0.3rem; border-bottom: 1px solid var(--borde); margin-bottom: 2rem; }
+    .tab-btn { background: none; border: none; color: var(--texto-apagado); padding: 0.6rem 1.2rem; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.95rem; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+    .tab-btn.activo { color: var(--acento); border-bottom-color: var(--acento); }
+    .tab-btn:hover { color: var(--acento); }
+    .tab-contenido { display: none; }
+    .tab-contenido.activo { display: block; }
+    .grid-libros { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+    .card-libro { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; overflow: hidden; cursor: pointer; transition: all 0.25s; display: flex; flex-direction: column; }
+    .card-libro:hover { border-color: var(--acento); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+    .libro-portada { aspect-ratio: 2/3; background: var(--surface2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .libro-portada img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .portada-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; background: linear-gradient(135deg, var(--surface2), var(--surface)); }
+    .portada-emoji { font-size: 3.5rem; }
+    .portada-titulo-mini { font-family: 'Playfair Display', serif; font-size: 0.7rem; font-weight: 700; text-align: center; padding: 0 0.5rem; color: var(--texto-apagado); line-height: 1.3; }
+    .libro-info { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+    .libro-titulo { font-family: 'Playfair Display', serif; font-size: 0.92rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.3; }
+    .libro-autor { font-size: 0.78rem; color: var(--texto-apagado); font-style: italic; margin-bottom: 0.5rem; }
+    .libro-categoria { margin-top: auto; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acento2); padding-top: 0.6rem; border-top: 1px solid var(--borde); }
+    .grid-recursos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+    .card-recurso { background: var(--surface); border: 1px solid var(--borde); border-radius: 6px; padding: 1.5rem; transition: border-color 0.2s; }
+    .card-recurso:hover { border-color: var(--acento2); }
+    .recurso-icono { font-size: 2rem; margin-bottom: 0.8rem; }
+    .recurso-titulo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .recurso-url { font-size: 0.75rem; color: var(--acento); margin-bottom: 0.7rem; font-style: italic; }
+    .recurso-desc { font-size: 0.85rem; color: var(--texto-apagado); line-height: 1.6; }
+    .recurso-tipo { display: inline-block; margin-top: 0.8rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.5rem; border-radius: 2px; background: rgba(125,191,168,0.1); color: var(--acento2); border: 1px solid rgba(125,191,168,0.2); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .modal-overlay.visible { opacity: 1; pointer-events: all; }
+    .modal-kindle { background: #1a1612; border: 1px solid #3a3020; border-radius: 12px; max-width: 600px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; transform: scale(0.95); transition: transform 0.3s; box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
+    .modal-overlay.visible .modal-kindle { transform: scale(1); }
+    .kindle-header { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-bottom: 1px solid #3a3020; background: #141210; }
+    .kindle-portada-mini { width: 48px; height: 64px; border-radius: 3px; overflow: hidden; background: var(--surface2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .kindle-portada-mini img { width: 100%; height: 100%; object-fit: cover; }
+    .kindle-header-info { flex: 1; }
+    .kindle-titulo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #e8d5a3; margin-bottom: 0.2rem; }
+    .kindle-autor { font-size: 0.78rem; color: #8a7a5a; font-style: italic; }
+    .kindle-cerrar { background: none; border: none; color: #8a7a5a; font-size: 1.2rem; cursor: pointer; padding: 0.3rem; transition: color 0.2s; }
+    .kindle-cerrar:hover { color: #e8d5a3; }
+    .kindle-pagina { flex: 1; overflow-y: auto; padding: 2rem 2.5rem; font-family: 'Crimson Pro', serif; font-size: 1.05rem; line-height: 1.9; color: #c8b88a; background: #1a1612; }
+    .kindle-pagina h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: #e8d5a3; margin-bottom: 1.2rem; margin-top: 0; }
+    .kindle-pagina h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #d4a855; margin-top: 1.5rem; margin-bottom: 0.6rem; }
+    .kindle-pagina p { margin-bottom: 1.2rem; text-align: justify; }
+    .kindle-pagina .drop-cap::first-letter { font-size: 3.5rem; font-family: 'Playfair Display', serif; font-weight: 900; float: left; line-height: 0.8; margin-right: 0.1rem; margin-top: 0.2rem; color: #d4a855; }
+    .kindle-pagina .nota { font-size: 0.82rem; color: #6a5a3a; font-style: italic; border-top: 1px solid #3a3020; padding-top: 1rem; margin-top: 2rem; }
+    .kindle-footer { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.5rem; border-top: 1px solid #3a3020; background: #141210; gap: 1rem; }
+    .kindle-progreso { flex: 1; height: 3px; background: #3a3020; border-radius: 2px; overflow: hidden; }
+    .kindle-progreso-fill { height: 100%; background: #d4a855; border-radius: 2px; transition: width 0.3s; }
+    .kindle-nav { display: flex; gap: 0.5rem; }
+    .kindle-btn { background: #2a2018; border: 1px solid #3a3020; color: #8a7a5a; padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.88rem; transition: all 0.2s; }
+    .kindle-btn:hover { border-color: #d4a855; color: #d4a855; }
+    .kindle-btn:disabled { opacity: 0.3; cursor: default; }
+    .kindle-pagina-num { font-size: 0.75rem; color: #6a5a3a; align-self: center; }
+    .kindle-abrir { background: #d4a855; border: none; color: #1a1208; padding: 0.5rem 1.2rem; border-radius: 4px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.88rem; font-weight: 700; transition: opacity 0.2s; white-space: nowrap; }
+    .kindle-abrir:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="index.html" class="activo" id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+    <div class="tabs" id="tabs"></div>
+    <div class="tab-contenido activo" id="tab-recomendados">
+      <div class="grid-libros" id="gridRecomendados"></div>
+    </div>
+    <div class="tab-contenido" id="tab-digitales">
+      <div class="grid-libros" id="gridDigitales"></div>
+    </div>
+    <div class="tab-contenido" id="tab-recursos">
+      <div class="grid-recursos" id="gridRecursos"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="cerrarModalFuera(event)">
+    <div class="modal-kindle" id="modalKindle">
+      <div class="kindle-header">
+        <div class="kindle-portada-mini" id="kindlePortadaMini"></div>
+        <div class="kindle-header-info">
+          <div class="kindle-titulo" id="kindleTitulo"></div>
+          <div class="kindle-autor" id="kindleAutor"></div>
+        </div>
+        <button class="kindle-cerrar" onclick="cerrarModal()">✕</button>
+      </div>
+      <div class="kindle-pagina" id="kindlePagina"></div>
+      <div class="kindle-footer">
+        <div class="kindle-nav">
+          <button class="kindle-btn" id="btnAnterior" onclick="cambiarPagina(-1)">← Anterior</button>
+          <button class="kindle-btn" id="btnSiguiente" onclick="cambiarPagina(1)">Siguiente →</button>
+        </div>
+        <div class="kindle-progreso"><div class="kindle-progreso-fill" id="kindleProgreso"></div></div>
+        <div class="kindle-pagina-num" id="kindlePaginaNum"></div>
+        <button class="kindle-abrir" onclick="abrirGoogleBooks()">Leer completo ↗</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const LIBROS_DATA = [
+      {
+        id: 1, titulo: "The Rise and Fall of the Dinosaurs", autor: "Steve Brusatte", tipo: "recomendado",
+        descripcion: "La historia definitiva del ascenso y caída de los dinosaurios, narrada por uno de los paleontólogos más importantes del mundo.",
+        categoria: "Paleontología", emoji: "🦖",
+        portada: "https://covers.openlibrary.org/b/isbn/9780062490421-L.jpg",
+        googleBooks: "https://books.google.com/books?id=aOMtDwAAQBAJ",
+        paginas: [
+          { titulo: "Prólogo: El mundo de los dinosaurios", contenido: "<p class='drop-cap'>Durante 180 millones de años, los dinosaurios dominaron la Tierra. Eran los animales más grandes, más veloces y más fascinantes que jamás han pisado este planeta. Y luego, en un instante geológico, desaparecieron.</p><p>Pero la historia de los dinosaurios no es solo una historia de extinción. Es una historia de origen, de evolución, de supervivencia contra todo pronóstico. Es la historia de cómo un grupo de reptiles poco prometedores del Triásico se convirtió en los amos del mundo.</p><p>He tenido la suerte de dedicar mi vida a estudiar estos animales extraordinarios. He excavado fósiles en los desiertos de Mongolia, en las llanuras de Polonia, en los barrancos de Escocia. Y cada vez que sostengo un hueso de dinosaurio en mis manos, siento lo mismo: asombro.</p>" },
+          { titulo: "Capítulo 1: Los orígenes", contenido: "<h3>El mundo del Triásico</h3><p class='drop-cap'>Hace 250 millones de años, la vida en la Tierra estuvo a punto de desaparecer. La Gran Extinción del Pérmico eliminó el 96% de todas las especies marinas y el 70% de los vertebrados terrestres. El mundo que quedó era árido, caluroso y casi vacío.</p><p>Fue en este mundo devastado donde surgieron los dinosaurios. No de golpe, no como los gigantes que conocemos, sino como criaturas pequeñas y ágiles que corrían sobre dos patas por los márgenes del supercontinente Pangea.</p><p>Los primeros dinosaurios tenían el tamaño de un perro. Vivían a la sombra de reptiles mucho más grandes y formidables. Nadie, observando aquellos animales diminutos hace 230 millones de años, habría predicho lo que estaba a punto de ocurrir.</p>" },
+          { titulo: "Capítulo 2: La conquista del mundo", contenido: "<h3>La revolución jurásica</h3><p class='drop-cap'>El Jurásico fue el período de los gigantes. Los saurópodos alcanzaron tamaños que desafían la imaginación. El Brachiosaurus podía elevar su cabeza a 13 metros de altura. El Argentinosaurus pesaba más que diez elefantes africanos juntos.</p><p>Los dinosaurios tenían un sistema respiratorio de flujo continuo con sacos aéreos que se extendían por todo el cuerpo, incluso dentro de los huesos. Este diseño era tan eficiente que permitía a los saurópodos mantener el metabolismo necesario para sostener cuerpos de decenas de toneladas.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+        ]
+      },
+      {
+        id: 2, titulo: "Prehistoric Life", autor: "Douglas Palmer", tipo: "recomendado",
+        descripcion: "Enciclopedia visual definitiva de la evolución de la vida en la Tierra, desde los primeros microbios hasta los humanos modernos.",
+        categoria: "Enciclopedia", emoji: "🌍",
+        portada: "https://covers.openlibrary.org/b/isbn/9780756662295-L.jpg",
+        googleBooks: "https://www.google.com/search?q=Prehistoric+Life+Douglas+Palmer+book",
+        paginas: [
+          { titulo: "Introducción: 4.000 millones de años de vida", contenido: "<p class='drop-cap'>La historia de la vida en la Tierra es la historia más larga y más extraordinaria que existe. Comenzó hace aproximadamente 3.800 millones de años con organismos unicelulares invisibles al ojo humano, y ha dado lugar a todo lo que vemos hoy: las ballenas azules, los bosques de secuoyas, los arrecifes de coral, los seres humanos.</p><p>Esta enciclopedia es una ventana a ese pasado profundo. A través de fósiles, reconstrucciones científicas y el trabajo de generaciones de paleontólogos, podemos ver cómo fue cambiando la vida a lo largo del tiempo geológico.</p>" },
+          { titulo: "Era Paleozoica: El amanecer de los animales", contenido: "<h3>La explosión cámbrica</h3><p class='drop-cap'>Hace 541 millones de años ocurrió algo extraordinario: en un período de apenas 20 millones de años, aparecieron casi todos los grandes grupos de animales que conocemos hoy. Los científicos llaman a este evento la Explosión Cámbrica.</p><p>Los mares del Cámbrico eran un mundo alien. Trilobites, anomalócaris, crinoídeos… formas de vida que no se parecen a nada que exista hoy. Los fósiles de Burgess Shale en Canadá nos han dado una ventana única a este mundo extraordinario.</p>" }
+        ]
+      },
+      {
+        id: 3, titulo: "Your Inner Fish", autor: "Neil Shubin", tipo: "recomendado",
+        descripcion: "Cómo el cuerpo humano guarda vestigios evolutivos de peces, reptiles y mamíferos primitivos. Ciencia narrativa magistral.",
+        categoria: "Evolución", emoji: "🐟",
+        portada: "https://covers.openlibrary.org/b/isbn/9780307277459-L.jpg",
+        googleBooks: "https://books.google.com/books?id=7sxT1OvRk2EC",
+        paginas: [
+          { titulo: "Capítulo 1: Encontrando tu pez interior", contenido: "<p class='drop-cap'>Mira tu mano. Cinco dedos, una palma, una muñeca. Ahora mira la aleta de un pez. Parece completamente diferente. Sin embargo, bajo la piel, los huesos cuentan una historia sorprendente: tú y ese pez compartís el mismo plano estructural básico, heredado de un ancestro común que vivió hace 375 millones de años.</p><p>En 2004, mi equipo encontró en el Ártico canadiense un fósil que cambiaría nuestra comprensión de cómo los vertebrados conquistaron la tierra. Lo llamamos Tiktaalik roseae, y es el eslabón que une los peces con los primeros tetrápodos.</p>" },
+          { titulo: "Capítulo 2: Construyendo cabezas", contenido: "<h3>Los genes que compartimos con los tiburones</h3><p class='drop-cap'>Uno de los descubrimientos más sorprendentes de la biología moderna es que todos los animales con cabeza, desde los tiburones hasta los humanos, construyen esa cabeza usando prácticamente los mismos genes.</p><p>Los genes Hox controlan el desarrollo de los ejes corporales en prácticamente todos los animales. Un gen Hox de ratón puede sustituir al gen equivalente de una mosca y funcionar perfectamente. Somos más parecidos de lo que creemos.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+        ]
+      },
+      {
+        id: 4, titulo: "Otherlands", autor: "Thomas Halliday", tipo: "recomendado",
+        descripcion: "Viaje literario por 16 ecosistemas extintos, desde el Ediacárico hasta la época de los mamuts. Escritura científica extraordinaria.",
+        categoria: "Divulgación", emoji: "🌿",
+        portada: "https://covers.openlibrary.org/b/isbn/9780525559504-L.jpg",
+        googleBooks: "https://books.google.com/books?id=03WXEAAAQBAJ",
+        paginas: [
+          { titulo: "Prólogo: Otros mundos", contenido: "<p class='drop-cap'>La extinción no es el fin de una historia. Es el comienzo de otra. Cada vez que un mundo desaparece, deja rastros en las rocas, en los genes de los sobrevivientes, en la forma de los continentes. Los paleontólogos somos detectives que interrogamos a esos rastros.</p><p>Este libro es un viaje a dieciséis mundos que ya no existen. Cada capítulo es un ecosistema completo: los olores, los sonidos, la textura del suelo, la temperatura del aire.</p>" },
+          { titulo: "La estepa de los mamuts — Siberia, hace 20.000 años", contenido: "<h3>Un mundo de hierba y hielo</h3><p class='drop-cap'>Es medianoche en Siberia, pero el sol no se ha puesto. En verano, a estas latitudes, la luz dura casi todo el día. Una manada de mamuts lanudos avanza lentamente hacia el este, siguiendo el corredor de hierba que se extiende desde Europa hasta Alaska.</p><p>El mamut lanudo no era un elefante con abrigo. Era una especie completamente diferente, perfectamente adaptada al frío extremo: grasa subcutánea de 10 centímetros, pelo de hasta un metro de longitud.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+        ]
+      },
+      {
+        id: 5, titulo: "Biodiversity Heritage Library", autor: "biodiversitylibrary.org", tipo: "digital",
+        descripcion: "Millones de páginas de publicaciones científicas históricas de libre acceso sobre historia natural.",
+        categoria: "Archivo digital", emoji: "🌐",
+        portada: "",
+        googleBooks: "https://www.biodiversitylibrary.org",
+        paginas: [
+          { titulo: "Sobre esta biblioteca", contenido: "<p class='drop-cap'>La Biodiversity Heritage Library es el mayor archivo digital de literatura científica sobre biodiversidad del mundo. Contiene más de 60 millones de páginas de libros, revistas y manuscritos sobre historia natural, paleontología y biología.</p><p>Todo el contenido es de acceso libre y gratuito. Puedes descargar ediciones originales de obras de Darwin, Cuvier, y cientos de naturalistas históricos.</p><p>Visita biodiversitylibrary.org para explorar la colección completa.</p>" }
+        ]
+      },
+      {
+        id: 6, titulo: "Palaeontologia Electronica", autor: "palaeo-electronica.org", tipo: "digital",
+        descripcion: "Revista científica de paleontología de acceso completamente libre con artículos revisados por pares.",
+        categoria: "Revista científica", emoji: "🔓",
+        portada: "",
+        googleBooks: "https://palaeo-electronica.org",
+        paginas: [
+          { titulo: "Sobre esta revista", contenido: "<p class='drop-cap'>Palaeontologia Electronica es una revista científica de paleontología de acceso completamente libre. Fue una de las primeras revistas científicas en existir únicamente en formato digital, desde 1998.</p><p>Todos los artículos están revisados por pares y son descargables gratuitamente en PDF. Cubre todos los campos de la paleontología, desde la micropaleontología hasta los vertebrados.</p><p>Visita palaeo-electronica.org para acceder a todos los artículos.</p>" }
+        ]
+      }
+    ];
+
+    const RECURSOS = [
+      { icono: "🎥", titulo: "PBS Eons", url: "youtube.com/@eons", desc: "Canal de divulgación paleontológica con episodios sobre todos los períodos.", tipo: "YouTube" },
+      { icono: "🏛️", titulo: "Smithsonian NMNH", url: "naturalhistory.si.edu", desc: "Colecciones digitales del museo de historia natural más importante del mundo.", tipo: "Museo digital" },
+      { icono: "🔬", titulo: "Palaeontologia Electronica", url: "palaeo-electronica.org", desc: "Revista científica de paleontología de acceso completamente libre.", tipo: "Revista" },
+      { icono: "📖", titulo: "Biodiversity Heritage Library", url: "biodiversitylibrary.org", desc: "Millones de páginas de publicaciones científicas históricas.", tipo: "Archivo" },
+      { icono: "🦕", titulo: "Dinosaur Database", url: "dinosaurpictures.org", desc: "Base de datos visual de dinosaurios con reconstrucciones científicas.", tipo: "Base de datos" },
+      { icono: "🖥️", titulo: "iNaturalist", url: "inaturalist.org", desc: "Plataforma de ciencia ciudadana para identificar fauna y flora actual.", tipo: "Web" }
+    ];
+
+    let tabActual = "recomendados";
+    let libroActual = null;
+    let paginaActual = 0;
+    let googleBooksURL = "";
+
+    function renderPagina() {
+      const lang = getLang();
+      document.getElementById("nav-explorer").textContent   = t("nav_explorer");
+      document.getElementById("nav-landscapes").textContent = t("nav_landscapes");
+      document.getElementById("nav-fossil").textContent     = t("nav_fossil");
+      document.getElementById("nav-gallery").textContent    = t("nav_gallery");
+      document.getElementById("nav-news").textContent       = t("nav_news");
+      document.getElementById("nav-books").textContent      = t("nav_books");
+      document.getElementById("nav-updates").textContent    = t("nav_updates");
+      document.getElementById("nav-comparator").textContent = t("nav_comparator");
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll(".btn-idioma").forEach(b => {
+        b.classList.remove("activo");
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add("activo");
+      });
+      document.getElementById("seccion-label").textContent  = t("books_label");
+      document.getElementById("seccion-titulo").textContent = t("books_titulo");
+      document.getElementById("seccion-sub").textContent    = t("books_sub");
+      document.getElementById("footer-copy").textContent    = t("footer_copy");
+      document.getElementById("tabs").innerHTML = `
+        <button class="tab-btn ${tabActual==="recomendados"?"activo":""}" onclick="cambiarTab('recomendados',this)">${t("tab_recomendados")}</button>
+        <button class="tab-btn ${tabActual==="digitales"?"activo":""}" onclick="cambiarTab('digitales',this)">${t("tab_digitales")}</button>
+        <button class="tab-btn ${tabActual==="recursos"?"activo":""}" onclick="cambiarTab('recursos',this)">${t("tab_recursos")}</button>
+      `;
+      document.getElementById("gridRecomendados").innerHTML = LIBROS_DATA.filter(l => l.tipo === "recomendado").map(l => cardLibro(l)).join("");
+      document.getElementById("gridDigitales").innerHTML    = LIBROS_DATA.filter(l => l.tipo === "digital").map(l => cardLibro(l)).join("");
+      document.getElementById("gridRecursos").innerHTML     = RECURSOS.map(r => `
+        <div class="card-recurso">
+          <div class="recurso-icono">${r.icono}</div>
+          <div class="recurso-titulo">${r.titulo}</div>
+          <div class="recurso-url">${r.url}</div>
+          <p class="recurso-desc">${r.desc}</p>
+          <span class="recurso-tipo">${r.tipo}</span>
+        </div>
+      `).join("");
+    }
+
+    function cardLibro(l) {
+      return `
+        <div class="card-libro" onclick="abrirLibro(${l.id})">
+          <div class="libro-portada">
+            ${l.portada ? `<img src="${l.portada}" alt="${l.titulo}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` : ""}
+            <div class="portada-fallback" ${l.portada ? 'style="display:none"' : ""}>
+              <div class="portada-emoji">${l.emoji}</div>
+              <div class="portada-titulo-mini">${l.titulo}</div>
+            </div>
+          </div>
+          <div class="libro-info">
+            <div class="libro-titulo">${l.titulo}</div>
+            <div class="libro-autor">${l.autor}</div>
+            <div class="libro-categoria">${l.categoria}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function cambiarTab(id, btn) {
+      tabActual = id;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("activo"));
+      document.querySelectorAll(".tab-contenido").forEach(c => c.classList.remove("activo"));
+      btn.classList.add("activo");
+      document.getElementById("tab-" + id).classList.add("activo");
+    }
+
+    function abrirLibro(id) {
+      libroActual = LIBROS_DATA.find(l => l.id === id);
+      if (!libroActual) return;
+      paginaActual = 0;
+      googleBooksURL = libroActual.googleBooks;
+      document.getElementById("kindleTitulo").textContent = libroActual.titulo;
+      document.getElementById("kindleAutor").textContent  = libroActual.autor;
+      const mini = document.getElementById("kindlePortadaMini");
+      if (libroActual.portada) {
+        mini.innerHTML = `<img src="${libroActual.portada}" alt="${libroActual.titulo}" onerror="this.parentElement.textContent='${libroActual.emoji}'">`;
+      } else {
+        mini.textContent = libroActual.emoji;
+      }
+      renderPaginaKindle();
+      document.getElementById("modalOverlay").classList.add("visible");
+      document.body.style.overflow = "hidden";
+    }
+
+    function renderPaginaKindle() {
+      const paginas = libroActual.paginas;
+      const pag = paginas[paginaActual];
+      document.getElementById("kindlePagina").innerHTML    = "<h2>" + pag.titulo + "</h2>" + pag.contenido;
+      document.getElementById("kindlePaginaNum").textContent = (paginaActual + 1) + " / " + paginas.length;
+      document.getElementById("kindleProgreso").style.width  = ((paginaActual + 1) / paginas.length * 100) + "%";
+      document.getElementById("btnAnterior").disabled  = paginaActual === 0;
+      document.getElementById("btnSiguiente").disabled = paginaActual === paginas.length - 1;
+      document.getElementById("kindlePagina").scrollTop = 0;
+    }
+
+    function cambiarPagina(dir) {
+      paginaActual = Math.max(0, Math.min(libroActual.paginas.length - 1, paginaActual + dir));
+      renderPaginaKindle();
+    }
+
+    function abrirGoogleBooks() { window.open(googleBooksURL, "_blank"); }
+
+    function cerrarModal() {
+      document.getElementById("modalOverlay").classList.remove("visible");
+      document.body.style.overflow = "";
+    }
+
+    function cerrarModalFuera(e) {
+      if (e.target === document.getElementById("modalOverlay")) cerrarModal();
+    }
+
+    document.addEventListener("keydown", e => {
+      if (!document.getElementById("modalOverlay").classList.contains("visible")) return;
+      if (e.key === "Escape") cerrarModal();
+      if (e.key === "ArrowRight") cambiarPagina(1);
+      if (e.key === "ArrowLeft")  cambiarPagina(-1);
+    });
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+/* ============================================
+   STYLE.CSS — Estilos globales
+   ============================================ */
+
+/* ── VARIABLES — MODO OSCURO (defecto) ── */
+:root {
+  --bg: #0a0c0f;
+  --surface: #111418;
+  --surface2: #1a1f26;
+  --borde: #2a3040;
+  --acento: #c8a45a;
+  --acento2: #7dbfa8;
+  --acento3: #d4704a;
+  --texto: #e8e0d0;
+  --texto-apagado: #7a7060;
+  --texto-dim: #4a4538;
+}
+
+/* ── VARIABLES — MODO CLARO ── */
+body.claro {
+  --bg: #f5f0e8;
+  --surface: #ffffff;
+  --surface2: #ede8de;
+  --borde: #d4c9b0;
+  --acento: #9a6e1a;
+  --acento2: #2d8a72;
+  --acento3: #b84a22;
+  --texto: #1a1510;
+  --texto-apagado: #6b5e48;
+  --texto-dim: #a89880;
+}
+
+/* ── RESET BÁSICO ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--texto);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── TIPOGRAFÍA ── */
+h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.1; }
+a { color: var(--acento); text-decoration: none; }
+
+/* ── NAVEGACIÓN ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,12,15,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+body.claro nav {
+  background: rgba(245,240,232,0.97);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--acento);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.nav-links { display: flex; gap: 0.2rem; list-style: none; }
+
+.nav-links a {
+  color: var(--texto-apagado);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem;
+  border-radius: 3px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.activo {
+  color: var(--acento);
+  background: rgba(200,164,90,0.08);
+}
+
+/* ── CONTENEDOR ── */
+.contenedor {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 2rem 4rem;
+}
+
+/* ── CABECERA DE SECCIÓN ── */
+.seccion-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 0.5rem;
+}
+
+.seccion-titulo {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  margin-bottom: 0.8rem;
+}
+
+.seccion-sub {
+  color: var(--texto-apagado);
+  font-size: 1rem;
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+}
+
+/* ── BOTONES ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primario { background: var(--acento); color: var(--bg); font-weight: 600; }
+.btn-primario:hover { opacity: 0.85; }
+
+.btn-secundario { background: var(--surface); color: var(--texto); border: 1px solid var(--borde); }
+.btn-secundario:hover { border-color: var(--acento); color: var(--acento); }
+
+/* ── TARJETAS GENÉRICAS ── */
+.tarjeta {
+  background: var(--surface);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.tarjeta:hover {
+  border-color: var(--acento);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(200,164,90,0.08);
+}
+
+/* ── DIVISOR ── */
+.divisor {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--borde), transparent);
+  margin: 2rem 0;
+}
+
+/* ── ETIQUETAS ── */
+.etiqueta {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+}
+
+.etiqueta-extinto {
+  background: rgba(212,112,74,0.15);
+  color: var(--acento3);
+  border: 1px solid rgba(212,112,74,0.3);
+}
+
+.etiqueta-viviente {
+  background: rgba(125,191,168,0.15);
+  color: var(--acento2);
+  border: 1px solid rgba(125,191,168,0.3);
+}
+
+/* ── ANIMACIÓN DE ENTRADA ── */
+@keyframes subirAparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animar { animation: subirAparecer 0.5s ease forwards; }
+
+/* ── SELECTOR DE IDIOMA ── */
+.selector-idioma { display: flex; gap: 0.3rem; }
+
+.btn-idioma {
+  background: none;
+  border: 1px solid var(--borde);
+  color: var(--texto-apagado);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Crimson Pro', serif;
+}
+
+.btn-idioma:hover,
+.btn-idioma.activo {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+/* ── TOGGLE MODO ── */
+.btn-modo {
+  background: none;
+  border: 1px solid var(--borde);
+  color: var(--texto-apagado);
+  font-size: 0.9rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.3rem;
+}
+
+.btn-modo:hover {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--borde);
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--texto-apagado);
+  transition: background 0.3s;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--acento);
+  margin-bottom: 0.5rem;
+}

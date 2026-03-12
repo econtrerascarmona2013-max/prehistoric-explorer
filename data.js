@@ -1,0 +1,1347 @@
+// ============================================
+// DATA.JS — Aquí añades todo el contenido
+// Sin tocar ningún otro archivo
+// ============================================
+
+const SITE_CONFIG = {
+  nombre: "Edu's Prehistoric Explorer",
+  descripcion: "Descubre animales extintos, ecosistemas del pasado y la ciencia detrás de los fósiles.",
+  version: "1.1",
+  adminPassword: "dino9173"
+};
+
+// ============================================
+// ANIMALES
+// ============================================
+
+const ANIMALES = [
+  {
+    id: 1,
+    nombre: "Tyrannosaurus rex",
+    cientifico: "Tyrannosaurus rex",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Cretácico tardío (68–66 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "12–13 m",
+    peso: "8.000–14.000 kg",
+    habitat: "Bosques y llanuras de América del Norte",
+    lugarFosil: "Wyoming, EE.UU.",
+    añoDescubrimiento: 1902,
+    cientifico2: "Barnum Brown",
+    descripcion: "El depredador terrestre más icónico. Tenía la mordida más potente de cualquier animal terrestre conocido: hasta 57.000 N.",
+    clasificacion: ["Theropoda", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 2,
+    nombre: "Mamut lanudo",
+    cientifico: "Mammuthus primigenius",
+    emoji: "🦣",
+    estado: "extinto",
+    periodo: "Pleistoceno (400.000–4.000 a.C.)",
+    dieta: "Herbívoro",
+    tamaño: "3,4 m de altura",
+    peso: "6.000 kg",
+    habitat: "Tundra fría de Eurasia y América del Norte",
+    lugarFosil: "Siberia, Rusia",
+    añoDescubrimiento: 1799,
+    cientifico2: "Johann Blumenbach",
+    descripcion: "Pariente del elefante asiático. Coexistió con humanos que lo cazaron y pintaron en cuevas. El último vivió en la isla de Wrangel.",
+    clasificacion: ["Proboscidea", "Mammalia", "Herbívoro"]
+  },
+  {
+    id: 3,
+    nombre: "Megalodón",
+    cientifico: "Otodus megalodon",
+    emoji: "🦈",
+    estado: "extinto",
+    periodo: "Mioceno–Plioceno (23–3,6 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "~15–18 m",
+    peso: "~50.000–70.000 kg",
+    habitat: "Océanos tropicales y templados globales",
+    lugarFosil: "Múltiples localidades mundiales",
+    añoDescubrimiento: 1835,
+    cientifico2: "Louis Agassiz",
+    descripcion: "El tiburón más grande que jamás existió. Sus dientes de 18 cm son el fósil más frecuente del Mioceno.",
+    clasificacion: ["Chondrichthyes", "Lamniformes", "Superdepredador"]
+  },
+  {
+    id: 4,
+    nombre: "Triceratops",
+    cientifico: "Triceratops horridus",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico tardío (68-66 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "9 m de largo",
+    peso: "6.000-12.000 kg",
+    habitat: "Llanuras forestales de América del Norte",
+    lugarFosil: "Colorado, EE.UU.",
+    añoDescubrimiento: 1889,
+    cientifico2: "Othniel Charles Marsh",
+    descripcion: "Ceratopsio con tres cuernos y gran gola ósea. Coexistió con T. rex y es uno de los dinosaurios más reconocibles.",
+    clasificacion: ["Ceratopsia", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 5,
+    nombre: "Quetzalcoatlus",
+    cientifico: "Quetzalcoatlus northropi",
+    emoji: "🦅",
+    estado: "extinto",
+    periodo: "Cretácico tardío (68-66 Ma)",
+    dieta: "Carnívoro/Piscívoro",
+    tamaño: "Envergadura alar de 10–12 m",
+    peso: "75–544 kg",
+    habitat: "Zonas interiores, humedales y llanuras semiáridas de América del Norte",
+    lugarFosil: "Texas, EE.UU.",
+    añoDescubrimiento: 1971,
+    cientifico2: "Douglas A. Lawson",
+    descripcion: "El animal volador más grande conocido, un pterosaurio azdárquido con cuello largo y pico sin dientes, que probablemente se alimentaba en tierra firme similar a las cigüeñas modernas.",
+    clasificacion: ["Pterosauria", "Azhdarchidae", "Carnívoro"]
+  },
+  {
+    id: 6,
+    nombre: "Velociraptor",
+    cientifico: "Velociraptor mongoliensis",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Cretácico tardío (75–71 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "2 m de largo",
+    peso: "15 kg",
+    habitat: "Desiertos y zonas semiáridas de Asia",
+    lugarFosil: "Desierto del Gobi, Mongolia",
+    añoDescubrimiento: 1924,
+    cientifico2: "Peter Kaisen",
+    descripcion: "Pequeño dinosaurio terópodo ágil con una gran garra en forma de hoz en cada pie. Probablemente tenía plumas y cazaba presas pequeñas.",
+    clasificacion: ["Theropoda", "Dromaeosauridae", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 7,
+    nombre: "Stegosaurus",
+    cientifico: "Stegosaurus stenops",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Jurásico tardío (155–150 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "9 m de largo",
+    peso: "5.000 kg",
+    habitat: "Llanuras y bosques abiertos",
+    lugarFosil: "Colorado, EE.UU.",
+    añoDescubrimiento: 1877,
+    cientifico2: "Othniel Charles Marsh",
+    descripcion: "Dinosaurio herbívoro con grandes placas óseas en la espalda y una cola con cuatro espinas defensivas llamadas thagomizer.",
+    clasificacion: ["Thyreophora", "Stegosauria", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 8,
+    nombre: "Brachiosaurus",
+    cientifico: "Brachiosaurus altithorax",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Jurásico tardío (154–150 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "25 m de largo",
+    peso: "50.000–60.000 kg",
+    habitat: "Bosques y llanuras cercanas a ríos",
+    lugarFosil: "Colorado, EE.UU.",
+    añoDescubrimiento: 1903,
+    cientifico2: "Elmer Riggs",
+    descripcion: "Gran dinosaurio saurópodo con cuello muy largo y patas delanteras más largas que las traseras, lo que le daba una postura inclinada hacia arriba.",
+    clasificacion: ["Sauropoda", "Brachiosauridae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 9,
+    nombre: "Spinosaurus",
+    cientifico: "Spinosaurus aegyptiacus",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Cretácico medio (99–93 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "15 m de largo",
+    peso: "7.000–9.000 kg",
+    habitat: "Ríos y zonas pantanosas",
+    lugarFosil: "Egipto",
+    añoDescubrimiento: 1912,
+    cientifico2: "Ernst Stromer",
+    descripcion: "Gran dinosaurio terópodo semiacuático con una enorme vela dorsal formada por largas espinas vertebrales. Probablemente se alimentaba principalmente de peces.",
+    clasificacion: ["Theropoda", "Spinosauridae", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 10,
+    nombre: "Ankylosaurus",
+    cientifico: "Ankylosaurus magniventris",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico tardío (68-66 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "7 m de largo",
+    peso: "6.000 kg",
+    habitat: "Llanuras y bosques",
+    lugarFosil: "Montana, EE.UU.",
+    añoDescubrimiento: 1906,
+    cientifico2: "Barnum Brown",
+    descripcion: "Dinosaurio herbívoro fuertemente acorazado con placas óseas por todo el cuerpo y una gran maza en la cola para defenderse de depredadores.",
+    clasificacion: ["Ankylosauria", "Ankylosauridae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 11,
+    nombre: "Diplodocus",
+    cientifico: "Diplodocus longus",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Jurásico tardío (154–152 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "25,5 m de largo",
+    peso: "15.000 kg",
+    habitat: "Llanuras con vegetación abundante",
+    lugarFosil: "Colorado, EE.UU.",
+    añoDescubrimiento: 1877,
+    cientifico2: "Othniel Charles Marsh",
+    descripcion: "Saurópodo de cuello largo y cola extremadamente larga, utilizado posiblemente como látigo defensivo.",
+    clasificacion: ["Sauropoda", "Diplodocidae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 12,
+    nombre: "Allosaurus",
+    cientifico: "Allosaurus fragilis",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Jurásico tardío (155-145 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "11 m de largo",
+    peso: "2.000-3.000 kg",
+    habitat: "Llanuras y bosques abiertos",
+    lugarFosil: "Utah, EE.UU.",
+    añoDescubrimiento: 1877,
+    cientifico2: "Othniel Charles Marsh",
+    descripcion: "Gran dinosaurio terópodo depredador con fuertes mandíbulas y brazos relativamente largos con tres garras.",
+    clasificacion: ["Theropoda", "Allosauridae", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 13,
+    nombre: "Pachycephalosaurus",
+    cientifico: "Pachycephalosaurus wyomingensis",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico tardío (70-66 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "4,5 m de largo",
+    peso: "450 kg",
+    habitat: "Bosques y llanuras",
+    lugarFosil: "Wyoming, EE.UU.",
+    añoDescubrimiento: 1931,
+    cientifico2: "Charles W. Gilmore",
+    descripcion: "Dinosaurio herbívoro conocido por su cráneo extremadamente grueso y abombado, posiblemente utilizado en combates entre individuos.",
+    clasificacion: ["Ornithischia", "Pachycephalosauridae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 14,
+    nombre: "Parasaurolophus",
+    cientifico: "Parasaurolophus walkeri",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico tardío (76–73 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "9,5 m de largo",
+    peso: "2.500 kg",
+    habitat: "Llanuras y bosques húmedos",
+    lugarFosil: "Alberta, Canadá",
+    añoDescubrimiento: 1922,
+    cientifico2: "William Parks",
+    descripcion: "Hadrosaurio con una cresta tubular muy larga en la cabeza que probablemente servía para producir sonidos o comunicación.",
+    clasificacion: ["Ornithopoda", "Hadrosauridae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 15,
+    nombre: "Iguanodon",
+    cientifico: "Iguanodon bernissartensis",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico temprano (126–122 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "10 m de largo",
+    peso: "3.500–5.000 kg",
+    habitat: "Bosques y llanuras",
+    lugarFosil: "Bernissart, Bélgica",
+    añoDescubrimiento: 1825,
+    cientifico2: "Gideon Mantell",
+    descripcion: "Uno de los primeros dinosaurios descubiertos. Tenía un pulgar en forma de espina que posiblemente utilizaba para defensa.",
+    clasificacion: ["Ornithopoda", "Iguanodontidae", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 16,
+    nombre: "Compsognathus",
+    cientifico: "Compsognathus longipes",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Jurásico tardío (155-150 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "1,05 m de largo",
+    peso: "3 kg",
+    habitat: "Zonas costeras, lagunas y playas cálidas",
+    lugarFosil: "Solnhofen, Alemania",
+    añoDescubrimiento: 1859,
+    cientifico2: "Johann A. Wagner",
+    descripcion: "Pequeño dinosaurio terópodo carnívoro, uno de los dinosaurios más pequeños conocidos. Probablemente cazaba pequeños lagartos y mamíferos.",
+    clasificacion: ["Theropoda", "Compsognathidae", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 17,
+    nombre: "Argentinosaurus",
+    cientifico: "Argentinosaurus huinculensis",
+    emoji: "🦕",
+    estado: "extinto",
+    periodo: "Cretácico tardío (97-94 Ma)",
+    dieta: "Herbívoro",
+    tamaño: "30-35 m de largo",
+    peso: "70.000-100.000 kg",
+    habitat: "Llanuras con vegetación y zonas cercanas a ríos",
+    lugarFosil: "Neuquén, Patagonia, Argentina",
+    añoDescubrimiento: 1987,
+    cientifico2: "Guillermo Heredia",
+    descripcion: "Gigantesco dinosaurio saurópodo considerado uno de los animales terrestres más grandes que han existido. Vivía en grandes llanuras del Cretácico.",
+    clasificacion: ["Sauropoda", "Titanosauria", "Dinosauria", "Herbívoro"]
+  },
+  {
+    id: 18,
+    nombre: "Mosasaurus",
+    cientifico: "Mosasaurus hoffmannii",
+    emoji: "🦎",
+    estado: "extinto",
+    periodo: "Cretácico tardío (70–66 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "15–18 m de largo",
+    peso: "15.000 kg",
+    habitat: "Océanos cálidos",
+    lugarFosil: "Maastricht, Países Bajos",
+    añoDescubrimiento: 1764,
+    cientifico2: "Trabajadores de cantera cerca del río Mosa",
+    descripcion: "Gran reptil marino depredador con cuerpo alargado, cola potente y fuertes mandíbulas con dientes afilados.",
+    clasificacion: ["Squamata", "Mosasauridae", "Reptilia", "Carnívoro"]
+  },
+  {
+    id: 19,
+    nombre: "Deinonychus",
+    cientifico: "Deinonychus antirrhopus",
+    emoji: "🦖",
+    estado: "extinto",
+    periodo: "Cretácico temprano (115–108 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "3,4 m de largo",
+    peso: "70–100 kg",
+    habitat: "Bosques y llanuras",
+    lugarFosil: "Montana, EE.UU.",
+    añoDescubrimiento: 1964,
+    cientifico2: "John Ostrom",
+    descripcion: "Dinosaurio terópodo ágil con una gran garra curva en el pie utilizada para cazar. Su descubrimiento revolucionó la visión de los dinosaurios como animales lentos.",
+    clasificacion: ["Theropoda", "Dromaeosauridae", "Dinosauria", "Carnívoro"]
+  },
+  {
+    id: 20,
+    nombre: "Plesiosaurus",
+    cientifico: "Plesiosaurus dolichodeirus",
+    emoji: "🦎",
+    estado: "extinto",
+    periodo: "Jurásico temprano (201–175 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "3–5 m de largo",
+    peso: "450 kg",
+    habitat: "Océanos",
+    lugarFosil: "Inglaterra",
+    añoDescubrimiento: 1823,
+    cientifico2: "Mary Anning",
+    descripcion: "Reptil marino con cuello muy largo, cabeza pequeña y cuatro grandes aletas para nadar. Inspiró la leyenda del monstruo del Lago Ness.",
+    clasificacion: ["Plesiosauria", "Sauropterygia", "Reptilia", "Carnívoro"]
+  },
+  {
+    id: 21,
+    nombre: "Dimetrodon",
+    cientifico: "Dimetrodon grandis",
+    emoji: "🦎",
+    estado: "extinto",
+    periodo: "Pérmico temprano (295–272 Ma)",
+    dieta: "Carnívoro",
+    tamaño: "3 m de largo",
+    peso: "250 kg",
+    habitat: "Zonas pantanosas",
+    lugarFosil: "Texas, EE.UU.",
+    añoDescubrimiento: 1878,
+    cientifico2: "Edward Drinker Cope",
+    descripcion: "Animal con una gran vela dorsal formada por espinas vertebrales, probablemente usada para regular la temperatura corporal. No era un dinosaurio sino un sinápsido, más emparentado con los mamíferos.",
+    clasificacion: ["Synapsida", "Sphenacodontidae", "Carnívoro"]
+  },
+  {
+    id: 22,
+    nombre: "Dodo",
+    cientifico: "Raphus cucullatus",
+    emoji: "🦤",
+    estado: "extinto",
+    periodo: "Holoceno (extinto en el siglo XVII)",
+    dieta: "Omnívoro",
+    tamaño: "1 m de alto",
+    peso: "10–18 kg",
+    habitat: "Bosques tropicales",
+    lugarFosil: "Isla Mauricio",
+    añoDescubrimiento: 1598,
+    cientifico2: "Marineros neerlandeses",
+    descripcion: "Ave no voladora que se extinguió poco después de la llegada de los humanos a su isla. Se convirtió en símbolo de la extinción causada por el ser humano.",
+    clasificacion: ["Aves", "Columbiformes", "Raphidae", "Omnívoro"]
+  },
+  {
+    id: 23,
+    nombre: "Elefante africano",
+    cientifico: "Loxodonta africana",
+    emoji: "🐘",
+    estado: "viviente",
+    periodo: "Actual (Holoceno)",
+    dieta: "Herbívoro",
+    tamaño: "6–7 m de largo",
+    peso: "4.000–7.000 kg",
+    habitat: "Sabana africana",
+    lugarFosil: "África",
+    añoDescubrimiento: 1758,
+    cientifico2: "Carl Linnaeus",
+    descripcion: "El animal terrestre más grande que vive actualmente. Pariente vivo del mamut lanudo.",
+    clasificacion: ["Mammalia", "Proboscidea", "Elephantidae", "Herbívoro"]
+  },
+  {
+    id: 24,
+    nombre: "Jirafa",
+    cientifico: "Giraffa camelopardalis",
+    emoji: "🦒",
+    estado: "viviente",
+    periodo: "Actual (Holoceno)",
+    dieta: "Herbívoro",
+    tamaño: "5–6 m de largo",
+    peso: "800–1.200 kg",
+    habitat: "Sabana africana",
+    lugarFosil: "África",
+    añoDescubrimiento: 1758,
+    cientifico2: "Carl Linnaeus",
+    descripcion: "El animal terrestre más alto del mundo, conocido por su largo cuello y manchas características.",
+    clasificacion: ["Mammalia", "Artiodactyla", "Giraffidae", "Herbívoro"]
+  },
+  {
+    id: 25,
+    nombre: "León",
+    cientifico: "Panthera leo",
+    emoji: "🦁",
+    estado: "viviente",
+    periodo: "Actual (Holoceno)",
+    dieta: "Carnívoro",
+    tamaño: "2–3,3 m de largo",
+    peso: "150–250 kg",
+    habitat: "Sabana y praderas",
+    lugarFosil: "África",
+    añoDescubrimiento: 1758,
+    cientifico2: "Carl Linnaeus",
+    descripcion: "Gran felino social que vive en grupos llamados manadas y es uno de los principales depredadores de África.",
+    clasificacion: ["Mammalia", "Carnivora", "Felidae", "Carnívoro"]
+  },
+  {
+    id: 26,
+    nombre: "Cocodrilo del Nilo",
+    cientifico: "Crocodylus niloticus",
+    emoji: "🐊",
+    estado: "viviente",
+    periodo: "Actual (Holoceno)",
+    dieta: "Carnívoro",
+    tamaño: "4–5 m de largo",
+    peso: "500–750 kg",
+    habitat: "Ríos y lagos",
+    lugarFosil: "África",
+    añoDescubrimiento: 1768,
+    cientifico2: "Josephus Laurenti",
+    descripcion: "Gran reptil semiacuático con fuertes mandíbulas. Lleva prácticamente sin cambiar desde el Cretácico.",
+    clasificacion: ["Reptilia", "Crocodylia", "Crocodylidae", "Carnívoro"]
+  },
+  {
+    id: 27,
+    nombre: "Pingüino emperador",
+    cientifico: "Aptenodytes forsteri",
+    emoji: "🐧",
+    estado: "viviente",
+    periodo: "Actual (Holoceno)",
+    dieta: "Carnívoro",
+    tamaño: "1,1 m de alto",
+    peso: "22–45 kg",
+    habitat: "Antártida",
+    lugarFosil: "Antártida",
+    añoDescubrimiento: 1844,
+    cientifico2: "George Robert Gray",
+    descripcion: "El pingüino más grande del mundo, adaptado a temperaturas extremadamente frías. Incuba los huevos en pleno invierno antártico.",
+    clasificacion: ["Aves", "Sphenisciformes", "Spheniscidae", "Carnívoro"]
+  }
+];
+
+// ============================================
+// NOTICIAS
+// ============================================
+
+const NOTICIAS = [
+  {
+    id: 1,
+    titulo: "Nuevo titanosaurio hallado en Argentina con 98% del esqueleto intacto",
+    fecha: "Enero 2025",
+    fuente: "Nature",
+    url: "https://www.nature.com",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Argentinosaurus_BW.jpg/480px-Argentinosaurus_BW.jpg",
+    resumen: "Paleontólogos de Neuquén han desenterrado uno de los saurópodos más completos jamás encontrados, con escamas de piel preservadas."
+  },
+  {
+    id: 2,
+    titulo: "El ADN más antiguo del mundo: 2 millones de años en el permafrost",
+    fecha: "Diciembre 2024",
+    fuente: "Nature",
+    url: "https://www.nature.com/articles/s41586-022-05453-y",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg/480px-Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg",
+    resumen: "Científicos han secuenciado fragmentos genéticos de mamíferos extintos del Ártico, batiendo todos los récords anteriores de preservación de ADN antiguo."
+  },
+  {
+    id: 3,
+    titulo: "Patagotitan mayorum: el dinosaurio más grande del mundo tiene nueva medida oficial",
+    fecha: "Agosto 2024",
+    fuente: "PLOS ONE",
+    url: "https://journals.plos.org/plosone/",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Patagotitan_mayorum_001.jpg/480px-Patagotitan_mayorum_001.jpg",
+    resumen: "Un nuevo estudio revisó los huesos del titanosaurio argentino y confirmó 37 metros de longitud y 70 toneladas de peso, convirtiéndolo oficialmente en el animal terrestre más grande conocido."
+  },
+  {
+    id: 4,
+    titulo: "Descubren en China un dinosaurio con plumas de colores iridiscentes",
+    fecha: "Junio 2024",
+    fuente: "Science",
+    url: "https://www.science.org",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Microraptor_gui_holotype.jpg/480px-Microraptor_gui_holotype.jpg",
+    resumen: "Análisis de melanosomas en fósiles de Liaoning revelan que algunos dinosaurios emplumados del Cretácico tenían plumaje metálico similar al de los colibríes modernos."
+  },
+  {
+    id: 5,
+    titulo: "El Spinosaurus era más acuático de lo que se pensaba, confirma nuevo estudio",
+    fecha: "Mayo 2024",
+    fuente: "Nature",
+    url: "https://www.nature.com/articles/s41586-020-2190-3",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Spinosaurus_Update_%28Steveoc_86%29.jpg/480px-Spinosaurus_Update_%28Steveoc_86%29.jpg",
+    resumen: "Análisis de isótopos en los dientes del Spinosaurus confirman que pasaba la mayor parte de su vida dentro del agua, siendo el único dinosaurio semiacuático conocido."
+  },
+  {
+    id: 6,
+    titulo: "Fósil de Archaeopteryx revela que podía volar activamente",
+    fecha: "Marzo 2024",
+    fuente: "Nature Communications",
+    url: "https://www.nature.com/ncomms/",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/480px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg",
+    resumen: "Tomografías computarizadas del espécimen de Berlín demuestran que el Archaeopteryx tenía las adaptaciones cerebrales necesarias para el vuelo activo, no solo el planeo."
+  },
+  {
+    id: 7,
+    titulo: "Hallan huellas de dinosaurios en el techo de una mina en Bolivia",
+    fecha: "Febrero 2024",
+    fuente: "BBC Science",
+    url: "https://www.bbc.com/news/science-environment",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Dinosaur_footprints_trackway.jpg/480px-Dinosaur_footprints_trackway.jpg",
+    resumen: "Más de 5.000 huellas de dinosaurios del Cretácico tardío, incluyendo titanosaurios y terópodos, fueron documentadas en una pared vertical de 80 metros en Cal Orcko, Bolivia."
+  },
+  {
+    id: 8,
+    titulo: "Nuevo estudio reconstruye el color del T. rex: probablemente era marrón con manchas",
+    fecha: "Enero 2024",
+    fuente: "Current Biology",
+    url: "https://www.cell.com/current-biology/home",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Tyrannosaurus_rex_mmartyniuk_wiki.png/480px-Tyrannosaurus_rex_mmartyniuk_wiki.png",
+    resumen: "Análisis de melanosomas en parientes cercanos del T. rex sugieren que este gran depredador tenía coloración críptica parda con marcas, no la piel gris escamosa de las películas."
+  },
+  {
+    id: 9,
+    titulo: "Desenterrado en Marruecos el cefalópodo más grande del Cámbrico",
+    fecha: "Noviembre 2023",
+    fuente: "Science Advances",
+    url: "https://www.science.org/journal/sciadv",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Burgess_shale_anomalocaris.jpg/480px-Burgess_shale_anomalocaris.jpg",
+    resumen: "Un nuevo espécimen de Anomalocaris de 50 cm de longitud hallado en el Anti-Atlas marroquí es el más grande y mejor preservado del período Cámbrico conocido hasta la fecha."
+  },
+  {
+    id: 10,
+    titulo: "Científicos clavan la fecha exacta del impacto de Chicxulub: primavera boreal",
+    fecha: "Octubre 2023",
+    fuente: "Nature",
+    url: "https://www.nature.com",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Chicxulub_impact.jpg/480px-Chicxulub_impact.jpg",
+    resumen: "Análisis de líneas de crecimiento en huesos de peces fosilizados en el sitio de Tanis (Dakota del Norte) indica que el asteroide impactó en primavera del hemisferio norte, hace 66 millones de años."
+  },
+  {
+    id: 11,
+    titulo: "El primer dinosaurio de Somalia identificado: un saurópodo jurásico",
+    fecha: "Septiembre 2023",
+    fuente: "PeerJ",
+    url: "https://peerj.com",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Giraffatitan_brancai_mounted_NHM_Berlin.jpg/480px-Giraffatitan_brancai_mounted_NHM_Berlin.jpg",
+    resumen: "Vértebras halladas en depósitos jurásicos del norte de Somalia fueron descritas como pertenecientes a un nuevo saurópodo, el primer dinosaurio registrado en ese país."
+  },
+  {
+    id: 12,
+    titulo: "Proyecto de desextinción del mamut lanudo entra en fase de pruebas en 2026",
+    fecha: "Agosto 2023",
+    fuente: "Colossal Biosciences",
+    url: "https://colossal.com",
+    categoria: "ciencia",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg/480px-Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg",
+    resumen: "La empresa Colossal Biosciences anuncia que sus elefantes asiáticos modificados genéticamente con características del mamut lanudo entrarán en fase de gestación experimental a partir de 2026."
+  },
+  {
+    id: 13,
+    titulo: "Descubierto en España un yacimiento del Jurásico con 30 dinosaurios",
+    fecha: "Julio 2023",
+    fuente: "El País Ciencia",
+    url: "https://elpais.com/ciencia/",
+    categoria: "descubrimiento",
+    imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Morrison_Formation_layers.jpg/480px-Morrison_Formation_layers.jpg",
+    resumen: "En Teruel, el yacimiento de Riodeva amplía su catálogo con nuevos restos de al menos seis especies distintas, consolidando la región como uno de los mayores tesoros paleontológicos de Europa."
+  }
+];
+
+// ============================================
+// YACIMIENTOS
+// ============================================
+
+const YACIMIENTOS = [
+  {
+    id: 1,
+    nombre: "Hell Creek Formation",
+    pais: "🇺🇸 Montana, EE.UU.",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 47.3, lng: -106.5,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Hell_Creek_Badlands.jpg/640px-Hell_Creek_Badlands.jpg",
+    desc: "Uno de los yacimientos más famosos del mundo. Datado en 66-68 Ma, preserva la fauna del final del Cretácico justo antes del impacto del asteroide.",
+    hallazgos: [
+      { e: "🦖", t: "Tyrannosaurus rex — múltiples especímenes completos" },
+      { e: "🦕", t: "Triceratops horridus — cráneo y esqueleto completo" },
+      { e: "🦕", t: "Edmontosaurus — hadrosauro gigante" },
+      { e: "🦴", t: "Ankylosaurus magniventris" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Hell_Creek_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 2,
+    nombre: "Solnhofen Limestone",
+    pais: "🇩🇪 Baviera, Alemania",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 48.9, lng: 11.0,
+    emoji: "🐦",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/480px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg",
+    desc: "Calizas de aguas poco profundas del Jurásico tardío (~150 Ma). La excepcional preservación permite ver impresiones de plumas y tejidos blandos.",
+    hallazgos: [
+      { e: "🐦", t: "Archaeopteryx lithographica — el fósil más famoso del mundo" },
+      { e: "🦅", t: "Rhamphorhynchus — pterosaurio con cola larga" },
+      { e: "🐟", t: "Peces y medusas preservados en detalle" },
+      { e: "🦎", t: "Compsognathus longipes — dinosaurio pequeño" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Solnhofen_Limestone",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 3,
+    nombre: "Burgess Shale",
+    pais: "🇨🇦 Columbia Británica, Canadá",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 51.4, lng: -116.5,
+    emoji: "🦐",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Burgess_shale_anomalocaris.jpg/480px-Burgess_shale_anomalocaris.jpg",
+    desc: "Patrimonio Mundial UNESCO. Pizarras del Cámbrico Medio (~508 Ma) con preservación extraordinaria de tejidos blandos. Ventana única a la Explosión Cámbrica.",
+    hallazgos: [
+      { e: "🦑", t: "Anomalocaris — mayor depredador del Cámbrico" },
+      { e: "🐌", t: "Hallucigenia — criatura con espinas en la espalda" },
+      { e: "👁️", t: "Opabinia — 5 ojos y garra frontal" },
+      { e: "🦀", t: "Marrella splendens — el fósil más abundante del sitio" }
+    ],
+    link: "https://www.pc.gc.ca/en/lhn-nhs/bc/burgess",
+    linkText: "Parks Canada"
+  },
+  {
+    id: 4,
+    nombre: "Gobi Desert — Flaming Cliffs",
+    pais: "🇲🇳 Ömnögovi, Mongolia",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 44.1, lng: 100.5,
+    emoji: "🥚",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bayanzag_Flaming_Cliffs.jpg/640px-Bayanzag_Flaming_Cliffs.jpg",
+    desc: "Bayanzag — los Acantilados en Llamas. Roy Chapman Andrews descubrió aquí los primeros nidos de huevos de dinosaurio en 1923. Formación Djadokhta, 75 Ma.",
+    hallazgos: [
+      { e: "🥚", t: "Primeros nidos de huevos de dinosaurio descubiertos" },
+      { e: "🦖", t: "Velociraptor mongoliensis — espécimen original" },
+      { e: "🦕", t: "Protoceratops — ceratópsido primitivo abundante" },
+      { e: "🦴", t: "Oviraptor philoceratops" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Flaming_Cliffs",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 5,
+    nombre: "Liaoning Formation",
+    pais: "🇨🇳 Liaoning, China",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 41.5, lng: 120.8,
+    emoji: "🐦",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Microraptor_gui_holotype.jpg/480px-Microraptor_gui_holotype.jpg",
+    desc: "Yacimientos del Cretácico inferior (~130 Ma) con preservación excepcional de plumas. Revolucionó la comprensión de la evolución de las aves desde los dinosaurios.",
+    hallazgos: [
+      { e: "🐦", t: "Microraptor gui — dinosaurio con 4 alas emplumadas" },
+      { e: "🦖", t: "Sinosauropteryx — primer dinosaurio con plumas confirmadas" },
+      { e: "🌸", t: "Archaefructus — primera planta con flores" },
+      { e: "🦎", t: "Psittacosaurus — ceratópsido primitivo" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Yixian_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 6,
+    nombre: "Morrison Formation",
+    pais: "🇺🇸 Wyoming/Colorado, EE.UU.",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 41.8, lng: -108.5,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Morrison_Formation_layers.jpg/640px-Morrison_Formation_layers.jpg",
+    desc: "La formación jurásica más productiva de Norteamérica. 150 Ma, se extiende por 13 estados. Fue el epicentro de la Bone Wars entre Cope y Marsh en el siglo XIX.",
+    hallazgos: [
+      { e: "🦕", t: "Diplodocus longus — saurópodo de 27m" },
+      { e: "🦕", t: "Brachiosaurus altithorax — cuello de 9m de altura" },
+      { e: "🦖", t: "Allosaurus fragilis — mayor depredador del Jurásico" },
+      { e: "🦕", t: "Stegosaurus armatus" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Morrison_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 7,
+    nombre: "Tendaguru",
+    pais: "🇹🇿 Lindi, Tanzania",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: -10.0, lng: 39.0,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Giraffatitan_brancai_mounted_NHM_Berlin.jpg/480px-Giraffatitan_brancai_mounted_NHM_Berlin.jpg",
+    desc: "El yacimiento jurásico más importante de África. Expediciones alemanas (1909-1913) extrajeron 225 toneladas de fósiles. El Giraffatitan del Museo de Berlín proviene de aquí.",
+    hallazgos: [
+      { e: "🦕", t: "Giraffatitan brancai — esqueleto completo en el Museum für Naturkunde" },
+      { e: "🦕", t: "Dicraeosaurus hansemanni — saurópodo con espinas" },
+      { e: "🦖", t: "Elaphrosaurus bambergi — terópodo esbelto" },
+      { e: "🦴", t: "Kentrosaurus aethiopicus — estegosáurido africano" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Tendaguru_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 8,
+    nombre: "Ischigualasto (Valle de la Luna)",
+    pais: "🇦🇷 San Juan, Argentina",
+    era: "Triásico",
+    color: "#c85030",
+    lat: -29.9, lng: -67.9,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Ischigualasto_Valle_de_la_Luna.jpg/640px-Ischigualasto_Valle_de_la_Luna.jpg",
+    desc: "Patrimonio Mundial UNESCO. Formación del Triásico tardío (~231 Ma) con algunos de los dinosaurios más primitivos conocidos. El yacimiento triásico más completo del mundo.",
+    hallazgos: [
+      { e: "🦖", t: "Eoraptor lunensis — uno de los primeros dinosaurios conocidos" },
+      { e: "🦖", t: "Herrerasaurus ischigualastensis — dinosaurio carnívoro primitivo" },
+      { e: "🦎", t: "Eodromaeus murphi — pequeño terópodo" },
+      { e: "🦴", t: "Pisanosaurus mertii — primer ornitísquio" }
+    ],
+    link: "https://whc.unesco.org/en/list/966",
+    linkText: "UNESCO"
+  },
+  {
+    id: 9,
+    nombre: "Messel Pit",
+    pais: "🇩🇪 Hesse, Alemania",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: 49.9, lng: 8.75,
+    emoji: "🐴",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Messel_pit_from_above.jpg/640px-Messel_pit_from_above.jpg",
+    desc: "Patrimonio Mundial UNESCO. Antiguo lago volcánico del Eoceno (~47 Ma) con preservación excepcional. El contenido estomacal, piel y pelo de los animales están preservados.",
+    hallazgos: [
+      { e: "🐴", t: "Propalaeotherium — caballo primitivo del tamaño de un zorro" },
+      { e: "🐍", t: "Messelophis variabilis — serpiente con patas vestigiales" },
+      { e: "🦅", t: "Gastornis — ave gigante depredadora de 2m" },
+      { e: "🦎", t: "Darwinius masillae — primate ancestral" }
+    ],
+    link: "https://whc.unesco.org/en/list/720",
+    linkText: "UNESCO"
+  },
+  {
+    id: 10,
+    nombre: "Ediacara Hills",
+    pais: "🇦🇺 Australia del Sur, Australia",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: -31.2, lng: 138.6,
+    emoji: "🫧",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Dickinsonia_costata.jpg/480px-Dickinsonia_costata.jpg",
+    desc: "El yacimiento que dio nombre al período Ediacárico (~550 Ma). Aquí se descubrieron los primeros organismos multicelulares complejos conocidos, la Biota de Ediacara.",
+    hallazgos: [
+      { e: "🫧", t: "Dickinsonia costata — organismo enigmático de hasta 1m" },
+      { e: "🫧", t: "Charniodiscus — organismo similar a una hoja" },
+      { e: "🫧", t: "Spriggina floundersi — posible ancestro de los artrópodos" },
+      { e: "🫧", t: "Tribrachidium — organismo con simetría triple" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Ediacara_Hills",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 11,
+    nombre: "La Brea Tar Pits",
+    pais: "🇺🇸 California, EE.UU.",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: 34.06, lng: -118.36,
+    emoji: "🐆",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/La_Brea_Tar_Pits_Lake_Pit.jpg/640px-La_Brea_Tar_Pits_Lake_Pit.jpg",
+    desc: "Depósitos de alquitrán del Pleistoceno (10.000-50.000 años) en pleno Los Ángeles. Más de 3,5 millones de fósiles extraídos, incluida la mayor colección de megafauna del Pleistoceno.",
+    hallazgos: [
+      { e: "🐆", t: "Smilodon fatalis — diente de sable más completo del mundo" },
+      { e: "🦁", t: "Panthera atrox — león americano extinto" },
+      { e: "🦣", t: "Mammuthus columbi — mamut colombino" },
+      { e: "🦅", t: "Teratornis merriami — ave voladora de 3,5m de envergadura" }
+    ],
+    link: "https://tarpits.org",
+    linkText: "La Brea Tar Pits"
+  },
+  {
+    id: 12,
+    nombre: "Dinosaur Provincial Park",
+    pais: "🇨🇦 Alberta, Canadá",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 50.75, lng: -111.5,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dinosaur_Provincial_Park_hoodoos.jpg/640px-Dinosaur_Provincial_Park_hoodoos.jpg",
+    desc: "Patrimonio Mundial UNESCO. Badlands de Alberta con la mayor concentración de fósiles del Cretácico tardío (~75 Ma). Más de 40 especies de dinosaurios identificadas.",
+    hallazgos: [
+      { e: "🦕", t: "Centrosaurus apertus — ceratópsido en manada" },
+      { e: "🦖", t: "Gorgosaurus libratus — tiranosáurido" },
+      { e: "🦴", t: "Corythosaurus casuarius — hadrosáurido con cresta" },
+      { e: "🦕", t: "Styracosaurus albertensis" }
+    ],
+    link: "https://whc.unesco.org/en/list/71",
+    linkText: "UNESCO"
+  },
+  {
+    id: 13,
+    nombre: "Chengjiang Biota",
+    pais: "🇨🇳 Yunnan, China",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 24.7, lng: 102.9,
+    emoji: "🦑",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Chengjiang_fossil_site_maotianshan_shales.jpg/640px-Chengjiang_fossil_site_maotianshan_shales.jpg",
+    desc: "Patrimonio Mundial UNESCO. Pizarras del Cámbrico Inferior (~520 Ma), 10 Ma más antiguo que Burgess Shale. Preserva la diversificación animal más temprana conocida.",
+    hallazgos: [
+      { e: "🐟", t: "Myllokunmingia — posible pez más primitivo conocido" },
+      { e: "🦑", t: "Amplectobelua — pariente de Anomalocaris" },
+      { e: "👁️", t: "Fuxianhuia — artrópodo primitivo con cerebro preservado" },
+      { e: "🦴", t: "Haikouichthys — vertebrado más antiguo conocido" }
+    ],
+    link: "https://whc.unesco.org/en/list/1388",
+    linkText: "UNESCO"
+  },
+  {
+    id: 14,
+    nombre: "Joggins Fossil Cliffs",
+    pais: "🇨🇦 Nova Scotia, Canadá",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: 45.7, lng: -64.4,
+    emoji: "🌳",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Joggins_Fossil_Cliffs.jpg/640px-Joggins_Fossil_Cliffs.jpg",
+    desc: "Patrimonio Mundial UNESCO. Acantilados del Carbonífero (~310 Ma), el 'Carboniferous Rainforest'. Darwin los llamó el lugar más notable del mundo para la geología.",
+    hallazgos: [
+      { e: "🌳", t: "Lepidodendron — árbol de 30m preservado en posición vertical" },
+      { e: "🦎", t: "Hylonomus lyelli — reptil más antiguo conocido" },
+      { e: "🦟", t: "Arthropleura — ciempiés gigante de 2,5m" },
+      { e: "🌿", t: "Bosque carbonífero completo in situ" }
+    ],
+    link: "https://whc.unesco.org/en/list/1285",
+    linkText: "UNESCO"
+  },
+  {
+    id: 15,
+    nombre: "Patagonia — Neuquén",
+    pais: "🇦🇷 Neuquén, Argentina",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: -38.5, lng: -68.0,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Argentinosaurus_BW.jpg/480px-Argentinosaurus_BW.jpg",
+    desc: "La región con mayor concentración de saurópodos gigantes del mundo. El Cretácico de Neuquén ha producido los animales más grandes que jamás caminaron sobre la Tierra.",
+    hallazgos: [
+      { e: "🦕", t: "Argentinosaurus huinculensis — posiblemente el animal más grande de la historia" },
+      { e: "🦖", t: "Giganotosaurus carolinii — mayor carnívoro del Cretácico" },
+      { e: "🦕", t: "Patagotitan mayorum — titanosaurio de 70 toneladas" },
+      { e: "🥚", t: "Sauropod nesting sites — miles de huevos" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Neuqu%C3%A9n_Group",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 16,
+    nombre: "Olduvai Gorge",
+    pais: "🇹🇿 Arusha, Tanzania",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: -2.99, lng: 35.35,
+    emoji: "🧑",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Olduvai_Gorge%2C_Tanzania.jpg/640px-Olduvai_Gorge%2C_Tanzania.jpg",
+    desc: "La 'Cuna de la Humanidad'. Los Leakey descubrieron aquí fósiles de homininos de 1,8 Ma. Cambió para siempre la comprensión de la evolución humana.",
+    hallazgos: [
+      { e: "🧑", t: "Homo habilis — primera especie del género Homo" },
+      { e: "🦴", t: "Paranthropus boisei — robusto australopitecino" },
+      { e: "🪨", t: "Industria lítica Olduvayense — herramientas de 1,8 Ma" },
+      { e: "🧑", t: "Homo erectus — múltiples especímenes" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Olduvai_Gorge",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 17,
+    nombre: "Ghost Ranch",
+    pais: "🇺🇸 Nuevo México, EE.UU.",
+    era: "Triásico",
+    color: "#c85030",
+    lat: 36.32, lng: -106.48,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Ghost_Ranch_Landscape.jpg/640px-Ghost_Ranch_Landscape.jpg",
+    desc: "Formación Chinle del Triásico tardío (~210 Ma). En 1947 se descubrió una acumulación masiva de miles de esqueletos de Coelophysis.",
+    hallazgos: [
+      { e: "🦖", t: "Coelophysis bauri — miles de esqueletos en un solo depósito" },
+      { e: "🦎", t: "Hesperosuchus agilis — cocodrilomorfo primitivo" },
+      { e: "🦴", t: "Chindesaurus bryansmalli — dinosaurio saurísquio primitivo" },
+      { e: "🌿", t: "Flora del Triásico tardío preservada" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Ghost_Ranch",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 18,
+    nombre: "Riversleigh",
+    pais: "🇦🇺 Queensland, Australia",
+    era: "Cenozoico",
+    color: "#5a8aaa",
+    lat: -19.1, lng: 138.7,
+    emoji: "🦘",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Riversleigh_Fossil_Site.jpg/640px-Riversleigh_Fossil_Site.jpg",
+    desc: "Patrimonio Mundial UNESCO. Registro fósil del Oligoceno al Pleistoceno (~25-0 Ma) de la fauna australiana. Documenta la evolución de los marsupiales australianos.",
+    hallazgos: [
+      { e: "🦘", t: "Procoptodon goliah — canguro gigante de 2m" },
+      { e: "🦁", t: "Thylacoleo carnifex — leon marsupial de 100 kg" },
+      { e: "🐊", t: "Quinkana — cocodrilo terrestre" },
+      { e: "🦆", t: "Dromornis stirtoni — ave no voladora de 500 kg" }
+    ],
+    link: "https://whc.unesco.org/en/list/586",
+    linkText: "UNESCO"
+  }
+];
+
+// ============================================
+// LIBROS
+// ============================================
+
+const LIBROS = [
+  {
+    id: 1,
+    titulo: "The Rise and Fall of the Dinosaurs",
+    autor: "Steve Brusatte",
+    anyo: "2018",
+    nivel: "divulgacion",
+    isbn: "9780062490421",
+    portada: "https://covers.openlibrary.org/b/isbn/9780062490421-L.jpg",
+    link: "https://www.amazon.com/dp/0062490427",
+    descripcion: "La historia más completa de los dinosaurios, escrita por uno de los paleontólogos más activos del mundo. Accesible y apasionante.",
+    categoria: "Paleontología"
+  },
+  {
+    id: 2,
+    titulo: "Prehistoric Life",
+    autor: "DK Publishing",
+    anyo: "2012",
+    nivel: "divulgacion",
+    isbn: "9780756682347",
+    portada: "https://covers.openlibrary.org/b/isbn/9780756682347-L.jpg",
+    link: "https://www.amazon.com/dp/0756682347",
+    descripcion: "La enciclopedia visual definitiva sobre la vida prehistórica, con más de 700 especies ilustradas.",
+    categoria: "Enciclopedia"
+  },
+  {
+    id: 3,
+    titulo: "T. rex and the Crater of Doom",
+    autor: "Walter Alvarez",
+    anyo: "1997",
+    nivel: "divulgacion",
+    isbn: "9780691016306",
+    portada: "https://covers.openlibrary.org/b/isbn/9780691016306-L.jpg",
+    link: "https://www.amazon.com/dp/0691016305",
+    descripcion: "El geólogo que descubrió la evidencia del asteroide de Chicxulub cuenta la historia de ese hallazgo que cambió la paleontología.",
+    categoria: "Ciencia"
+  },
+  {
+    id: 4,
+    titulo: "The Dinosaur Artist",
+    autor: "Paige Williams",
+    anyo: "2018",
+    nivel: "divulgacion",
+    isbn: "9780316382076",
+    portada: "https://covers.openlibrary.org/b/isbn/9780316382076-L.jpg",
+    link: "https://www.amazon.com/dp/0316382078",
+    descripcion: "La increíble historia del tráfico ilegal de fósiles y la batalla por preservar el patrimonio paleontológico del Gobi.",
+    categoria: "Historia"
+  },
+  {
+    id: 5,
+    titulo: "Jurassic West",
+    autor: "John Foster",
+    anyo: "2007",
+    nivel: "tecnico",
+    isbn: "9780253348449",
+    portada: "https://covers.openlibrary.org/b/isbn/9780253348449-L.jpg",
+    link: "https://www.amazon.com/dp/0253348447",
+    descripcion: "Guía científica completa de la fauna de la Formación Morrison, la más productiva del Jurásico norteamericano.",
+    categoria: "Técnico"
+  },
+  {
+    id: 6,
+    titulo: "Wonderful Life",
+    autor: "Stephen Jay Gould",
+    anyo: "1989",
+    nivel: "divulgacion",
+    isbn: "9780393307009",
+    portada: "https://covers.openlibrary.org/b/isbn/9780393307009-L.jpg",
+    link: "https://www.amazon.com/dp/0393307009",
+    descripcion: "El clásico de Gould sobre el Burgess Shale y lo que los animales del Cámbrico nos dicen sobre la contingencia de la evolución.",
+    categoria: "Evolución"
+  },
+  {
+    id: 7,
+    titulo: "Dinosaurios de la Patagonia",
+    autor: "Fernando Novas",
+    anyo: "2009",
+    nivel: "divulgacion",
+    isbn: "9789871256419",
+    portada: "https://covers.openlibrary.org/b/isbn/9789871256419-L.jpg",
+    link: "https://www.amazon.com/dp/9871256418",
+    descripcion: "La guía definitiva sobre los gigantes de Patagonia, escrita por el principal paleontólogo argentino especializado en dinosaurios.",
+    categoria: "Paleontología"
+  },
+  {
+    id: 8,
+    titulo: "Your Inner Fish",
+    autor: "Neil Shubin",
+    anyo: "2008",
+    nivel: "divulgacion",
+    isbn: "9780307277459",
+    portada: "https://covers.openlibrary.org/b/isbn/9780307277459-L.jpg",
+    link: "https://www.amazon.com/dp/0307277453",
+    descripcion: "El descubridor del Tiktaalik explica cómo los fósiles revelan la historia evolutiva que conecta a los peces con los seres humanos.",
+    categoria: "Evolución"
+  }
+];
+
+// ============================================
+// TRADUCCIONES
+// ES = español (base), FR = francés
+// ============================================
+
+const TRADUCCIONES = {
+  es: {
+    nav_explorer:   "Animal Explorer",
+    nav_landscapes: "Landscapes",
+    nav_fossil:     "Fossil Science",
+    nav_gallery:    "Gallery",
+    nav_news:       "News",
+    nav_books:      "Books",
+    nav_updates:    "Updates",
+    nav_comparator: "Comparator",
+
+    home_badge:  "🔬 Divulgación científica · Paleontología",
+    home_desc:   "Descubre animales extintos, ecosistemas del pasado y la ciencia detrás de los fósiles. Un viaje de 4.000 millones de años.",
+    home_stat_animales:   "Animales",
+    home_stat_noticias:   "Noticias",
+    home_stat_libros:     "Libros",
+    home_stat_version:    "Versión",
+    home_card_explorer_titulo: "Animal Explorer",
+    home_card_explorer_desc:   "Busca y explora fichas de animales actuales y prehistóricos con datos científicos.",
+    home_card_landscapes_titulo: "Ancient Landscapes",
+    home_card_landscapes_desc:   "Biomas extintos, reconstrucciones científicas y comparaciones pasado vs presente.",
+    home_card_fossil_titulo: "Fossil Science",
+    home_card_fossil_desc:   "Cómo se forman los fósiles, cómo se descubren y qué tecnología usan los científicos.",
+    home_card_gallery_titulo: "Illustration Gallery",
+    home_card_gallery_desc:   "Galería de reconstrucciones científicas y arte paleontológico.",
+    home_card_news_titulo: "Science News",
+    home_card_news_desc:   "Descubrimientos recientes, artículos simplificados y curiosidades científicas.",
+    home_card_books_titulo: "Books & Resources",
+    home_card_books_desc:   "Libros, revistas digitales y recursos educativos recomendados.",
+
+    explorer_label:       "🦕 Animal Explorer",
+    explorer_titulo:      "Buscador de Animales",
+    explorer_sub:         "Explora especies actuales y prehistóricas. Busca por nombre o filtra por tipo.",
+    explorer_placeholder: "Buscar animal... (ej: T-Rex, mamut...)",
+    explorer_buscar:      "Buscar",
+    explorer_todos:       "Todos",
+    explorer_extintos:    "Extintos",
+    explorer_vivientes:   "Vivientes",
+    explorer_sin_result:  "No se encontraron animales con ese nombre.",
+    explorer_volver:      "← Volver a la lista",
+    explorer_extinto:     "Extinto",
+    explorer_viviente:    "Viviente",
+    campo_dieta:          "Dieta",
+    campo_tamaño:         "Tamaño",
+    campo_peso:           "Peso",
+    campo_habitat:        "Hábitat",
+    campo_periodo:        "Época geológica",
+    campo_año:            "Año descubrimiento",
+    campo_fosil:          "Lugar del fósil",
+    campo_cientifico:     "Descubierto por",
+    campo_clasificacion:  "Clasificación",
+
+    landscapes_label:  "🌋 Ancient Landscapes",
+    landscapes_titulo: "Paisajes Antiguos",
+    landscapes_sub:    "Cómo era la Tierra millones de años antes de que llegáramos.",
+    tab_biomas:        "Biomas Antiguos",
+    tab_recon:         "Reconstrucciones",
+    tab_comparacion:   "Pasado vs Presente",
+    tabla_lugar:       "Lugar",
+    tabla_hace:        "Hace",
+    tabla_entonces:    "Entonces",
+    tabla_hoy:         "Hoy",
+    bioma_clima:       "Clima",
+    bioma_flora:       "Flora",
+    bioma_fauna:       "Fauna",
+
+    fossil_label:  "🦴 Fossil Science",
+    fossil_titulo: "Ciencia de los Fósiles",
+    fossil_sub:    "Cómo los científicos leen la historia de la vida en piedra.",
+    fossil_como:   "¿Cómo se forma un fósil?",
+
+    gallery_label:  "🎨 Illustration Gallery",
+    gallery_titulo: "Galería de Ilustraciones",
+    gallery_sub:    "Reconstrucciones científicas y arte paleontológico.",
+    gallery_todos:       "Todos",
+    gallery_animales:    "Animales prehistóricos",
+    gallery_ecosistemas: "Ecosistemas",
+    gallery_comp:        "Comparaciones",
+    gallery_mostrando:   "Mostrando",
+    gallery_ilustraciones: "ilustraciones",
+
+    news_label:         "📰 Science News",
+    news_titulo:        "Noticias Científicas",
+    news_sub:           "Descubrimientos recientes, artículos simplificados y curiosidades.",
+    news_todas:         "Todas",
+    news_descubrimiento:"Descubrimientos",
+    news_ciencia:       "Ciencia",
+    news_curiosidad:    "Curiosidades",
+    news_sin_result:    "No hay noticias en esta categoría todavía.",
+    cat_descubrimiento: "Descubrimiento",
+    cat_ciencia:        "Ciencia",
+    cat_curiosidad:     "Curiosidad",
+
+    books_label:       "📚 Books & Resources",
+    books_titulo:      "Biblioteca Científica",
+    books_sub:         "Libros, recursos digitales y material educativo para explorar más.",
+    tab_recomendados:  "Libros recomendados",
+    tab_digitales:     "Libros digitales",
+    tab_recursos:      "Recursos educativos",
+
+    updates_label:  "🔄 Updates",
+    updates_titulo: "Actualizaciones",
+    updates_sub:    "Registro de cambios del sitio. Actualización grande cada 1–2 meses.",
+    updates_proximas: "Próximamente",
+    badge_nuevo:     "Nueva versión",
+    badge_contenido: "Contenido",
+    badge_inicio:    "Inicio",
+    badge_idioma:    "Idiomas",
+    estado_desarrollo: "En desarrollo",
+    estado_planificado: "Planificado",
+    estado_idea:     "Idea",
+
+    comparator_label:  "📏 Size Comparator",
+    comparator_titulo: "Comparador de Tamaños",
+    comparator_sub:    "Compara el tamaño de cualquier animal con otro y con un humano de referencia.",
+    comparator_animal1: "Animal 1",
+    comparator_animal2: "Animal 2",
+    comparator_veces:  "veces más largo que",
+    comparator_barras: "Comparación de longitud",
+    comparator_ref:    "Humano (referencia)",
+
+    footer_copy: "© 2025 Eduardo · Proyecto educativo de divulgación paleontológica",
+  },
+
+  fr: {
+    nav_explorer:   "Explorateur",
+    nav_landscapes: "Paysages",
+    nav_fossil:     "Science des Fossiles",
+    nav_gallery:    "Galerie",
+    nav_news:       "Actualités",
+    nav_books:      "Livres",
+    nav_updates:    "Mises à jour",
+    nav_comparator: "Comparateur",
+
+    home_badge:  "🔬 Vulgarisation scientifique · Paléontologie",
+    home_desc:   "Découvre des animaux disparus, des écosystèmes du passé et la science derrière les fossiles. Un voyage de 4 milliards d'années.",
+    home_stat_animales:   "Animaux",
+    home_stat_noticias:   "Actualités",
+    home_stat_libros:     "Livres",
+    home_stat_version:    "Version",
+    home_card_explorer_titulo: "Explorateur d'Animaux",
+    home_card_explorer_desc:   "Recherche et explore des fiches d'animaux actuels et préhistoriques avec des données scientifiques.",
+    home_card_landscapes_titulo: "Paysages Anciens",
+    home_card_landscapes_desc:   "Biomes disparus, reconstructions scientifiques et comparaisons passé vs présent.",
+    home_card_fossil_titulo: "Science des Fossiles",
+    home_card_fossil_desc:   "Comment se forment les fossiles, comment on les découvre et quelles technologies utilisent les scientifiques.",
+    home_card_gallery_titulo: "Galerie d'Illustrations",
+    home_card_gallery_desc:   "Galerie de reconstructions scientifiques et d'art paléontologique.",
+    home_card_news_titulo: "Actualités Scientifiques",
+    home_card_news_desc:   "Découvertes récentes, articles simplifiés et curiosités scientifiques.",
+    home_card_books_titulo: "Livres & Ressources",
+    home_card_books_desc:   "Livres, ressources numériques et matériel éducatif recommandés.",
+
+    explorer_label:       "🦕 Explorateur d'Animaux",
+    explorer_titulo:      "Recherche d'Animaux",
+    explorer_sub:         "Explore des espèces actuelles et préhistoriques. Recherche par nom ou filtre par type.",
+    explorer_placeholder: "Rechercher un animal... (ex: T-Rex, mammouth...)",
+    explorer_buscar:      "Rechercher",
+    explorer_todos:       "Tous",
+    explorer_extintos:    "Disparus",
+    explorer_vivientes:   "Vivants",
+    explorer_sin_result:  "Aucun animal trouvé avec ce nom.",
+    explorer_volver:      "← Retour à la liste",
+    explorer_extinto:     "Disparu",
+    explorer_viviente:    "Vivant",
+    campo_dieta:          "Régime",
+    campo_tamaño:         "Taille",
+    campo_peso:           "Poids",
+    campo_habitat:        "Habitat",
+    campo_periodo:        "Époque géologique",
+    campo_año:            "Année de découverte",
+    campo_fosil:          "Lieu du fossile",
+    campo_cientifico:     "Découvert par",
+    campo_clasificacion:  "Classification",
+
+    landscapes_label:  "🌋 Paysages Anciens",
+    landscapes_titulo: "Paysages Anciens",
+    landscapes_sub:    "Comment était la Terre des millions d'années avant notre arrivée.",
+    tab_biomas:        "Biomes Anciens",
+    tab_recon:         "Reconstructions",
+    tab_comparacion:   "Passé vs Présent",
+    tabla_lugar:       "Lieu",
+    tabla_hace:        "Il y a",
+    tabla_entonces:    "Autrefois",
+    tabla_hoy:         "Aujourd'hui",
+    bioma_clima:       "Climat",
+    bioma_flora:       "Flore",
+    bioma_fauna:       "Faune",
+
+    fossil_label:  "🦴 Science des Fossiles",
+    fossil_titulo: "Science des Fossiles",
+    fossil_sub:    "Comment les scientifiques lisent l'histoire de la vie dans la pierre.",
+    fossil_como:   "Comment se forme un fossile ?",
+
+    gallery_label:  "🎨 Galerie d'Illustrations",
+    gallery_titulo: "Galerie d'Illustrations",
+    gallery_sub:    "Reconstructions scientifiques et art paléontologique.",
+    gallery_todos:       "Tous",
+    gallery_animales:    "Animaux préhistoriques",
+    gallery_ecosistemas: "Écosystèmes",
+    gallery_comp:        "Comparaisons",
+    gallery_mostrando:   "Affichage de",
+    gallery_ilustraciones: "illustrations",
+
+    news_label:         "📰 Actualités Scientifiques",
+    news_titulo:        "Actualités Scientifiques",
+    news_sub:           "Découvertes récentes, articles simplifiés et curiosités.",
+    news_todas:         "Toutes",
+    news_descubrimiento:"Découvertes",
+    news_ciencia:       "Science",
+    news_curiosidad:    "Curiosités",
+    news_sin_result:    "Pas encore d'actualités dans cette catégorie.",
+    cat_descubrimiento: "Découverte",
+    cat_ciencia:        "Science",
+    cat_curiosidad:     "Curiosité",
+
+    books_label:       "📚 Livres & Ressources",
+    books_titulo:      "Bibliothèque Scientifique",
+    books_sub:         "Livres, ressources numériques et matériel éducatif pour en savoir plus.",
+    tab_recomendados:  "Livres recommandés",
+    tab_digitales:     "Livres numériques",
+    tab_recursos:      "Ressources éducatives",
+
+    updates_label:  "🔄 Mises à jour",
+    updates_titulo: "Mises à jour",
+    updates_sub:    "Journal des modifications du site. Grande mise à jour tous les 1-2 mois.",
+    updates_proximas: "Prochainement",
+    badge_nuevo:     "Nouvelle version",
+    badge_contenido: "Contenu",
+    badge_inicio:    "Début",
+    badge_idioma:    "Langues",
+    estado_desarrollo: "En développement",
+    estado_planificado: "Planifié",
+    estado_idea:     "Idée",
+
+    comparator_label:  "📏 Comparateur de Tailles",
+    comparator_titulo: "Comparateur de Tailles",
+    comparator_sub:    "Compare la taille de n'importe quel animal avec un autre et avec un humain de référence.",
+    comparator_animal1: "Animal 1",
+    comparator_animal2: "Animal 2",
+    comparator_veces:  "fois plus long que",
+    comparator_barras: "Comparaison de longueur",
+    comparator_ref:    "Humain (référence)",
+
+    footer_copy: "© 2025 Eduardo · Projet éducatif de vulgarisation paléontologique",
+  }
+};
+
+// ── SISTEMA DE IDIOMA ──
+function getLang() {
+  return localStorage.getItem('lang') || 'es';
+}
+
+function setLang(lang) {
+  localStorage.setItem('lang', lang);
+  aplicarIdioma(lang);
+}
+
+function t(clave) {
+  const lang = getLang();
+  return (TRADUCCIONES[lang] && TRADUCCIONES[lang][clave])
+    ? TRADUCCIONES[lang][clave]
+    : (TRADUCCIONES['es'][clave] || clave);
+}
+
+function aplicarIdioma(lang) {
+  document.querySelectorAll('.btn-idioma').forEach(b => {
+    b.classList.remove('activo');
+    if ((lang === 'fr' && b.textContent.trim() === 'FR') ||
+        (lang === 'es' && b.textContent.trim() === 'ES')) {
+      b.classList.add('activo');
+    }
+  });
+  if (typeof renderPagina === 'function') renderPagina();
+}

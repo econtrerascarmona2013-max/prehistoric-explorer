@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { min-height: 100vh; padding-bottom: 4rem; }
+ 
+    /* ── LOGIN ── */
+    #login-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      padding: 2.5rem 3rem;
+      text-align: center;
+      width: 320px;
+    }
+    .login-box h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.3rem; }
+    .login-box p  { color: var(--texto-apagado); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .login-input {
+      width: 100%; padding: 0.7rem 1rem; margin-bottom: 1rem;
+      background: var(--surface2); border: 1px solid var(--borde);
+      border-radius: 4px; color: var(--texto);
+      font-family: 'Crimson Pro', serif; font-size: 1rem;
+      outline: none; box-sizing: border-box;
+    }
+    .login-input:focus { border-color: var(--acento); }
+    .login-btn {
+      width: 100%; padding: 0.7rem;
+      background: var(--acento); color: #1a1208;
+      border: none; border-radius: 4px;
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .login-btn:hover { opacity: 0.85; }
+    .login-error { color: #d4704a; font-size: 0.8rem; margin-top: 0.5rem; display: none; }
+ 
+    /* ── LAYOUT ── */
+    .admin-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 2rem;
+    }
+    .admin-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 900;
+      margin-bottom: 0.3rem;
+    }
+    .admin-subtitulo {
+      color: var(--texto-apagado); font-size: 0.9rem; margin-bottom: 2rem;
+    }
+ 
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+      border-bottom: 1px solid var(--borde);
+      margin-bottom: 2rem;
+    }
+    .tab {
+      padding: 0.5rem 1.2rem;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.95rem;
+      color: var(--texto-apagado);
+      background: transparent;
+      transition: all 0.2s;
+      position: relative; bottom: -1px;
+    }
+    .tab:hover { color: var(--texto); }
+    .tab.activo {
+      border-color: var(--borde);
+      border-bottom-color: var(--bg);
+      color: var(--acento);
+      background: var(--bg);
+    }
+ 
+    /* ── SECCIONES ── */
+    .seccion { display: none; }
+    .seccion.visible { display: block; }
+ 
+    /* ── FORMULARIO ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-grid.full { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-group label {
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--texto-apagado);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--surface);
+      border: 1px solid var(--borde);
+      border-radius: 4px;
+      color: var(--texto);
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.95rem;
+      padding: 0.55rem 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--acento); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+ 
+    .generar-btn {
+      background: var(--acento); color: #1a1208;
+      border: none; border-radius: 4px;
+      padding: 0.75rem 2rem;
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s;
+      margin-top: 0.5rem;
+    }
+    .generar-btn:hover { opacity: 0.85; }
+ 
+    /* ── RESULTADO ── */
+    #resultado {
+      display: none;
+      margin-top: 2rem;
+    }
+    .resultado-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--acento);
+    }
+ 
+    .paso {
+      background: var(--surface);
+      border: 1px solid var(--borde);
+      border-left: 3px solid var(--acento);
+      border-radius: 0 6px 6px 0;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .paso-num {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--acento); margin-bottom: 0.4rem;
+    }
+    .paso-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .paso-desc {
+      font-size: 0.88rem; color: var(--texto-apagado);
+      line-height: 1.6; margin-bottom: 0.8rem;
+    }
+    .paso-desc code {
+      background: var(--surface2);
+      border: 1px solid var(--borde);
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--acento);
+    }
+ 
+    .codigo-bloque {
+      background: #0a0c10;
+      border: 1px solid var(--borde);
+      border-radius: 4px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: #a8d8a8;
+      white-space: pre-wrap;
+      word-break: break-all;
+      position: relative;
+      margin-top: 0.5rem;
+    }
+    .copiar-btn {
+      position: absolute;
+      top: 0.5rem; right: 0.5rem;
+      background: rgba(200,164,90,0.15);
+      border: 1px solid rgba(200,164,90,0.3);
+      color: var(--acento);
+      border-radius: 3px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copiar-btn:hover { background: rgba(200,164,90,0.25); }
+    .copiar-btn.copiado { color: #6abf6a; border-color: #6abf6a; background: rgba(106,191,106,0.1); }
+ 
+    .buscar-bloque {
+      background: #0a0c10;
+      border: 1px solid #c87040;
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #e8a070;
+      white-space: pre-wrap;
+      margin-top: 0.5rem;
+      position: relative;
+    }
+ 
+    .aviso {
+      background: rgba(212,112,74,0.08);
+      border: 1px solid rgba(212,112,74,0.25);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      font-size: 0.82rem;
+      color: #d4704a;
+      margin-top: 1rem;
+    }
+ 
+    /* ── SEPARADOR SECCIÓN FORM ── */
+    .form-sep {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--acento); margin: 1.2rem 0 0.5rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--borde);
+    }
+ 
+    /* Ayuda inline */
+    .form-ayuda {
+      font-size: 0.72rem; color: var(--texto-apagado); margin-top: 0.2rem;
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem">🔒</div>
+    <h2>Panel Admin</h2>
+    <p>Acceso restringido</p>
+    <input type="password" class="login-input" id="pwd-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">Entrar</button>
+    <div class="login-error" id="login-error">Contraseña incorrecta</div>
+  </div>
+</div>
+ 
+<nav>
+  <a class="nav-logo" href="index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+  <ul class="nav-links">
+    <li><a href="index.html">← Volver al sitio</a></li>
+  </ul>
+  <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+</nav>
+ 
+<div class="admin-wrap">
+  <div class="admin-titulo">⚙️ Panel de Administración</div>
+  <div class="admin-subtitulo">Rellena el formulario y sigue las instrucciones para añadir contenido al sitio.</div>
+ 
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab activo" onclick="cambiarTab('animales', this)">🦖 Animal</button>
+    <button class="tab" onclick="cambiarTab('noticia',  this)">📰 Noticia</button>
+    <button class="tab" onclick="cambiarTab('yacimiento', this)">🗺️ Yacimiento</button>
+    <button class="tab" onclick="cambiarTab('libro',    this)">📚 Libro</button>
+  </div>
+ 
+  <!-- ══════════════════ ANIMAL ══════════════════ -->
+  <div id="sec-animales" class="seccion visible">
+    <div class="form-sep">Información básica</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="a-nombre" placeholder="Ej: Spinosaurus">
+      </div>
+      <div class="form-group">
+        <label>Nombre científico</label>
+        <input type="text" id="a-cientifico" placeholder="Ej: Spinosaurus aegyptiacus">
+      </div>
+      <div class="form-group">
+        <label>Período</label>
+        <select id="a-periodo">
+          <option>Cretácico</option>
+          <option>Jurásico</option>
+          <option>Triásico</option>
+          <option>Pérmico</option>
+          <option>Carbonífero</option>
+          <option>Devónico</option>
+          <option>Silúrico</option>
+          <option>Ordovícico</option>
+          <option>Cámbrico</option>
+          <option>Paleógeno</option>
+          <option>Neógeno</option>
+          <option>Pleistoceno</option>
+          <option>Holoceno</option>
+          <option>Actual</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dieta</label>
+        <select id="a-dieta">
+          <option value="carnivoro">Carnívoro</option>
+          <option value="herbivoro">Herbívoro</option>
+          <option value="omnivoro">Omnívoro</option>
+          <option value="piscivoro">Piscívoro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select id="a-estado">
+          <option value="extinto">Extinto</option>
+          <option value="vivo">Vivo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Época (años)</label>
+        <input type="text" id="a-epoca" placeholder="Ej: 100-93 Ma">
+      </div>
+    </div>
+ 
+    <div class="form-sep">Medidas</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Longitud (m)</label>
+        <input type="number" id="a-largo" placeholder="Ej: 15" step="0.1">
+      </div>
+      <div class="form-group">
+        <label>Altura (m)</label>
+        <input type="number" id="a-alto" placeholder="Ej: 5.5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label>Peso (toneladas)</label>
+        <input type="number" id="a-peso" placeholder="Ej: 7" step="0.1">
+      </div>
+      <div class="form-group">
+        <label>Región geográfica</label>
+        <input type="text" id="a-region" placeholder="Ej: África del Norte">
+      </div>
+    </div>
+ 
+    <div class="form-sep">Descripción y multimedia</div>
+    <div class="form-grid full">
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="a-desc" placeholder="Descripción del animal..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>URL imagen (Wikipedia u otra)</label>
+        <input type="text" id="a-img" placeholder="https://upload.wikimedia.org/...">
+        <div class="form-ayuda">Usa URLs de Wikimedia Commons para mejor compatibilidad en GitHub Pages.</div>
+      </div>
+      <div class="form-group">
+        <label>ID nuevo (número siguiente al último)</label>
+        <input type="number" id="a-id" placeholder="Ej: 28">
+        <div class="form-ayuda">El último animal en data.js tiene ID 27.</div>
+      </div>
+    </div>
+ 
+    <button class="generar-btn" onclick="generarAnimal()">Generar instrucciones →</button>
+  </div>
+ 
+  <!-- ══════════════════ NOTICIA ══════════════════ -->
+  <div id="sec-noticia" class="seccion">
+    <div class="form-sep">Datos de la noticia</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Titular</label>
+        <input type="text" id="n-titulo" placeholder="Ej: Nuevo dinosaurio descubierto en Argentina">
+      </div>
+      <div class="form-group">
+        <label>Fuente</label>
+        <input type="text" id="n-fuente" placeholder="Ej: Nature, Science, BBC...">
+      </div>
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" id="n-fecha">
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="n-categoria">
+          <option>Descubrimiento</option>
+          <option>Investigación</option>
+          <option>Exposición</option>
+          <option>Tecnología</option>
+          <option>Evolución</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>URL del artículo original</label>
+        <input type="text" id="n-url" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>URL imagen</label>
+        <input type="text" id="n-img" placeholder="https://upload.wikimedia.org/...">
+      </div>
+    </div>
+    <div class="form-grid full">
+      <div class="form-group">
+        <label>Resumen (2-3 frases)</label>
+        <textarea id="n-resumen" placeholder="Resumen breve de la noticia..."></textarea>
+      </div>
+    </div>
+ 
+    <button class="generar-btn" onclick="generarNoticia()">Generar instrucciones →</button>
+  </div>
+ 
+  <!-- ══════════════════ YACIMIENTO ══════════════════ -->
+  <div id="sec-yacimiento" class="seccion">
+    <div class="form-sep">Datos del yacimiento</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nombre del yacimiento</label>
+        <input type="text" id="y-nombre" placeholder="Ej: Lyme Regis">
+      </div>
+      <div class="form-group">
+        <label>País y región</label>
+        <input type="text" id="y-pais" placeholder="Ej: 🇬🇧 Dorset, Reino Unido">
+      </div>
+      <div class="form-group">
+        <label>Era geológica</label>
+        <select id="y-era">
+          <option>Cretácico</option>
+          <option>Jurásico</option>
+          <option>Triásico</option>
+          <option>Paleozoico</option>
+          <option>Cenozoico</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Emoji representativo</label>
+        <input type="text" id="y-emoji" placeholder="Ej: 🦕" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label>Latitud</label>
+        <input type="number" id="y-lat" placeholder="Ej: 50.7" step="0.01">
+        <div class="form-ayuda">Busca en Google Maps → clic derecho → coordenadas.</div>
+      </div>
+      <div class="form-group">
+        <label>Longitud</label>
+        <input type="number" id="y-lng" placeholder="Ej: -2.9" step="0.01">
+      </div>
+    </div>
+    <div class="form-grid full">
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="y-desc" placeholder="Describe el yacimiento..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>URL foto (Wikimedia recomendado)</label>
+        <input type="text" id="y-foto" placeholder="https://upload.wikimedia.org/...">
+      </div>
+      <div class="form-group">
+        <label>Hallazgos principales (uno por línea, con emoji al inicio)</label>
+        <textarea id="y-hallazgos" placeholder="🦕 Ichthyosaurus — esqueleto completo&#10;🦴 Plesiosaurus dolichodeirus&#10;🐚 Amonites jurásicos"></textarea>
+      </div>
+      <div class="form-group">
+        <label>URL enlace externo</label>
+        <input type="text" id="y-link" placeholder="https://en.wikipedia.org/...">
+      </div>
+      <div class="form-group">
+        <label>Texto del enlace</label>
+        <input type="text" id="y-linktext" placeholder="Wikipedia">
+      </div>
+      <div class="form-group">
+        <label>ID nuevo (número siguiente al último)</label>
+        <input type="number" id="y-id" placeholder="Ej: 19">
+        <div class="form-ayuda">El último yacimiento en fossilmap/index.html tiene ID 18.</div>
+      </div>
+    </div>
+ 
+    <button class="generar-btn" onclick="generarYacimiento()">Generar instrucciones →</button>
+  </div>
+ 
+  <!-- ══════════════════ LIBRO ══════════════════ -->
+  <div id="sec-libro" class="seccion">
+    <div class="form-sep">Datos del libro</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" id="l-titulo" placeholder="Ej: The Rise and Fall of the Dinosaurs">
+      </div>
+      <div class="form-group">
+        <label>Autor</label>
+        <input type="text" id="l-autor" placeholder="Ej: Steve Brusatte">
+      </div>
+      <div class="form-group">
+        <label>Año</label>
+        <input type="number" id="l-anyo" placeholder="Ej: 2018">
+      </div>
+      <div class="form-group">
+        <label>Nivel</label>
+        <select id="l-nivel">
+          <option value="divulgacion">Divulgación</option>
+          <option value="intermedio">Intermedio</option>
+          <option value="tecnico">Técnico</option>
+          <option value="juvenil">Juvenil</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ISBN (para portada automática)</label>
+        <input type="text" id="l-isbn" placeholder="Ej: 9780062490421">
+        <div class="form-ayuda">Con el ISBN se carga la portada automáticamente desde OpenLibrary.</div>
+      </div>
+      <div class="form-group">
+        <label>Enlace Amazon/compra (opcional)</label>
+        <input type="text" id="l-link" placeholder="https://...">
+      </div>
+    </div>
+    <div class="form-grid full">
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="l-desc" placeholder="Resumen breve del libro..."></textarea>
+      </div>
+    </div>
+ 
+    <button class="generar-btn" onclick="generarLibro()">Generar instrucciones →</button>
+  </div>
+ 
+  <!-- ══════════════════ RESULTADO ══════════════════ -->
+  <div id="resultado"></div>
+</div>
+ 
+<script src="data.js"></script>
+<script>
+ 
+// ── LOGIN ──
+const PASSWORD = 'dino9173';
+function login() {
+  const v = document.getElementById('pwd-input').value;
+  if (v === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+  }
+}
+ 
+// ── TABS ──
+function cambiarTab(id, btn) {
+  document.querySelectorAll('.seccion').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('activo'));
+  document.getElementById('sec-' + id).classList.add('visible');
+  btn.classList.add('activo');
+  document.getElementById('resultado').style.display = 'none';
+  document.getElementById('resultado').innerHTML = '';
+}
+ 
+// ── MODO ──
+(function() {
+  const modo = localStorage.getItem('modo') || 'oscuro';
+  if (modo === 'claro') document.body.classList.add('claro');
+  document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+})();
+function toggleModo() {
+  const esClaro = document.body.classList.toggle('claro');
+  localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+  document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+}
+ 
+// ── COPIAR ──
+function copiar(btnId, textoId) {
+  const texto = document.getElementById(textoId).textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.getElementById(btnId);
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copiado');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copiado'); }, 2000);
+  });
+}
+ 
+// ── MOSTRAR RESULTADO ──
+function mostrarResultado(pasos) {
+  const res = document.getElementById('resultado');
+  res.style.display = 'block';
+  res.innerHTML = `<div class="resultado-titulo">📋 Instrucciones paso a paso</div>` +
+    pasos.map((p, i) => `
+      <div class="paso">
+        <div class="paso-num">Paso ${i+1}</div>
+        <div class="paso-titulo">${p.titulo}</div>
+        <div class="paso-desc">${p.desc}</div>
+        ${p.buscar ? `<div class="buscar-bloque">${escapeHtml(p.buscar)}</div>` : ''}
+        ${p.codigo ? `
+          <div class="codigo-bloque" id="cod-${i}"><button class="copiar-btn" id="btn-${i}" onclick="copiar('btn-${i}','cod-${i}')">Copiar</button>${escapeHtml(p.codigo)}</div>
+        ` : ''}
+      </div>
+    `).join('');
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+ 
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+ 
+// ═══════════════════════════════════
+//  GENERAR ANIMAL
+// ═══════════════════════════════════
+function generarAnimal() {
+  const id      = document.getElementById('a-id').value.trim();
+  const nombre  = document.getElementById('a-nombre').value.trim();
+  const cient   = document.getElementById('a-cientifico').value.trim();
+  const periodo = document.getElementById('a-periodo').value;
+  const dieta   = document.getElementById('a-dieta').value;
+  const estado  = document.getElementById('a-estado').value;
+  const epoca   = document.getElementById('a-epoca').value.trim();
+  const largo   = document.getElementById('a-largo').value;
+  const alto    = document.getElementById('a-alto').value;
+  const peso    = document.getElementById('a-peso').value;
+  const region  = document.getElementById('a-region').value.trim();
+  const desc    = document.getElementById('a-desc').value.trim();
+  const img     = document.getElementById('a-img').value.trim();
+ 
+  if (!nombre || !id) {
+    alert('Rellena al menos el nombre y el ID.'); return;
+  }
+ 
+  const bloqueAnimal = `  {
+    id: ${id},
+    nombre: "${nombre}",
+    nombreCientifico: "${cient}",
+    periodo: "${periodo}",
+    dieta: "${dieta}",
+    estado: "${estado}",
+    epoca: "${epoca}",
+    largo: ${largo || 0},
+    alto: ${alto || 0},
+    peso: ${peso || 0},
+    region: "${region}",
+    descripcion: "${desc.replace(/"/g, '\\"')}",
+    imagen: "${img}"
+  }`;
+ 
+  const bloqueTamanyo = `  ${id}: { largo: ${largo || 0}, alto: ${alto || 0} },   // ${nombre}`;
+ 
+  mostrarResultado([
+    {
+      titulo: 'Abre el archivo <code>data.js</code>',
+      desc: 'Localiza la lista de animales <code>ANIMALES</code>. Busca el último animal (ID ' + (parseInt(id)-1) + ') — verás una línea que termina en <code>}</code> y luego el cierre del array <code>]</code>.',
+      buscar: `imagen: "..."
+  }
+];`
+    },
+    {
+      titulo: 'Añade el nuevo animal al final de la lista',
+      desc: 'Justo antes del <code>]</code> que cierra el array, añade una coma al final del último animal y pega este bloque:',
+      codigo: bloqueAnimal
+    },
+    {
+      titulo: 'Abre el archivo <code>comparator/index.html</code>',
+      desc: 'Busca el objeto <code>TAMAÑOS</code> y localiza la última línea con ID ' + (parseInt(id)-1) + '.',
+      buscar: `${parseInt(id)-1}: { largo: ..., alto: ... },`
+    },
+    {
+      titulo: 'Añade las medidas del nuevo animal en TAMAÑOS',
+      desc: 'Pega esta línea justo después de la anterior:',
+      codigo: bloqueTamanyo
+    },
+    {
+      titulo: 'Guarda ambos archivos y recarga el navegador',
+      desc: 'Abre el Explorer y comprueba que el nuevo animal aparece en la lista. Si no aparece, revisa que no haya comas extra o comillas mal cerradas.'
+    }
+  ]);
+}
+ 
+// ═══════════════════════════════════
+//  GENERAR NOTICIA
+// ═══════════════════════════════════
+function generarNoticia() {
+  const titulo    = document.getElementById('n-titulo').value.trim();
+  const fuente    = document.getElementById('n-fuente').value.trim();
+  const fecha     = document.getElementById('n-fecha').value;
+  const categoria = document.getElementById('n-categoria').value;
+  const url       = document.getElementById('n-url').value.trim();
+  const img       = document.getElementById('n-img').value.trim();
+  const resumen   = document.getElementById('n-resumen').value.trim();
+ 
+  if (!titulo) { alert('Rellena el titular.'); return; }
+ 
+  // Formatear fecha
+  let fechaFormato = fecha;
+  if (fecha) {
+    const d = new Date(fecha + 'T00:00:00');
+    fechaFormato = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+ 
+  const bloque = `  {
+    titulo: "${titulo.replace(/"/g, '\\"')}",
+    fuente: "${fuente}",
+    fecha: "${fechaFormato}",
+    categoria: "${categoria}",
+    url: "${url}",
+    imagen: "${img}",
+    resumen: "${resumen.replace(/"/g, '\\"')}"
+  }`;
+ 
+  mostrarResultado([
+    {
+      titulo: 'Abre el archivo <code>news/index.html</code>',
+      desc: 'Busca el array <code>NOTICIAS</code> al inicio del bloque <code>&lt;script&gt;</code>.',
+      buscar: `const NOTICIAS = [`
+    },
+    {
+      titulo: 'Añade la noticia al principio de la lista',
+      desc: 'Para que aparezca como la más reciente, pégala justo después de <code>[</code> y añade una coma al final:',
+      codigo: bloque + ','
+    },
+    {
+      titulo: 'Guarda y recarga',
+      desc: 'La nueva noticia aparecerá en primer lugar en la página de noticias.'
+    }
+  ]);
+}
+ 
+// ═══════════════════════════════════
+//  GENERAR YACIMIENTO
+// ═══════════════════════════════════
+function generarYacimiento() {
+  const id        = document.getElementById('y-id').value.trim();
+  const nombre    = document.getElementById('y-nombre').value.trim();
+  const pais      = document.getElementById('y-pais').value.trim();
+  const era       = document.getElementById('y-era').value;
+  const emoji     = document.getElementById('y-emoji').value.trim() || '🦴';
+  const lat       = document.getElementById('y-lat').value;
+  const lng       = document.getElementById('y-lng').value;
+  const desc      = document.getElementById('y-desc').value.trim();
+  const foto      = document.getElementById('y-foto').value.trim();
+  const hallazgos = document.getElementById('y-hallazgos').value.trim();
+  const link      = document.getElementById('y-link').value.trim();
+  const linkText  = document.getElementById('y-linktext').value.trim();
+ 
+  if (!nombre || !id) { alert('Rellena nombre e ID.'); return; }
+ 
+  const ERA_COLORES = {
+    "Triásico":   "#c85030",
+    "Jurásico":   "#2a9a40",
+    "Cretácico":  "#3aaa30",
+    "Paleozoico": "#c8a030",
+    "Cenozoico":  "#5a8aaa"
+  };
+  const color = ERA_COLORES[era] || '#888888';
+ 
+  // Parsear hallazgos
+  const hLines = hallazgos.split('\n').filter(l => l.trim());
+  const hArray = hLines.map(l => {
+    const parts = l.trim().split(' ');
+    const e = parts[0];
+    const t = parts.slice(1).join(' ');
+    return `      { e: "${e}", t: "${t.replace(/"/g, '\\"')}" }`;
+  }).join(',\n');
+ 
+  const bloque = `  {
+    id: ${id},
+    nombre: "${nombre.replace(/"/g, '\\"')}",
+    pais: "${pais.replace(/"/g, '\\"')}",
+    era: "${era}",
+    color: "${color}",
+    lat: ${lat || 0},
+    lng: ${lng || 0},
+    emoji: "${emoji}",
+    foto: "${foto}",
+    desc: "${desc.replace(/"/g, '\\"')}",
+    hallazgos: [
+${hArray}
+    ],
+    link: "${link}",
+    linkText: "${linkText}"
+  }`;
+ 
+  mostrarResultado([
+    {
+      titulo: 'Abre el archivo <code>fossilmap/index.html</code>',
+      desc: 'Busca el array <code>YACIMIENTOS</code> al inicio del bloque <code>&lt;script&gt;</code>.',
+      buscar: `const YACIMIENTOS = [`
+    },
+    {
+      titulo: 'Localiza el último yacimiento (ID ' + (parseInt(id)-1) + ')',
+      desc: 'Ve al final del array y busca la llave que cierra el último yacimiento, justo antes del <code>]</code>.',
+      buscar: `    linkText: "..."
+  }
+];`
+    },
+    {
+      titulo: 'Añade el nuevo yacimiento',
+      desc: 'Añade una coma al final del último yacimiento y pega este bloque antes del <code>]</code>:',
+      codigo: bloque
+    },
+    {
+      titulo: 'Guarda y recarga',
+      desc: 'El nuevo punto aparecerá en el mapa con el color de la era ' + era + '. Comprueba que las coordenadas son correctas.'
+    }
+  ]);
+}
+ 
+// ═══════════════════════════════════
+//  GENERAR LIBRO
+// ═══════════════════════════════════
+function generarLibro() {
+  const titulo = document.getElementById('l-titulo').value.trim();
+  const autor  = document.getElementById('l-autor').value.trim();
+  const anyo   = document.getElementById('l-anyo').value.trim();
+  const nivel  = document.getElementById('l-nivel').value;
+  const isbn   = document.getElementById('l-isbn').value.trim();
+  const link   = document.getElementById('l-link').value.trim();
+  const desc   = document.getElementById('l-desc').value.trim();
+ 
+  if (!titulo) { alert('Rellena el título.'); return; }
+ 
+  const portada = isbn
+    ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+    : '';
+ 
+  const bloque = `  {
+    titulo: "${titulo.replace(/"/g, '\\"')}",
+    autor: "${autor}",
+    anyo: "${anyo}",
+    nivel: "${nivel}",
+    isbn: "${isbn}",
+    portada: "${portada}",
+    link: "${link}",
+    descripcion: "${desc.replace(/"/g, '\\"')}"
+  }`;
+ 
+  mostrarResultado([
+    {
+      titulo: 'Abre el archivo <code>books/index.html</code>',
+      desc: 'Busca el array <code>LIBROS</code> al inicio del bloque <code>&lt;script&gt;</code>.',
+      buscar: `const LIBROS = [`
+    },
+    {
+      titulo: 'Añade el libro al final de la lista',
+      desc: 'Busca el último libro (el que cierra con <code>}</code> y luego <code>]</code>). Añade coma al último libro y pega este bloque:',
+      codigo: bloque
+    },
+    {
+      titulo: 'Guarda y recarga',
+      desc: `La portada se cargará automáticamente desde OpenLibrary usando el ISBN${isbn ? ' <code>' + isbn + '</code>' : ' (cuando lo tengas)'}. Si no aparece la portada, revisa que el ISBN sea correcto.`
+    }
+  ]);
+}
+ 
+</script>
+</body>
+</html>

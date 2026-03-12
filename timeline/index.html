@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Geológico — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      background: #060810;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #globoCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #epochOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      transition: background 2.5s ease;
+      opacity: 0.07;
+      mix-blend-mode: screen;
+    }
+
+    /* ── PANEL DERECHO ── */
+    #panel {
+      position: fixed;
+      top: 70px;
+      right: 2rem;
+      z-index: 100;
+      width: 320px;
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    #panel::-webkit-scrollbar { display: none; }
+
+    .panel-era {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      transition: color 0.8s;
+    }
+    .panel-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 0.2rem;
+      transition: color 0.6s;
+    }
+    .panel-ma {
+      font-size: 0.78rem;
+      color: var(--texto-apagado);
+      font-style: italic;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+    .panel-divisor {
+      height: 1px;
+      margin-bottom: 1rem;
+      transition: background 0.8s;
+    }
+    .panel-descripcion {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: rgba(232,224,208,0.72);
+      margin-bottom: 1.2rem;
+    }
+    .panel-seccion {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--texto-apagado);
+      margin-bottom: 0.5rem;
+    }
+    .panel-fauna {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1.2rem;
+    }
+    .fauna-chip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.78rem;
+      color: rgba(232,224,208,0.65);
+      transition: border-color 0.3s;
+    }
+    .panel-eventos {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .evento-item {
+      font-size: 0.8rem;
+      color: rgba(232,224,208,0.6);
+      padding-left: 0.8rem;
+      border-left: 2px solid rgba(255,255,255,0.1);
+      line-height: 1.4;
+      transition: border-color 0.6s;
+    }
+    .badge-extincion {
+      display: inline-block;
+      background: rgba(212,112,74,0.15);
+      color: #d4704a;
+      border: 1px solid rgba(212,112,74,0.35);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2px;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── SLIDER / TIMELINE INFERIOR ── */
+    #timeline-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      z-index: 100;
+      background: rgba(6,8,16,0.92);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0.8rem 2rem 1.2rem;
+    }
+
+    #tl-periodos {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+      height: 36px;
+      margin-bottom: 0.5rem;
+      gap: 2px;
+      cursor: pointer;
+    }
+
+    .tl-segmento {
+      height: 100%;
+      border-radius: 2px;
+      transition: height 0.2s, opacity 0.3s;
+      opacity: 0.5;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tl-segmento:hover { opacity: 0.85; height: 110%; }
+    .tl-segmento.activo {
+      opacity: 1;
+      height: 130%;
+      border-radius: 3px;
+      box-shadow: 0 0 12px currentColor;
+    }
+    .tl-segmento-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(6,8,16,0.95);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      color: #e8e0d0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .tl-segmento:hover .tl-segmento-tooltip { opacity: 1; }
+
+    #tl-slider-wrap {
+      position: relative;
+      width: 100%;
+      height: 20px;
+      display: flex;
+      align-items: center;
+    }
+    #tl-slider {
+      width: 100%;
+      height: 3px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    #tl-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e8e0d0;
+      border: 2px solid #060810;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(232,224,208,0.5);
+      transition: transform 0.15s;
+    }
+    #tl-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
+
+    #tl-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.3rem;
+      font-size: 0.65rem;
+      color: rgba(232,224,208,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ANIMACIÓN ENTRADA PANEL ── */
+    .panel-fade {
+      animation: fadeSlide 0.4s ease forwards;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── INDICADOR CENTRAL ── */
+    #indicador-central {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+    #indicador-central.oculto { opacity: 0; }
+    .ind-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      opacity: 0.08;
+      letter-spacing: 0.05em;
+      transition: color 1s;
+      text-shadow: 0 0 60px currentColor;
+    }
+  </style>
+</head>
+<body>
+    <canvas id="globoCanvas"></canvas>
+<div id="epochOverlay"></div>
+
+<nav>
+  <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+  <ul class="nav-links">
+    <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+    <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+    <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+    <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+    <li><a href="../news/index.html"       id="nav-news"></a></li>
+    <li><a href="../books/index.html"      id="nav-books"></a></li>
+    <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+    <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+    <li><a href="index.html" class="activo" id="nav-timeline"></a></li>
+    <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+  </ul>
+  <div class="selector-idioma">
+    <button class="btn-idioma" onclick="setLang('es')">ES</button>
+    <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+  </div>
+  <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+</nav>
+
+<div id="panel">
+  <div class="panel-era" id="p-era"></div>
+  <div class="panel-nombre" id="p-nombre"></div>
+  <div class="panel-ma" id="p-ma"></div>
+  <div id="p-extincion"></div>
+  <div class="panel-divisor" id="p-divisor"></div>
+  <div class="panel-descripcion" id="p-desc"></div>
+  <div class="panel-seccion">Fauna</div>
+  <div class="panel-fauna" id="p-fauna"></div>
+  <div class="panel-seccion">Eventos clave</div>
+  <div class="panel-eventos" id="p-eventos"></div>
+</div>
+
+<div id="indicador-central">
+  <div class="ind-nombre" id="ind-nombre"></div>
+</div>
+
+<div id="timeline-bar">
+  <div id="tl-periodos"></div>
+  <div id="tl-slider-wrap">
+    <input type="range" id="tl-slider" min="0" step="1">
+  </div>
+  <div id="tl-labels">
+    <span>4.600 Ma</span>
+    <span>Paleozoico</span>
+    <span>Mesozoico</span>
+    <span>Cenozoico</span>
+    <span>Hoy</span>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../data.js"></script>
+<script>
+const PERIODOS = [
+  { id:"hadeico",      nombre:"Hadeico",          era:"Hadeico",         ma:"4.600 – 4.000 Ma", color:"#8b4513", globoColor:[0.55,0.27,0.07], atmosfera:"#ff4400", evento:"Formación de la Tierra. Océanos de magma, bombardeo meteorítico constante. Sin vida.", fauna:[], eventos:["Formación de la Luna por impacto de Theia (~4.500 Ma)","Primeros minerales: circones de Australia (~4.400 Ma)"], extincion:false },
+  { id:"arcaico",      nombre:"Arcaico",           era:"Arcaico",         ma:"4.000 – 2.500 Ma", color:"#7a3520", globoColor:[0.48,0.21,0.12], atmosfera:"#cc3300", evento:"Primeras bacterias y arqueas. Estromatolitos liberan oxígeno. Océanos de color óxido.", fauna:["🦠 Bacterias","🦠 Arqueas","🟢 Cianobacterias"], eventos:["Primeras bacterias (~3.800 Ma)","Primeros estromatolitos (~3.500 Ma)"], extincion:false },
+  { id:"proterozoico", nombre:"Proterozoico",      era:"Proterozoico",    ma:"2.500 – 635 Ma",   color:"#6a6a30", globoColor:[0.42,0.42,0.19], atmosfera:"#aaaa00", evento:"Gran Oxidación: el O₂ llena la atmósfera. Tierra Bola de Nieve. Primeros eucariotas.", fauna:["🦠 Eucariotas","🟢 Algas"], eventos:["Gran Oxidación (~2.400 Ma)","Tierra Bola de Nieve (~700 Ma)","Primeros multicelulares (~600 Ma)"], extincion:false },
+  { id:"ediacárico",   nombre:"Ediacárico",        era:"Proterozoico",    ma:"635 – 541 Ma",     color:"#7a8a55", globoColor:[0.48,0.54,0.33], atmosfera:"#88aa44", evento:"Primera fauna compleja: Dickinsonia, Charnia. Cuerpos blandos sin esqueleto. Mares poco profundos.", fauna:["🫧 Dickinsonia","🫧 Charnia","🫧 Spriggina"], eventos:["Primera biota animal compleja (~575 Ma)"], extincion:false },
+  { id:"cambrico",     nombre:"Cámbrico",          era:"Paleozoico",      ma:"541 – 485 Ma",     color:"#4a9a7a", globoColor:[0.29,0.60,0.48], atmosfera:"#44bbaa", evento:"Explosión Cámbrica: aparecen casi todos los grupos animales. Trilobites, Anomalocaris. Evolución del ojo.", fauna:["🦀 Trilobites","🦑 Anomalocaris","🐌 Hallucigenia","🦐 Opabinia"], eventos:["Explosión Cámbrica (~538 Ma)","Primer ojo complejo (~530 Ma)"], extincion:false },
+  { id:"ordovicico",   nombre:"Ordovícico",        era:"Paleozoico",      ma:"485 – 444 Ma",     color:"#3a8a6a", globoColor:[0.23,0.54,0.42], atmosfera:"#33aa88", evento:"Máxima biodiversidad marina del Paleozoico. Termina con extinción masiva: 85% de especies.", fauna:["🦑 Cefalópodos gigantes","🦀 Trilobites","🐠 Primeros peces con mandíbula"], eventos:["Extinción Ordovícico-Silúrico (444 Ma) — 85% especies"], extincion:true },
+  { id:"silurico",     nombre:"Silúrico",          era:"Paleozoico",      ma:"444 – 419 Ma",     color:"#4a9a60", globoColor:[0.29,0.60,0.38], atmosfera:"#44aa66", evento:"Las plantas conquistan la tierra. Euriptéridos gigantes en los mares. Primeros tiburones.", fauna:["🦂 Euriptéridos","🐟 Peces con mandíbula","🦈 Primeros tiburones","🌱 Primeras plantas terrestres"], eventos:["Primeras plantas vasculares (~430 Ma)","Primeros tiburones (~420 Ma)"], extincion:false },
+  { id:"devonico",     nombre:"Devónico",          era:"Paleozoico",      ma:"419 – 359 Ma",     color:"#c8a030", globoColor:[0.78,0.63,0.19], atmosfera:"#ddaa00", evento:"Edad de los Peces. Dunkleosteus de 9m. Tiktaalik sale del agua. Primeros bosques. Extinción 75%.", fauna:["🐟 Dunkleosteus","🐟 Tiktaalik","🦎 Primeros tetrápodos","🌳 Primeros bosques"], eventos:["Primeros tetrápodos (~375 Ma)","Extinción Devónico tardío (359 Ma) — 75% especies"], extincion:true },
+  { id:"carbonifero",  nombre:"Carbonífero",       era:"Paleozoico",      ma:"359 – 299 Ma",     color:"#3a6a30", globoColor:[0.23,0.42,0.19], atmosfera:"#336622", evento:"Bosques de 30m. O₂ al 35%: insectos gigantes. Libélulas de 70cm. Primeros reptiles.", fauna:["🪲 Artropleura (2,5m)","🦟 Meganeura (70cm)","🦎 Primeros reptiles","🐸 Anfibios gigantes"], eventos:["O₂ al 35% (~310 Ma)","Primeros reptiles amniota (~320 Ma)"], extincion:false },
+  { id:"permico",      nombre:"Pérmico",           era:"Paleozoico",      ma:"299 – 252 Ma",     color:"#c87040", globoColor:[0.78,0.44,0.25], atmosfera:"#dd5500", evento:"Pangea completa. Sinápsidos dominan. La Gran Muerte: 96% de especies extintas. La peor extinción.", fauna:["🦎 Dimetrodon","🦎 Gorgonópsidos","🦎 Dicinodontos"], eventos:["Dimetrodon domina los continentes","Gran Extinción Pérmico-Triásico (252 Ma) — 96% especies"], extincion:true },
+  { id:"triasico",     nombre:"Triásico",          era:"Mesozoico",       ma:"252 – 201 Ma",     color:"#c85030", globoColor:[0.78,0.31,0.19], atmosfera:"#cc4422", evento:"Recuperación. Primeros dinosaurios y mamíferos. Mundo árido y caluroso. Extinción al final.", fauna:["🦖 Eoraptor","🐊 Primeros cocodrilos","🐢 Primeras tortugas","🐁 Primeros mamíferos"], eventos:["Primeros dinosaurios (~230 Ma)","Primeros mamíferos (~225 Ma)","Extinción Triásico-Jurásico (201 Ma) — 76% especies"], extincion:true },
+  { id:"jurasico",     nombre:"Jurásico",          era:"Mesozoico",       ma:"201 – 145 Ma",     color:"#2a9a40", globoColor:[0.16,0.60,0.25], atmosfera:"#22aa33", evento:"La edad de los gigantes. Brachiosaurus, Diplodocus. Archaeopteryx. Océanos cálidos y mares interiores.", fauna:["🦕 Brachiosaurus","🦕 Diplodocus","🦖 Allosaurus","🐦 Archaeopteryx","🦅 Pterosaurios"], eventos:["Archaeopteryx — primer ave (~150 Ma)","Pangea completamente dividida (~175 Ma)"], extincion:false },
+  { id:"cretacico",    nombre:"Cretácico",         era:"Mesozoico",       ma:"145 – 66 Ma",      color:"#3aaa30", globoColor:[0.23,0.67,0.19], atmosfera:"#33cc22", evento:"T. rex, Triceratops, Velociraptor. Primeras flores. Asteroide Chicxulub: 76% de especies extintas.", fauna:["🦖 T. rex","🦕 Triceratops","🦖 Velociraptor","🌸 Primeras flores","🦅 Quetzalcoatlus"], eventos:["Primeras flores (~130 Ma)","Impacto de Chicxulub (66 Ma) — 76% especies"], extincion:true },
+  { id:"paleogeno",    nombre:"Paleógeno",         era:"Cenozoico",       ma:"66 – 23 Ma",       color:"#5a8aaa", globoColor:[0.35,0.54,0.67], atmosfera:"#5599bb", evento:"Recuperación. Mamíferos llenan los nichos. Primeros primates. Ballenas desde mamíferos terrestres.", fauna:["🐀 Mamíferos primitivos","🐒 Primeros primates","🐋 Pakicetus (ancestro ballenas)","🦅 Gastornis (2m)"], eventos:["Primeros primates (~65 Ma)","Ballenas desde mamíferos terrestres (~50 Ma)","Máximo térmico PETM (56 Ma)"], extincion:false },
+  { id:"neogeno",      nombre:"Neógeno",           era:"Cenozoico",       ma:"23 – 2,6 Ma",      color:"#4a7a8a", globoColor:[0.29,0.48,0.54], atmosfera:"#4488aa", evento:"Megalodón domina océanos. Primeros homininos en África. Praderas globales. Lucy (3,2 Ma).", fauna:["🦈 Megalodón","🦍 Australopithecus","🦒 Primeras jirafas","🐆 Smilodon"], eventos:["Megalodón (23–3,6 Ma)","Separación humano-chimpancé (~7 Ma)","Australopithecus Lucy (~3,2 Ma)"], extincion:false },
+  { id:"pleistoceno",  nombre:"Pleistoceno",       era:"Cenozoico",       ma:"2,6 Ma – 11.700 aC", color:"#90b8c8", globoColor:[0.56,0.72,0.78], atmosfera:"#aaccdd", evento:"Edad del Hielo. Mamuts, rinocerontes lanudos. Homo sapiens. Extinción de la megafauna.", fauna:["🦣 Mamut lanudo","🦏 Rinoceronte lanudo","🐆 Smilodon","🧑 Homo sapiens","🦴 Neanderthal"], eventos:["Homo sapiens (~300.000 aC)","Arte rupestre de Altamira (~36.000 aC)","Extinción megafauna (~12.000 aC)"], extincion:false },
+  { id:"holoceno",     nombre:"Holoceno",          era:"Cenozoico",       ma:"11.700 aC – Hoy",  color:"#3a9a5a", globoColor:[0.23,0.60,0.35], atmosfera:"#44bb66", evento:"Agricultura, civilizaciones, era moderna. El ser humano domina el planeta. Inicio del Antropoceno.", fauna:["🌾 Agricultura","🏙️ Civilizaciones","🦤 Dodo (extinto 1681)","🧑 8.000 millones de humanos"], eventos:["Agricultura (~10.000 aC)","Extinción del Dodo (1681)","Antropoceno (siglo XX)"], extincion:false }
+];
+
+// ── THREE.JS ──
+const canvas = document.getElementById('globoCanvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 2.8);
+
+// Estrellas
+const starGeo = new THREE.BufferGeometry();
+const starCount = 2000;
+const starPos = new Float32Array(starCount * 3);
+for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 200;
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.7 });
+scene.add(new THREE.Points(starGeo, starMat));
+
+// Globo base
+const geoGlobo = new THREE.SphereGeometry(1, 64, 64);
+const matGlobo = new THREE.MeshPhongMaterial({
+  color: new THREE.Color(0.23, 0.60, 0.35),
+  emissive: new THREE.Color(0.02, 0.06, 0.02),
+  shininess: 25,
+  specular: new THREE.Color(0.1, 0.2, 0.3),
+});
+const globo = new THREE.Mesh(geoGlobo, matGlobo);
+scene.add(globo);
+
+// Océano (capa ligeramente más grande, translúcida)
+const geoOcean = new THREE.SphereGeometry(1.002, 64, 64);
+const matOcean = new THREE.MeshPhongMaterial({
+  color: new THREE.Color(0.1, 0.3, 0.6),
+  transparent: true,
+  opacity: 0.35,
+  shininess: 80,
+  specular: new THREE.Color(0.4, 0.6, 0.9),
+});
+const ocean = new THREE.Mesh(geoOcean, matOcean);
+scene.add(ocean);
+
+// Atmósfera (glow exterior)
+const geoAtmos = new THREE.SphereGeometry(1.08, 64, 64);
+const matAtmos = new THREE.MeshPhongMaterial({
+  color: new THREE.Color(0.3, 0.6, 1.0),
+  transparent: true,
+  opacity: 0.12,
+  side: THREE.FrontSide,
+});
+const atmosfera = new THREE.Mesh(geoAtmos, matAtmos);
+scene.add(atmosfera);
+
+// Nubes
+const geoNubes = new THREE.SphereGeometry(1.015, 48, 48);
+const matNubes = new THREE.MeshPhongMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 0.18,
+});
+const nubes = new THREE.Mesh(geoNubes, matNubes);
+scene.add(nubes);
+
+// Iluminación
+const luzSol = new THREE.DirectionalLight(0xfff5e0, 1.4);
+luzSol.position.set(5, 3, 5);
+scene.add(luzSol);
+const luzAmb = new THREE.AmbientLight(0x223344, 0.6);
+scene.add(luzAmb);
+const luzRim = new THREE.DirectionalLight(0x334466, 0.4);
+luzRim.position.set(-5, -2, -3);
+scene.add(luzRim);
+
+// ── ESTADO ──
+let periodoActual = 0;
+let colorObjetivo = new THREE.Color(...PERIODOS[0].globoColor);
+let colorActual   = new THREE.Color(...PERIODOS[0].globoColor);
+let rotSpeed = 0.0015;
+let isDragging = false, prevX = 0;
+
+// ── SLIDER ──
+const slider = document.getElementById('tl-slider');
+slider.max = PERIODOS.length - 1;
+slider.value = 0;
+
+// Segmentos de color
+const tlPeriodos = document.getElementById('tl-periodos');
+// Anchos proporcionales a duración geológica (simplificado)
+const duraciones = [3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2,3.2];
+const totalDur   = duraciones.reduce((a,b) => a+b, 0);
+tlPeriodos.innerHTML = PERIODOS.map((p, i) => {
+  const pct = (duraciones[i] / totalDur * 100).toFixed(3);
+  return `<div class="tl-segmento" id="seg-${i}" style="width:${pct}%;background:${p.color};color:${p.color}"
+    onclick="irAPeriodo(${i})" title="${p.nombre}">
+    <div class="tl-segmento-tooltip">${p.nombre}</div>
+  </div>`;
+}).join('');
+
+function irAPeriodo(idx) {
+  slider.value = idx;
+  actualizarPeriodo(idx);
+}
+
+slider.addEventListener('input', () => actualizarPeriodo(parseInt(slider.value)));
+
+function actualizarPeriodo(idx) {
+  idx = Math.max(0, Math.min(PERIODOS.length - 1, parseInt(idx)));
+  periodoActual = idx;
+  const p = PERIODOS[idx];
+  if (!p) return;
+
+  colorObjetivo = new THREE.Color(...p.globoColor);
+  matAtmos.color.set(new THREE.Color(p.atmosfera));
+  document.getElementById('epochOverlay').style.background = p.atmosfera;
+  document.querySelectorAll('.tl-segmento').forEach((s,i) => s.classList.toggle('activo', i === idx));
+  actualizarPanel(p);
+
+}
+
+function actualizarPanel(p) {
+  document.getElementById('p-era').textContent    = p.era;
+  document.getElementById('p-era').style.color    = p.color;
+  document.getElementById('p-nombre').textContent = p.nombre;
+  document.getElementById('p-nombre').style.color = p.color;
+  document.getElementById('p-ma').textContent     = p.ma;
+  document.getElementById('p-divisor').style.background = `linear-gradient(to right, ${p.color}, transparent)`;
+  document.getElementById('p-desc').textContent   = p.evento;
+  document.getElementById('p-extincion').innerHTML = p.extincion
+    ? '<span class="badge-extincion">💀 Extinción masiva</span>' : '';
+
+  document.getElementById('p-fauna').innerHTML = p.fauna
+    .map(f => `<span class="fauna-chip">${f}</span>`).join('');
+
+  document.getElementById('p-eventos').innerHTML = p.eventos
+    .map(e => `<div class="evento-item" style="border-left-color:${p.color}">${e}</div>`).join('');
+
+  document.getElementById('ind-nombre').textContent = p.nombre;
+  document.getElementById('ind-nombre').style.color = p.color;
+
+  // Animación
+  const panel = document.getElementById('panel');
+  panel.classList.remove('panel-fade');
+  void panel.offsetWidth;
+  panel.classList.add('panel-fade');
+
+  // Ocultar indicador central tras 2s
+  const ind = document.getElementById('indicador-central');
+  ind.classList.remove('oculto');
+  clearTimeout(window._indTimer);
+  window._indTimer = setTimeout(() => ind.classList.add('oculto'), 2000);
+}
+
+// Drag para rotar el globo
+canvas.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; rotSpeed = 0; });
+window.addEventListener('mouseup', () => { isDragging = false; rotSpeed = 0.0015; });
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  const dx = e.clientX - prevX;
+  globo.rotation.y  += dx * 0.005;
+  ocean.rotation.y  += dx * 0.005;
+  nubes.rotation.y  += dx * 0.005;
+  atmosfera.rotation.y += dx * 0.005;
+  prevX = e.clientX;
+});
+
+// Touch
+canvas.addEventListener('touchstart', e => { isDragging = true; prevX = e.touches[0].clientX; rotSpeed = 0; });
+window.addEventListener('touchend', () => { isDragging = false; rotSpeed = 0.0015; });
+window.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  const dx = e.touches[0].clientX - prevX;
+  globo.rotation.y  += dx * 0.005;
+  ocean.rotation.y  += dx * 0.005;
+  nubes.rotation.y  += dx * 0.005;
+  prevX = e.touches[0].clientX;
+});
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ── LOOP ──
+function animate() {
+  requestAnimationFrame(animate);
+  // Interpolar color
+  colorActual.lerp(colorObjetivo, 0.08);
+  matGlobo.color.copy(colorActual);
+  matGlobo.emissive.set(colorActual.r * 0.06, colorActual.g * 0.06, colorActual.b * 0.06);
+
+  // Rotación automática
+  if (!isDragging) {
+    globo.rotation.y     += rotSpeed;
+    ocean.rotation.y     += rotSpeed * 0.95;
+    nubes.rotation.y     += rotSpeed * 1.1;
+    atmosfera.rotation.y += rotSpeed * 0.8;
+  }
+
+  // Pulso atmósfera suave
+  const t = Date.now() * 0.001;
+  matAtmos.opacity = 0.10 + Math.sin(t * 0.5) * 0.03;
+
+  renderer.render(scene, camera);
+}
+
+// ── NAV ──
+function renderNav() {
+  const lang = getLang();
+  document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+  document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+  document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+  document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+  document.getElementById('nav-news').textContent       = t('nav_news');
+  document.getElementById('nav-books').textContent      = t('nav_books');
+  document.getElementById('nav-updates').textContent    = t('nav_updates');
+  document.getElementById('nav-comparator').textContent = t('nav_comparator');
+  document.getElementById('nav-timeline').textContent   = lang === 'fr' ? 'Chronologie' : 'Timeline';
+  document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+  document.querySelectorAll('.btn-idioma').forEach(b => {
+    b.classList.toggle('activo', b.textContent.trim() === lang.toUpperCase());
+  });
+  
+}
+
+// Modo claro/oscuro
+(function() {
+  const modo = localStorage.getItem('modo') || 'oscuro';
+  if (modo === 'claro') document.body.classList.add('claro');
+  document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+})();
+function toggleModo() {
+  const esClaro = document.body.classList.toggle('claro');
+  localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+  document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+}
+
+// Init
+renderNav();
+actualizarPeriodo(0);
+animate();
+</script>
+</body>
+</html>

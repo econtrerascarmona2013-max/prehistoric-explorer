@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .controles { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+    .buscador-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+    .buscador-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--texto-apagado); font-size: 0.85rem; pointer-events: none; }
+    .buscador-input { width: 100%; background: var(--surface); border: 1px solid var(--borde); color: var(--texto); padding: 0.45rem 1rem 0.45rem 2.2rem; border-radius: 20px; font-family: 'Crimson Pro', serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    .buscador-input:focus { border-color: var(--acento); }
+    .buscador-input::placeholder { color: var(--texto-dim); }
+    .filtros { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-filtro { background: var(--surface); border: 1px solid var(--borde); color: var(--texto-apagado); padding: 0.4rem 1.1rem; border-radius: 20px; cursor: pointer; font-family: 'Crimson Pro', serif; font-size: 0.88rem; transition: all 0.2s; }
+    .btn-filtro.activo, .btn-filtro:hover { border-color: var(--acento); color: var(--acento); background: rgba(200,164,90,0.06); }
+    .contador { font-size: 0.8rem; color: var(--texto-apagado); margin-bottom: 1rem; }
+    .contador span { color: var(--acento); font-weight: 600; }
+    .grid-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .item-galeria { aspect-ratio: 4/3; border: 1px solid var(--borde); border-radius: 6px; position: relative; overflow: hidden; cursor: pointer; transition: all 0.25s; background: var(--surface2); }
+    .item-galeria:hover { border-color: var(--acento); transform: scale(1.02); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .item-galeria img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+    .item-galeria:hover img { transform: scale(1.08); }
+    .item-tipo { position: absolute; top: 0.6rem; right: 0.6rem; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 2px; background: rgba(10,12,15,0.75); color: var(--acento); border: 1px solid rgba(200,164,90,0.3); backdrop-filter: blur(4px); }
+    .item-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,12,15,0.95) 0%, rgba(10,12,15,0.4) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; opacity: 0; transition: opacity 0.3s; }
+    .item-galeria:hover .item-overlay { opacity: 1; }
+    .overlay-titulo { font-family: 'Playfair Display', serif; font-size: 0.92rem; font-weight: 700; color: var(--texto); margin-bottom: 0.3rem; }
+    .overlay-desc { font-size: 0.75rem; color: rgba(255,255,255,0.7); font-style: italic; line-height: 1.4; }
+    .img-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; background: var(--surface2); }
+    .img-placeholder .ph-emoji { font-size: 3rem; }
+    .img-placeholder .ph-label { font-size: 0.75rem; color: var(--texto-apagado); }
+    .sin-resultados { text-align: center; padding: 4rem 2rem; color: var(--texto-apagado); font-style: italic; display: none; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .modal-overlay.visible { opacity: 1; pointer-events: all; }
+    .modal { background: var(--surface); border: 1px solid var(--borde); border-radius: 8px; max-width: 900px; width: 100%; max-height: 90vh; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; transform: scale(0.95); transition: transform 0.3s; }
+    .modal-overlay.visible .modal { transform: scale(1); }
+    .modal-img { width: 100%; height: 100%; object-fit: cover; min-height: 300px; display: block; background: var(--surface2); }
+    .modal-img-placeholder { width: 100%; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; background: var(--surface2); }
+    .modal-img-placeholder .mph-emoji { font-size: 5rem; }
+    .modal-cuerpo { padding: 2rem; display: flex; flex-direction: column; overflow-y: auto; }
+    .modal-tipo { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--acento); margin-bottom: 0.8rem; }
+    .modal-titulo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; margin-bottom: 0.8rem; line-height: 1.2; }
+    .modal-desc { font-size: 0.9rem; color: var(--texto-apagado); line-height: 1.7; flex: 1; }
+    .modal-fuente { font-size: 0.72rem; color: var(--texto-dim); margin-top: 1.5rem; border-top: 1px solid var(--borde); padding-top: 0.8rem; }
+    .modal-cerrar { position: absolute; top: 1rem; right: 1rem; background: rgba(10,12,15,0.8); border: 1px solid var(--borde); color: var(--texto); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; backdrop-filter: blur(4px); }
+    .modal-cerrar:hover { border-color: var(--acento); color: var(--acento); }
+    @media (max-width: 600px) { .modal { grid-template-columns: 1fr; } .modal-img, .modal-img-placeholder { min-height: 200px; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="index.html" class="activo" id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="../updates/index.html"    id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>  
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="controles">
+      <div class="buscador-wrap">
+        <span class="buscador-icon">🔍</span>
+        <input class="buscador-input" id="buscadorInput" placeholder="Buscar ilustración..." oninput="aplicarFiltros()">
+      </div>
+      <div class="filtros" id="filtros"></div>
+    </div>
+    <div class="contador" id="contador"></div>
+    <div class="grid-galeria" id="gridGaleria"></div>
+    <div class="sin-resultados" id="sinResultados">Sin resultados</div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
+    <div class="modal" id="modal">
+      <div id="modalImgWrap"></div>
+      <div class="modal-cuerpo">
+        <div class="modal-tipo" id="modalTipo"></div>
+        <div class="modal-titulo" id="modalTitulo"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-fuente" id="modalFuente"></div>
+      </div>
+    </div>
+    <button class="modal-cerrar" onclick="cerrarModalBtn()">✕</button>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const ILUSTRACIONES = [
+      { emoji:"🦖", label:"T. rex — reconstrucción", tipo:"animal", desc:"Reconstrucción científica del Tyrannosaurus rex basada en fósiles del Cretácico tardío (~66 Ma). Norteamérica.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/T._rex_old_posture.JPG/600px-T._rex_old_posture.JPG", fuente:"Wikimedia Commons — Dominio público" },
+      { emoji:"🦣", label:"Mamut lanudo", tipo:"animal", desc:"Mammuthus primigenius, el mamut lanudo del Pleistoceno. Vivió en las estepas frías de Eurasia y Norteamérica hasta hace ~4.000 años.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg/600px-Woolly_mammoth_model_Royal_BC_Museum_in_Victoria.jpg", fuente:"Wikimedia Commons — CC BY-SA 2.0" },
+      { emoji:"🦕", label:"Diplodocus — esqueleto", tipo:"animal", desc:"Esqueleto montado de Diplodocus carnegii en el Carnegie Museum of Natural History. Uno de los dinosaurios más largos conocidos (~27 m).", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Diplodocus_carnegii_Pittsburgh.jpg/600px-Diplodocus_carnegii_Pittsburgh.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐊", label:"Triceratops — cráneo fósil", tipo:"animal", desc:"Cráneo de Triceratops horridus expuesto en el Museo Nacional de Historia Natural de Washington. Cretácico tardío, ~68–66 Ma.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Triceratops_skull_2.jpg/600px-Triceratops_skull_2.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🦴", label:"Velociraptor — fósil Mongolia", tipo:"animal", desc:"Esqueleto articulado de Velociraptor mongoliensis del Cretácico tardío de Mongolia (~75 Ma). Mucho más pequeño que el de la película.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Velociraptor_mongoliensis_skeleton.jpg/600px-Velociraptor_mongoliensis_skeleton.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐟", label:"Dunkleosteus — mandíbula", tipo:"animal", desc:"Cráneo y mandíbula del pez acorazado Dunkleosteus terrelli del Devónico tardío (~380 Ma). Su mordida era una de las más potentes de la historia.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Dunkleosteus_terrelli.jpg/600px-Dunkleosteus_terrelli.jpg", fuente:"Wikimedia Commons — CC BY-SA 2.5" },
+      { emoji:"🦟", label:"Insecto en ámbar", tipo:"comparacion", desc:"Insecto preservado en ámbar del Cretácico (~100 Ma). El ámbar es una de las formas de preservación más espectaculares del registro fósil.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Insect_in_amber.jpg/600px-Insect_in_amber.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐦", label:"Archaeopteryx — fósil Berlín", tipo:"comparacion", desc:"Fósil de Archaeopteryx lithographica, el eslabón entre dinosaurios y aves. Jurásico tardío de Baviera (~150 Ma). Museo de Historia Natural de Berlín.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/600px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg", fuente:"Wikimedia Commons — CC BY-SA 2.5" },
+      { emoji:"🪨", label:"Fósil de amonita", tipo:"comparacion", desc:"Amonita fosilizada del período Jurásico. Estos moluscos cefalópodos vivieron durante 300 millones de años y son excelentes fósiles guía.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Ammonite_Asteroceras.jpg/600px-Ammonite_Asteroceras.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐘", label:"Comparación: mamut vs elefante", tipo:"comparacion", desc:"Comparación de tamaño entre el mamut lanudo (Mammuthus primigenius) y el elefante africano moderno. Ambos del mismo linaje evolutivo.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Mammoth_size_comparison.png/600px-Mammoth_size_comparison.png", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🌿", label:"Bosque del Carbonífero", tipo:"ecosistema", desc:"Reconstrucción artística de los pantanos forestales del Carbonífero (~307 Ma). Helechos arborescentes de 30 m y un oxígeno atmosférico del 35%.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Carboniferous_swamp_forest.jpg/600px-Carboniferous_swamp_forest.jpg", fuente:"Wikimedia Commons — Dominio público" },
+      { emoji:"❄️", label:"Estepa del mamut — Pleistoceno", tipo:"ecosistema", desc:"Panorámica de la megafauna del Pleistoceno tardío en la estepa periglacial. Mamuts, rinocerontes lanudos y bisontes esteparios.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Megafauna_of_the_Pleistocene_epoch.jpg/600px-Megafauna_of_the_Pleistocene_epoch.jpg", fuente:"Wikimedia Commons — CC BY 2.5" },
+      { emoji:"🌊", label:"Mar del Cretácico", tipo:"ecosistema", desc:"Reconstrucción del mar interior del Cretácico en Norteamérica. Mosasaurios, tortugas gigantes y amonitas dominaban estos mares cálidos.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Cretaceous_seaway.jpg/600px-Cretaceous_seaway.jpg", fuente:"Wikimedia Commons — Dominio público" },
+      { emoji:"🌋", label:"Pangea — mapa supercontinente", tipo:"ecosistema", desc:"Representación cartográfica de Pangea en el Pérmico tardío (~250 Ma), antes de que la deriva continental separara los continentes actuales.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Pangaea_continents.svg/600px-Pangaea_continents.svg.png", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      // Nuevas
+      { emoji:"🦷", label:"Mosasaurus — mandíbula", tipo:"animal", desc:"Mandíbula del Mosasaurus hoffmannii, el reptil marino del Cretácico tardío. Podía superar los 17 metros. Su mordida era devastadora gracias a su doble fila de dientes.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Mosasaurus_hoffmanni_jaws.jpg/600px-Mosasaurus_hoffmanni_jaws.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐉", label:"Spinosaurus — reconstrucción", tipo:"animal", desc:"Reconstrucción del Spinosaurus aegyptiacus, el depredador más largo conocido (~15 m). Las últimas investigaciones indican que era semiacuático, como un cocodrilo gigante.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Spinosaurus_skeletal_reconstruction.png/600px-Spinosaurus_skeletal_reconstruction.png", fuente:"Wikimedia Commons — CC BY-SA 4.0" },
+      { emoji:"🦅", label:"Quetzalcoatlus — el pterosaurio más grande", tipo:"animal", desc:"Quetzalcoatlus northropi tenía una envergadura de ~11 metros, comparable a un avión ligero. Era probablemente carroñero terrestre y no pescador como se creía.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Quetzalcoatlus_size_comparison.png/600px-Quetzalcoatlus_size_comparison.png", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🦦", label:"Megalodon — diente fósil", tipo:"comparacion", desc:"Diente de Otodus megalodon comparado con el de un gran tiburón blanco moderno. El megalodon podía tener dientes de hasta 18 cm de altura.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Megalodon_tooth_with_great_white_shark_teeth.jpg/600px-Megalodon_tooth_with_great_white_shark_teeth.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🌍", label:"Deriva continental — animación", tipo:"ecosistema", desc:"Secuencia de la separación de Pangea desde el Triásico hasta hoy. La deriva continental explica la distribución de fósiles similares en continentes hoy separados por océanos.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Pangaea_animation_03.gif/600px-Pangaea_animation_03.gif", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🐢", label:"Archelon — tortuga gigante del Cretácico", tipo:"animal", desc:"Archelon ischyros era la tortuga más grande que ha existido (~4,6 m de longitud). Vivió en el mar interior del Cretácico en Norteamérica hace ~75 Ma.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Archelon_ischyros.jpg/600px-Archelon_ischyros.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🦎", label:"Iguanodon — primer dinosaurio descrito", tipo:"animal", desc:"Iguanodon bernissartensis fue uno de los primeros dinosaurios científicamente descritos (1825). Los 38 esqueletos hallados en Bernissart (Bélgica) revolucionaron la paleontología.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Iguanodon_bernissartensis_skelet_IRSNB.jpg/600px-Iguanodon_bernissartensis_skelet_IRSNB.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🌿", label:"Fósil de helecho — huella vegetal", tipo:"comparacion", desc:"Impresión fósil de Neuropteris, un helecho arborescente del Carbonífero. Las plantas también fosilizan, dejando huellas precisas de su estructura en la roca.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Neuropteris_ovata.jpg/600px-Neuropteris_ovata.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🌊", label:"Ichthyosaurus — reptil marino Jurásico", tipo:"animal", desc:"Ichthyosaurus communis, el reptil marino que convergió evolutivamente con los delfines modernos. Jurásico inferior de Gran Bretaña. Daba a luz crías vivas en el mar.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Ichthyosaurus_communis.jpg/600px-Ichthyosaurus_communis.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+      { emoji:"🦌", label:"Megaloceros — el ciervo gigante", tipo:"animal", desc:"Megaloceros giganteus, el ciervo con la mayor cornamenta conocida (~3,7 m de punta a punta). Pleistoceno de Eurasia. Se extinguió hace ~7.700 años.", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Megaloceros_giganteus_Senckenberg.jpg/600px-Megaloceros_giganteus_Senckenberg.jpg", fuente:"Wikimedia Commons — CC BY-SA 3.0" },
+    ];
+
+    const TIPOS = {
+      es: { animal: 'Animal', ecosistema: 'Ecosistema', comparacion: 'Fósil / Comparación' },
+      fr: { animal: 'Animal', ecosistema: 'Écosystème', comparacion: 'Fossile / Comparaison' }
+    };
+
+    let filtroActual = 'todos';
+    let busqueda = '';
+
+    function getLista() {
+      let lista = filtroActual === 'todos' ? ILUSTRACIONES : ILUSTRACIONES.filter(i => i.tipo === filtroActual);
+      if (busqueda.trim()) {
+        const q = busqueda.toLowerCase();
+        lista = lista.filter(i => i.label.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q));
+      }
+      return lista;
+    }
+
+    function aplicarFiltros() {
+      busqueda = document.getElementById('buscadorInput').value;
+      renderizarGaleria(getLista());
+    }
+
+    function renderPagina() {
+      const lang = getLang();
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('activo');
+      });
+      document.getElementById('seccion-label').textContent  = t('gallery_label');
+      document.getElementById('seccion-titulo').textContent = t('gallery_titulo');
+      document.getElementById('seccion-sub').textContent    = t('gallery_sub');
+      document.getElementById('footer-copy').textContent    = t('footer_copy');
+
+      document.getElementById('filtros').innerHTML = `
+        <button class="btn-filtro ${filtroActual==='todos'?'activo':''}"      onclick="filtrarGaleria('todos',this)">${t('gallery_todos')}</button>
+        <button class="btn-filtro ${filtroActual==='animal'?'activo':''}"     onclick="filtrarGaleria('animal',this)">${t('gallery_animales')}</button>
+        <button class="btn-filtro ${filtroActual==='ecosistema'?'activo':''}" onclick="filtrarGaleria('ecosistema',this)">${t('gallery_ecosistemas')}</button>
+        <button class="btn-filtro ${filtroActual==='comparacion'?'activo':''}" onclick="filtrarGaleria('comparacion',this)">${t('gallery_comp')}</button>
+      `;
+
+      renderizarGaleria(getLista());
+    }
+
+    function renderizarGaleria(lista) {
+      const lang = getLang();
+      const tipos = TIPOS[lang] || TIPOS.es;
+      const sin = document.getElementById('sinResultados');
+      document.getElementById('contador').innerHTML =
+        `${t('gallery_mostrando')} <span>${lista.length}</span> ${t('gallery_ilustraciones')}`;
+
+      if (lista.length === 0) {
+        document.getElementById('gridGaleria').innerHTML = '';
+        sin.style.display = 'block';
+        return;
+      }
+      sin.style.display = 'none';
+
+      document.getElementById('gridGaleria').innerHTML = lista.map((item) => `
+        <div class="item-galeria" onclick="abrirModal(${ILUSTRACIONES.indexOf(item)})">
+          <div class="item-tipo">${tipos[item.tipo]}</div>
+          <img src="${item.img}" alt="${item.label}" loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-placeholder" style="display:none; position:absolute; inset:0;">
+            <div class="ph-emoji">${item.emoji}</div>
+            <div class="ph-label">${item.label}</div>
+          </div>
+          <div class="item-overlay">
+            <div class="overlay-titulo">${item.label}</div>
+            <div class="overlay-desc">${item.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filtrarGaleria(tipo, btn) {
+      filtroActual = tipo;
+      document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+      btn.classList.add('activo');
+      renderizarGaleria(getLista());
+    }
+
+    function abrirModal(idx) {
+      const item = ILUSTRACIONES[idx];
+      const lang = getLang();
+      const tipos = TIPOS[lang] || TIPOS.es;
+      document.getElementById('modalTipo').textContent   = tipos[item.tipo];
+      document.getElementById('modalTitulo').textContent = item.label;
+      document.getElementById('modalDesc').textContent   = item.desc;
+      document.getElementById('modalFuente').textContent = '📷 ' + item.fuente;
+      const wrap = document.getElementById('modalImgWrap');
+      wrap.innerHTML = `
+        <img class="modal-img" src="${item.img}" alt="${item.label}"
+          onerror="this.style.display='none'; document.getElementById('modalFallback').style.display='flex';">
+        <div class="modal-img-placeholder" id="modalFallback" style="display:none;">
+          <div class="mph-emoji">${item.emoji}</div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal(e) { if (e.target === document.getElementById('modalOverlay')) cerrarModalBtn(); }
+    function cerrarModalBtn() { document.getElementById('modalOverlay').classList.remove('visible'); document.body.style.overflow = ''; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModalBtn(); });
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>

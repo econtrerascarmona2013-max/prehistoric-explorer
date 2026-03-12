@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Updates — Edu's Prehistoric Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .updates-lista { max-width: 700px; }
+    .update-item { display: grid; grid-template-columns: 130px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--borde); align-items: start; }
+    .update-fecha { font-size: 0.78rem; color: var(--texto-apagado); letter-spacing: 0.08em; padding-top: 0.2rem; text-transform: uppercase; }
+    .update-badge { display: inline-block; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 2px; margin-bottom: 0.4rem; }
+    .badge-nuevo { background: rgba(125,191,168,0.15); color: var(--acento2); border: 1px solid rgba(125,191,168,0.2); }
+    .badge-contenido { background: rgba(200,164,90,0.1); color: var(--acento); border: 1px solid rgba(200,164,90,0.2); }
+    .badge-fix { background: rgba(212,112,74,0.1); color: var(--acento3); border: 1px solid rgba(212,112,74,0.2); }
+    .badge-idioma { background: rgba(125,191,168,0.1); color: var(--acento2); border: 1px solid rgba(125,191,168,0.2); }
+    .update-titulo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .update-desc { font-size: 0.87rem; color: var(--texto-apagado); line-height: 1.6; }
+    .update-lista-items { margin-top: 0.5rem; padding-left: 1rem; list-style: none; }
+    .update-lista-items li { font-size: 0.85rem; color: var(--texto-apagado); padding: 0.1rem 0; }
+    .update-lista-items li::before { content: '→ '; color: var(--acento); }
+    .proximas { margin-top: 3rem; max-width: 700px; }
+    .proximas-titulo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1.2rem; }
+    .proxima-item { background: var(--surface); border: 1px solid var(--borde); border-left: 3px solid var(--borde); border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin-bottom: 0.8rem; transition: border-color 0.2s; }
+    .proxima-item:hover { border-left-color: var(--acento); }
+    .proxima-titulo { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .proxima-desc { font-size: 0.82rem; color: var(--texto-apagado); }
+    .proxima-estado { display: inline-block; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 2px; margin-top: 0.4rem; background: rgba(200,164,90,0.08); color: var(--texto-apagado); border: 1px solid var(--borde); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="../index.html"><span>🦕</span> Edu's Prehistoric Explorer</a>
+    <ul class="nav-links">
+      <li><a href="../explorer/index.html"   id="nav-explorer"></a></li>
+      <li><a href="../landscapes/index.html" id="nav-landscapes"></a></li>
+      <li><a href="../fossil/index.html"     id="nav-fossil"></a></li>
+      <li><a href="../gallery/index.html"    id="nav-gallery"></a></li>
+      <li><a href="../news/index.html"       id="nav-news"></a></li>
+      <li><a href="../books/index.html"      id="nav-books"></a></li>
+      <li><a href="index.html" class="activo" id="nav-updates"></a></li>
+      <li><a href="../comparator/index.html" id="nav-comparator"></a></li>
+      <li><a href="../timeline/index.html" id="nav-timeline"></a></li>
+      <li><a href="../fossilmap/index.html" id="nav-fossilmap"></a></li>
+    </ul>
+    <div class="selector-idioma">
+      <button class="btn-idioma" onclick="setLang('es')">ES</button>
+      <button class="btn-idioma" onclick="setLang('fr')">FR</button>
+    </div>
+    <button class="btn-modo" id="btn-modo" onclick="toggleModo()" title="Cambiar modo"></button>
+  </nav>
+
+  <div class="contenedor">
+    <p class="seccion-label" id="seccion-label"></p>
+    <h1 class="seccion-titulo" id="seccion-titulo"></h1>
+    <p class="seccion-sub" id="seccion-sub"></p>
+
+    <div class="updates-lista" id="updatesLista"></div>
+    <div class="proximas">
+      <h2 class="proximas-titulo" id="proximas-titulo"></h2>
+      <div id="proximasLista"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
+    <p id="footer-copy"></p>
+  </footer>
+
+  <script src="../data.js"></script>
+  <script>
+    const CONTENIDO = {
+      es: {
+        updates: [
+          { fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Nueva versión", titulo: "v1.0 — Lanzamiento oficial", desc: "Primera versión pública con todas las secciones operativas.", items: ["Animal Explorer con 15 animales y buscador", "Ancient Landscapes con 6 biomas", "Fossil Science con línea de tiempo", "Illustration Gallery con filtros", "Science News con 6 noticias", "Books & Resources con 3 pestañas", "Size Comparator interactivo"] },
+          { fecha: "Feb 2025", badge: "badge-contenido", badgeText: "Contenido", titulo: "15 animales añadidos", desc: "Base de datos inicial con T. rex, Mamut, Megalodón, Triceratops y más.", items: [] },
+          { fecha: "Ene 2025", badge: "badge-nuevo", badgeText: "Inicio", titulo: "Inicio del proyecto", desc: "Diseño de la estructura, paleta de colores y tipografía.", items: [] }
+        ],
+        proximas: [
+          { titulo: "Soporte completo en francés", desc: "Traducción de todo el contenido al francés.", estado: "En desarrollo" },
+          { titulo: "+20 animales nuevos", desc: "Expansión de la base de datos con más especies.", estado: "Planificado" },
+          { titulo: "Comparador de tamaños mejorado", desc: "Visualización con siluetas reales en lugar de emojis.", estado: "Planificado" },
+          { titulo: "Mapa de yacimientos", desc: "Mapa interactivo con los principales yacimientos paleontológicos del mundo.", estado: "Idea" }
+        ],
+        proximas_titulo: "Próximamente"
+      },
+      fr: {
+        updates: [
+          { fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Nouvelle version", titulo: "v1.0 — Lancement officiel", desc: "Première version publique avec toutes les sections opérationnelles.", items: ["Explorateur d'animaux avec 15 animaux", "Paysages anciens avec 6 biomes", "Science des fossiles avec chronologie", "Galerie d'illustrations avec filtres", "Actualités scientifiques avec 6 articles", "Livres & Ressources avec 3 onglets", "Comparateur de tailles interactif"] },
+          { fecha: "Fév 2025", badge: "badge-contenido", badgeText: "Contenu", titulo: "15 animaux ajoutés", desc: "Base de données initiale avec T. rex, Mammouth, Mégalodon, Tricératops et plus.", items: [] },
+          { fecha: "Jan 2025", badge: "badge-nuevo", badgeText: "Début", titulo: "Début du projet", desc: "Conception de la structure, palette de couleurs et typographie.", items: [] }
+        ],
+        proximas: [
+          { titulo: "Support complet en français", desc: "Traduction de tout le contenu en français.", estado: "En développement" },
+          { titulo: "+20 nouveaux animaux", desc: "Expansion de la base de données avec plus d'espèces.", estado: "Planifié" },
+          { titulo: "Comparateur de tailles amélioré", desc: "Visualisation avec de vraies silhouettes au lieu d'emojis.", estado: "Planifié" },
+          { titulo: "Carte des gisements", desc: "Carte interactive des principaux gisements paléontologiques mondiaux.", estado: "Idée" }
+        ],
+        proximas_titulo: "Prochainement"
+      }
+    };
+
+    function renderPagina() {
+      const lang = getLang();
+      const c = CONTENIDO[lang] || CONTENIDO.es;
+
+      // Nav
+      document.getElementById('nav-explorer').textContent   = t('nav_explorer');
+      document.getElementById('nav-landscapes').textContent = t('nav_landscapes');
+      document.getElementById('nav-fossil').textContent     = t('nav_fossil');
+      document.getElementById('nav-gallery').textContent    = t('nav_gallery');
+      document.getElementById('nav-news').textContent       = t('nav_news');
+      document.getElementById('nav-books').textContent      = t('nav_books');
+      document.getElementById('nav-updates').textContent    = t('nav_updates');
+      document.getElementById('nav-comparator').textContent = t('nav_comparator');
+      document.getElementById('nav-timeline').textContent = getLang() === 'fr' ? 'Chronologie' : 'Timeline';
+      document.getElementById('nav-fossilmap').textContent = getLang() === 'fr' ? 'Carte fossile' : 'Mapa fósil';
+      document.querySelectorAll('.btn-idioma').forEach(b => {
+        b.classList.remove('activo');
+        if (b.textContent.trim() === lang.toUpperCase()) b.classList.add('activo');
+      });
+
+      // Cabecera
+      document.getElementById('seccion-label').textContent  = t('updates_label');
+      document.getElementById('seccion-titulo').textContent = t('updates_titulo');
+      document.getElementById('seccion-sub').textContent    = t('updates_sub');
+      document.getElementById('footer-copy').textContent    = t('footer_copy');
+      document.getElementById('proximas-titulo').textContent = c.proximas_titulo;
+
+      // Updates
+      document.getElementById('updatesLista').innerHTML = c.updates.map(u => `
+        <div class="update-item">
+          <div class="update-fecha">${u.fecha}</div>
+          <div>
+            <span class="update-badge ${u.badge}">${u.badgeText}</span>
+            <div class="update-titulo">${u.titulo}</div>
+            <div class="update-desc">${u.desc}</div>
+            ${u.items.length ? `<ul class="update-lista-items">${u.items.map(i => `<li>${i}</li>`).join('')}</ul>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      // Próximas
+      document.getElementById('proximasLista').innerHTML = c.proximas.map(p => `
+        <div class="proxima-item">
+          <div class="proxima-titulo">${p.titulo}</div>
+          <div class="proxima-desc">${p.desc}</div>
+          <span class="proxima-estado">${p.estado}</span>
+        </div>
+      `).join('');
+    }
+
+    renderPagina();
+  </script>
+<script>
+  (function() {
+    const modo = localStorage.getItem('modo') || 'oscuro';
+    if (modo === 'claro') document.body.classList.add('claro');
+    document.getElementById('btn-modo').textContent = modo === 'claro' ? '🌙' : '☀️';
+  })();
+  function toggleModo() {
+    const esClaro = document.body.classList.toggle('claro');
+    localStorage.setItem('modo', esClaro ? 'claro' : 'oscuro');
+    document.getElementById('btn-modo').textContent = esClaro ? '🌙' : '☀️';
+  }
+</script>
+</body>
+</html>
