@@ -959,6 +959,26 @@ const YACIMIENTOS = [
     ],
     link: "https://whc.unesco.org/en/list/586",
     linkText: "UNESCO"
+  },
+  Copiar  {
+    id: 19,
+    nombre: "Lyme Regis",
+    pais: "Dorset, Reino Unido",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 50.7252,
+    lng: -2.9366,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/4/49/Cliff_east_of_Lyme_Regis_-_geograph.org.uk_-_6221144.jpg",
+    desc: "Lyme Regis es uno de los yacimientos fósiles más famosos del mundo y forma parte de la llamada Costa Jurásica, un sitio declarado Patrimonio de la Humanidad por la UNESCO. Sus acantilados y playas contienen rocas que abarcan millones de años de historia geológica y han producido numerosos fósiles bien conservados de reptiles marinos y otros organismos del Jurásico temprano. Muchos descubrimientos importantes fueron realizados aquí por la paleontóloga Mary Anning en el siglo XIX.",
+    hallazgos: [
+      { e: "🦎", t: "Ichthyosaurus — esqueletos completos" },
+      { e: "🦴", t: "Plesiosaurus — reptiles marinos del Jurásico" },
+      { e: "🦕", t: "Scelidosaurus — dinosaurio temprano" },
+      { e: "🐚", t: "Ammonites — fósiles marinos abundantes" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Lyme_Regis",
+    linkText: "https://en.wikipedia.org/wiki/Lyme_Regis"
   }
 ];
 
