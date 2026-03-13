@@ -960,7 +960,7 @@ const YACIMIENTOS = [
     link: "https://whc.unesco.org/en/list/586",
     linkText: "UNESCO"
   },
-  Copiar  {
+  {
     id: 19,
     nombre: "Lyme Regis",
     pais: "Dorset, Reino Unido",
