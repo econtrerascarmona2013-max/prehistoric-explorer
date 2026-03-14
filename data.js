@@ -1119,6 +1119,12 @@ const TRADUCCIONES = {
     home_card_news_desc:   "Descubrimientos recientes, artículos simplificados y curiosidades científicas.",
     home_card_books_titulo: "Books & Resources",
     home_card_books_desc:   "Libros, revistas digitales y recursos educativos recomendados.",
+    home_card_comparator_titulo: "Comparador de Tamaños",
+    home_card_comparator_desc:   "Compara el tamaño de cualquier animal con otro y con un humano.",
+    home_card_timeline_titulo:   "Timeline Geológico",
+    home_card_timeline_desc:     "Explora los 17 períodos de la historia de la Tierra en un globo 3D interactivo.",
+    home_card_fossilmap_titulo:  "Mapa de Yacimientos",
+    home_card_fossilmap_desc:    "Localiza los 18 yacimientos paleontológicos más importantes del mundo.",
 
     explorer_label:       "🦕 Animal Explorer",
     explorer_titulo:      "Buscador de Animales",
@@ -1242,7 +1248,13 @@ const TRADUCCIONES = {
     home_card_news_desc:   "Découvertes récentes, articles simplifiés et curiosités scientifiques.",
     home_card_books_titulo: "Livres & Ressources",
     home_card_books_desc:   "Livres, ressources numériques et matériel éducatif recommandés.",
-
+    home_card_comparator_titulo: "Comparateur de Tailles",
+    home_card_comparator_desc:   "Compare la taille de n'importe quel animal avec un autre et un humain.",
+    home_card_timeline_titulo:   "Chronologie Géologique",
+    home_card_timeline_desc:     "Explore les 17 périodes de l'histoire de la Terre sur un globe 3D interactif.",
+    home_card_fossilmap_titulo:  "Carte des Sites Fossiles",
+    home_card_fossilmap_desc:    "Localise les 18 sites paléontologiques les plus importants du monde.",
+    
     explorer_label:       "🦕 Explorateur d'Animaux",
     explorer_titulo:      "Recherche d'Animaux",
     explorer_sub:         "Explore des espèces actuelles et préhistoriques. Recherche par nom ou filtre par type.",
