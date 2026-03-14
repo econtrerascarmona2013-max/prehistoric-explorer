@@ -979,109 +979,264 @@ const YACIMIENTOS = [
     ],
     link: "https://en.wikipedia.org/wiki/Lyme_Regis",
     linkText: "https://en.wikipedia.org/wiki/Lyme_Regis"
+  },
+  {
+    id: 19,
+    nombre: "Bahariya Formation",
+    pais: "🇪🇬 Oasis de Bahariya, Egipto",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 28.3, lng: 28.8,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Spinosaurus_Update_%28Steveoc_86%29.jpg/480px-Spinosaurus_Update_%28Steveoc_86%29.jpg",
+    desc: "Formación del Cretácico medio (~95 Ma) en el desierto del Sáhara. Stromer descubrió aquí los primeros restos de Spinosaurus en 1912, destruidos en la Segunda Guerra Mundial.",
+    hallazgos: [
+      { e: "🦖", t: "Spinosaurus aegyptiacus — descubierto aquí originalmente" },
+      { e: "🦖", t: "Carcharodontosaurus saharicus — rival del T. rex" },
+      { e: "🦕", t: "Paralititan stromeri — saurópodo gigante" },
+      { e: "🐊", t: "Stomatosuchus inermis — cocodrilo de 10m" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Bahariya_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 20,
+    nombre: "Nemegt Formation",
+    pais: "🇲🇳 Ömnögovi, Mongolia",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 43.5, lng: 100.8,
+    emoji: "🦖",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Bayanzag_Flaming_Cliffs.jpg/640px-Bayanzag_Flaming_Cliffs.jpg",
+    desc: "Formación del Cretácico tardío (~75-70 Ma) en el Gobi. Considerada la más rica de Asia, con depredadores gigantes y saurópodos enormes.",
+    hallazgos: [
+      { e: "🦖", t: "Tarbosaurus bataar — el T. rex asiático" },
+      { e: "🦕", t: "Therizinosaurus cheloniformis — garras de 1m" },
+      { e: "🦕", t: "Nemegtosaurus mongoliensis — saurópodo gigante" },
+      { e: "🦆", t: "Deinocheirus mirificus — brazos de 2,4m" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Nemegt_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 21,
+    nombre: "Dashanpu Formation",
+    pais: "🇨🇳 Sichuan, China",
+    era: "Jurásico",
+    color: "#2a9a40",
+    lat: 29.3, lng: 104.7,
+    emoji: "🦕",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Chengjiang_fossil_site_maotianshan_shales.jpg/640px-Chengjiang_fossil_site_maotianshan_shales.jpg",
+    desc: "Formación del Jurásico medio (~165 Ma). El yacimiento jurásico más productivo de Asia, con más de 8.000 huesos excavados en una sola cantera.",
+    hallazgos: [
+      { e: "🦕", t: "Shunosaurus lii — saurópodo con maza en la cola" },
+      { e: "🦕", t: "Omeisaurus tianfuensis — cuello de 9m" },
+      { e: "🦖", t: "Yangchuanosaurus shangyouensis — mayor carnívoro jurásico asiático" },
+      { e: "🐟", t: "Peces y tortugas jurásicas preservados" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Shaximiao_Formation",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 22,
+    nombre: "Dinosaur Ridge",
+    pais: "🇺🇸 Colorado, EE.UU.",
+    era: "Cretácico",
+    color: "#3aaa30",
+    lat: 39.7, lng: -105.2,
+    emoji: "🦶",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Dinosaur_footprints_trackway.jpg/480px-Dinosaur_footprints_trackway.jpg",
+    desc: "Cresta rocosa del Cretácico inferior (~100 Ma) con cientos de huellas de dinosaurios perfectamente preservadas en la roca, visibles a simple vista.",
+    hallazgos: [
+      { e: "🦶", t: "Más de 300 huellas de Iguanodon preservadas" },
+      { e: "🦕", t: "Huellas de saurópodos gigantes" },
+      { e: "🦖", t: "Rastros de terópodos carnívoros" },
+      { e: "🦴", t: "Huesos de Stegosaurus in situ" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Dinosaur_Ridge",
+    linkText: "Wikipedia"
+  },
+  {
+    id: 23,
+    nombre: "Karoo Basin",
+    pais: "🇿🇦 Cabo Occidental, Sudáfrica",
+    era: "Paleozoico",
+    color: "#c8a030",
+    lat: -32.5, lng: 22.0,
+    emoji: "🦎",
+    foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Dickinsonia_costata.jpg/480px-Dickinsonia_costata.jpg",
+    desc: "Cuenca sedimentaria del Pérmico-Triásico (~260-240 Ma). Registra la mayor extinción de la historia (96% especies) y la recuperación posterior. La fauna de sinápsidos más completa del mundo.",
+    hallazgos: [
+      { e: "🦎", t: "Lystrosaurus — el animal que sobrevivió la Gran Extinción" },
+      { e: "🦎", t: "Gorgonops — depredador sinápsido de colmillos" },
+      { e: "🦎", t: "Dicynodon — herbívoro dominante del Pérmico" },
+      { e: "🦴", t: "Registro completo de la extinción Pérmico-Triásico" }
+    ],
+    link: "https://en.wikipedia.org/wiki/Karoo_Supergroup",
+    linkText: "Wikipedia"
   }
 ];
 
 // ============================================
-// LIBROS
+// LIBROS_DATA (con páginas Kindle)
 // ============================================
 
-const LIBROS = [
+const LIBROS_DATA = [
   {
-    id: 1,
-    titulo: "The Rise and Fall of the Dinosaurs",
-    autor: "Steve Brusatte",
-    anyo: "2018",
-    nivel: "divulgacion",
-    isbn: "9780062490421",
+    id: 1, titulo: "The Rise and Fall of the Dinosaurs", autor: "Steve Brusatte", tipo: "recomendado",
+    descripcion: "La historia definitiva del ascenso y caída de los dinosaurios, narrada por uno de los paleontólogos más importantes del mundo.",
+    categoria: "Paleontología", emoji: "🦖",
     portada: "https://covers.openlibrary.org/b/isbn/9780062490421-L.jpg",
-    link: "https://www.amazon.com/dp/0062490427",
-    descripcion: "La historia más completa de los dinosaurios, escrita por uno de los paleontólogos más activos del mundo. Accesible y apasionante.",
-    categoria: "Paleontología"
+    googleBooks: "https://books.google.com/books?id=aOMtDwAAQBAJ",
+    paginas: [
+      { titulo: "Prólogo: El mundo de los dinosaurios", contenido: "<p class='drop-cap'>Durante 180 millones de años, los dinosaurios dominaron la Tierra. Eran los animales más grandes, más veloces y más fascinantes que jamás han pisado este planeta. Y luego, en un instante geológico, desaparecieron.</p><p>Pero la historia de los dinosaurios no es solo una historia de extinción. Es una historia de origen, de evolución, de supervivencia contra todo pronóstico. Es la historia de cómo un grupo de reptiles poco prometedores del Triásico se convirtieron en los amos del mundo.</p>" },
+      { titulo: "Capítulo 1: Los orígenes", contenido: "<h3>El mundo del Triásico</h3><p class='drop-cap'>Hace 250 millones de años, la vida en la Tierra estuvo a punto de desaparecer. La Gran Extinción del Pérmico eliminó el 96% de todas las especies marinas y el 70% de los vertebrados terrestres.</p><p>Fue en este mundo devastado donde surgieron los dinosaurios. No de golpe, no como los gigantes que conocemos, sino como criaturas pequeñas y ágiles que corrían sobre dos patas por los márgenes del supercontinente Pangea.</p>" },
+      { titulo: "Capítulo 2: La conquista del mundo", contenido: "<h3>La revolución jurásica</h3><p class='drop-cap'>El Jurásico fue el período de los gigantes. Los saurópodos alcanzaron tamaños que desafían la imaginación. El Brachiosaurus podía elevar su cabeza a 13 metros de altura.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+    ]
   },
   {
-    id: 2,
-    titulo: "Prehistoric Life",
-    autor: "DK Publishing",
-    anyo: "2012",
-    nivel: "divulgacion",
-    isbn: "9780756682347",
+    id: 2, titulo: "Prehistoric Life", autor: "DK Publishing", tipo: "recomendado",
+    descripcion: "Enciclopedia visual definitiva de la evolución de la vida en la Tierra, desde los primeros microbios hasta los humanos modernos.",
+    categoria: "Enciclopedia", emoji: "🌍",
     portada: "https://covers.openlibrary.org/b/isbn/9780756682347-L.jpg",
-    link: "https://www.amazon.com/dp/0756682347",
-    descripcion: "La enciclopedia visual definitiva sobre la vida prehistórica, con más de 700 especies ilustradas.",
-    categoria: "Enciclopedia"
+    googleBooks: "https://www.google.com/search?q=Prehistoric+Life+DK+Publishing+book",
+    paginas: [
+      { titulo: "Introducción: 4.000 millones de años de vida", contenido: "<p class='drop-cap'>La historia de la vida en la Tierra es la historia más larga y más extraordinaria que existe. Comenzó hace aproximadamente 3.800 millones de años con organismos unicelulares invisibles al ojo humano.</p><p>Esta enciclopedia es una ventana a ese pasado profundo. A través de fósiles, reconstrucciones científicas y el trabajo de generaciones de paleontólogos, podemos ver cómo fue cambiando la vida a lo largo del tiempo geológico.</p>" },
+      { titulo: "Era Paleozoica: El amanecer de los animales", contenido: "<h3>La explosión cámbrica</h3><p class='drop-cap'>Hace 541 millones de años ocurrió algo extraordinario: en un período de apenas 20 millones de años, aparecieron casi todos los grandes grupos de animales que conocemos hoy.</p><p>Los mares del Cámbrico eran un mundo alien. Trilobites, anomalócaris, crinoídeos… formas de vida que no se parecen a nada que exista hoy.</p>" }
+    ]
   },
   {
-    id: 3,
-    titulo: "T. rex and the Crater of Doom",
-    autor: "Walter Alvarez",
-    anyo: "1997",
-    nivel: "divulgacion",
-    isbn: "9780691016306",
-    portada: "https://covers.openlibrary.org/b/isbn/9780691016306-L.jpg",
-    link: "https://www.amazon.com/dp/0691016305",
+    id: 3, titulo: "T. rex and the Crater of Doom", autor: "Walter Alvarez", tipo: "recomendado",
     descripcion: "El geólogo que descubrió la evidencia del asteroide de Chicxulub cuenta la historia de ese hallazgo que cambió la paleontología.",
-    categoria: "Ciencia"
+    categoria: "Ciencia", emoji: "☄️",
+    portada: "https://covers.openlibrary.org/b/isbn/9780691016306-L.jpg",
+    googleBooks: "https://www.google.com/search?q=T+rex+Crater+of+Doom+Walter+Alvarez",
+    paginas: [
+      { titulo: "El día que cambió el mundo", contenido: "<p class='drop-cap'>Hace 66 millones de años, un asteroide de 10 kilómetros de diámetro impactó en lo que hoy es la Península de Yucatán. En cuestión de horas, el mundo que conocían los dinosaurios dejó de existir.</p><p>Este libro cuenta cómo un geólogo y su padre, premio Nobel de física, encontraron la evidencia de ese impacto en una delgada capa de arcilla en los Apeninos italianos.</p>" },
+      { titulo: "La capa de iridio", contenido: "<h3>Una pista en la roca</h3><p class='drop-cap'>El iridio es un elemento extremadamente raro en la corteza terrestre, pero abundante en los meteoritos. Cuando Walter Alvarez encontró concentraciones anómalas de iridio exactamente en el límite Cretácico-Paleógeno en todo el mundo, la conclusión era inevitable.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+    ]
   },
   {
-    id: 4,
-    titulo: "The Dinosaur Artist",
-    autor: "Paige Williams",
-    anyo: "2018",
-    nivel: "divulgacion",
-    isbn: "9780316382076",
-    portada: "https://covers.openlibrary.org/b/isbn/9780316382076-L.jpg",
-    link: "https://www.amazon.com/dp/0316382078",
+    id: 4, titulo: "The Dinosaur Artist", autor: "Paige Williams", tipo: "recomendado",
     descripcion: "La increíble historia del tráfico ilegal de fósiles y la batalla por preservar el patrimonio paleontológico del Gobi.",
-    categoria: "Historia"
+    categoria: "Historia", emoji: "🦴",
+    portada: "https://covers.openlibrary.org/b/isbn/9780316382076-L.jpg",
+    googleBooks: "https://www.google.com/search?q=The+Dinosaur+Artist+Paige+Williams",
+    paginas: [
+      { titulo: "El mercado negro de fósiles", contenido: "<p class='drop-cap'>En 2012, un esqueleto casi completo de Tarbosaurus bataar apareció en una subasta en Nueva York con un precio inicial de un millón de dólares. El problema: era ilegal. Mongolia prohibió la exportación de fósiles en 1924.</p><p>Este libro sigue el caso de Eric Prokopi, el paleontólogo comercial que excavó, preparó y vendió el esqueleto, y la batalla diplomática y legal que desencadenó.</p>" },
+      { titulo: "Mongolia recupera su patrimonio", contenido: "<h3>El regreso del depredador</h3><p class='drop-cap'>Cuando el esqueleto del Tarbosaurus aterrizó en el aeropuerto de Ulán Bator en 2013, miles de mongoles salieron a recibirlo. Para ellos no era solo un fósil: era parte de su identidad nacional.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+    ]
   },
   {
-    id: 5,
-    titulo: "Jurassic West",
-    autor: "John Foster",
-    anyo: "2007",
-    nivel: "tecnico",
-    isbn: "9780253348449",
-    portada: "https://covers.openlibrary.org/b/isbn/9780253348449-L.jpg",
-    link: "https://www.amazon.com/dp/0253348447",
+    id: 5, titulo: "Jurassic West", autor: "John Foster", tipo: "recomendado",
     descripcion: "Guía científica completa de la fauna de la Formación Morrison, la más productiva del Jurásico norteamericano.",
-    categoria: "Técnico"
+    categoria: "Técnico", emoji: "🗺️",
+    portada: "https://covers.openlibrary.org/b/isbn/9780253348449-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Jurassic+West+John+Foster+book",
+    paginas: [
+      { titulo: "La Formación Morrison", contenido: "<p class='drop-cap'>Hace 150 millones de años, el oeste de Norteamérica era un paisaje de llanuras inundables, ríos meandriformes y bosques de coníferas. Era el hogar de los dinosaurios más grandes que jamás pisaron el continente.</p><p>La Formación Morrison se extiende por más de un millón de kilómetros cuadrados en 13 estados, y es la fuente de más esqueletos de dinosaurios jurásicos que cualquier otra formación del mundo.</p>" }
+    ]
   },
   {
-    id: 6,
-    titulo: "Wonderful Life",
-    autor: "Stephen Jay Gould",
-    anyo: "1989",
-    nivel: "divulgacion",
-    isbn: "9780393307009",
-    portada: "https://covers.openlibrary.org/b/isbn/9780393307009-L.jpg",
-    link: "https://www.amazon.com/dp/0393307009",
+    id: 6, titulo: "Wonderful Life", autor: "Stephen Jay Gould", tipo: "recomendado",
     descripcion: "El clásico de Gould sobre el Burgess Shale y lo que los animales del Cámbrico nos dicen sobre la contingencia de la evolución.",
-    categoria: "Evolución"
+    categoria: "Evolución", emoji: "🦐",
+    portada: "https://covers.openlibrary.org/b/isbn/9780393307009-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Wonderful+Life+Stephen+Jay+Gould",
+    paginas: [
+      { titulo: "El Burgess Shale", contenido: "<p class='drop-cap'>En 1909, Charles Doolittle Walcott descubrió en las Montañas Rocosas canadienses una roca que cambiaría para siempre nuestra comprensión de la vida. Las pizarras de Burgess contenían animales del Cámbrico medio preservados con una fidelidad extraordinaria.</p><p>Gould usó estos fósiles para argumentar algo radical: la evolución no progresa hacia la complejidad de manera inevitable. Es contingente, dependiente del azar.</p>" }
+    ]
   },
   {
-    id: 7,
-    titulo: "Dinosaurios de la Patagonia",
-    autor: "Fernando Novas",
-    anyo: "2009",
-    nivel: "divulgacion",
-    isbn: "9789871256419",
-    portada: "https://covers.openlibrary.org/b/isbn/9789871256419-L.jpg",
-    link: "https://www.amazon.com/dp/9871256418",
+    id: 7, titulo: "Dinosaurios de la Patagonia", autor: "Fernando Novas", tipo: "recomendado",
     descripcion: "La guía definitiva sobre los gigantes de Patagonia, escrita por el principal paleontólogo argentino especializado en dinosaurios.",
-    categoria: "Paleontología"
+    categoria: "Paleontología", emoji: "🦕",
+    portada: "https://covers.openlibrary.org/b/isbn/9789871256419-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Dinosaurios+Patagonia+Fernando+Novas",
+    paginas: [
+      { titulo: "La tierra de los gigantes", contenido: "<p class='drop-cap'>Ningún lugar en la Tierra ha producido más dinosaurios gigantes que la Patagonia argentina. En los últimos 30 años, esta región semiárida ha entregado al mundo el mayor carnívoro conocido, el mayor herbívoro conocido, y decenas de especies nuevas.</p><p>Fernando Novas ha pasado su carrera excavando estos monstruos bajo el sol patagónico, y este libro es el resultado de décadas de trabajo de campo.</p>" }
+    ]
   },
   {
-    id: 8,
-    titulo: "Your Inner Fish",
-    autor: "Neil Shubin",
-    anyo: "2008",
-    nivel: "divulgacion",
-    isbn: "9780307277459",
+    id: 8, titulo: "Your Inner Fish", autor: "Neil Shubin", tipo: "recomendado",
+    descripcion: "Cómo el cuerpo humano guarda vestigios evolutivos de peces, reptiles y mamíferos primitivos.",
+    categoria: "Evolución", emoji: "🐟",
     portada: "https://covers.openlibrary.org/b/isbn/9780307277459-L.jpg",
-    link: "https://www.amazon.com/dp/0307277453",
-    descripcion: "El descubridor del Tiktaalik explica cómo los fósiles revelan la historia evolutiva que conecta a los peces con los seres humanos.",
-    categoria: "Evolución"
+    googleBooks: "https://books.google.com/books?id=7sxT1OvRk2EC",
+    paginas: [
+      { titulo: "Capítulo 1: Encontrando tu pez interior", contenido: "<p class='drop-cap'>Mira tu mano. Cinco dedos, una palma, una muñeca. Ahora mira la aleta de un pez. Parece completamente diferente. Sin embargo, bajo la piel, los huesos cuentan una historia sorprendente: tú y ese pez compartís el mismo plano estructural básico, heredado de un ancestro común que vivió hace 375 millones de años.</p><p>En 2004, mi equipo encontró en el Ártico canadiense un fósil que cambiaría nuestra comprensión de cómo los vertebrados conquistaron la tierra. Lo llamamos Tiktaalik roseae.</p>" },
+      { titulo: "Capítulo 2: Los genes que compartimos", contenido: "<h3>Construyendo cabezas</h3><p class='drop-cap'>Uno de los descubrimientos más sorprendentes de la biología moderna es que todos los animales con cabeza, desde los tiburones hasta los humanos, construyen esa cabeza usando prácticamente los mismos genes.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
+    ]
+  },
+  {
+    id: 9, titulo: "The Feathered Dragon", autor: "Alan Feduccia", tipo: "recomendado",
+    descripcion: "Análisis detallado de la evolución de las aves desde los dinosaurios emplumados, con especial atención a los fósiles de Liaoning.",
+    categoria: "Evolución", emoji: "🐦",
+    portada: "https://covers.openlibrary.org/b/isbn/9781421438221-L.jpg",
+    googleBooks: "https://www.google.com/search?q=The+Feathered+Dragon+Feduccia",
+    paginas: [
+      { titulo: "El origen de las aves", contenido: "<p class='drop-cap'>Durante más de un siglo, la pregunta de cómo evolucionaron las aves dividió a los paleontólogos. ¿Descendían de dinosaurios terópodos, o de reptiles arcosaurios más primitivos? Los fósiles de Liaoning resolvieron el debate de manera definitiva.</p><p>Las pizarras volcánicas del Cretácico inferior de China preservaron decenas de especies de dinosaurios con plumas en un estado de conservación extraordinario.</p>" }
+    ]
+  },
+  {
+    id: 10, titulo: "Paleoart: Visions of the Prehistoric Past", autor: "Zoë Lescaze", tipo: "recomendado",
+    descripcion: "El libro más completo sobre arte paleontológico histórico, desde las primeras reconstrucciones del siglo XIX hasta las ilustraciones científicas modernas.",
+    categoria: "Arte", emoji: "🎨",
+    portada: "https://covers.openlibrary.org/b/isbn/9783791356006-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Paleoart+Visions+Prehistoric+Past+Lescaze",
+    paginas: [
+      { titulo: "El arte de reconstruir el pasado", contenido: "<p class='drop-cap'>Antes de que existieran las películas, antes de los museos modernos, los artistas del siglo XIX se enfrentaron a un reto imposible: dar vida a criaturas que nadie había visto jamás, basándose únicamente en huesos fragmentados y la imaginación.</p><p>Este libro reúne más de 200 años de arte paleontológico, desde las primeras reconstrucciones especulativas de Duria Antiquior hasta las ilustraciones hiperrealistas de los artistas contemporáneos.</p>" }
+    ]
+  },
+  {
+    id: 11, titulo: "Dinosaur Odyssey", autor: "Scott Sampson", tipo: "recomendado",
+    descripcion: "Una visión ecosistémica de los dinosaurios como parte de ecosistemas complejos, no como monstruos aislados.",
+    categoria: "Paleontología", emoji: "🌿",
+    portada: "https://covers.openlibrary.org/b/isbn/9780520246164-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Dinosaur+Odyssey+Scott+Sampson",
+    paginas: [
+      { titulo: "Los dinosaurios en su ecosistema", contenido: "<p class='drop-cap'>Durante demasiado tiempo hemos pensado en los dinosaurios como criaturas aisladas: el T. rex aquí, el Triceratops allá. Pero los animales no existen en el vacío. Viven en ecosistemas, interactúan con plantas, con insectos, con el clima.</p><p>Este libro reconstruye los ecosistemas completos del Mesozoico, situando a los dinosaurios en su contexto ecológico real.</p>" }
+    ]
+  },
+  {
+    id: 12, titulo: "The Princeton Field Guide to Dinosaurs", autor: "Gregory S. Paul", tipo: "recomendado",
+    descripcion: "La guía de campo más completa de todos los dinosaurios conocidos, con siluetas y datos de más de 700 especies.",
+    categoria: "Referencia", emoji: "📋",
+    portada: "https://covers.openlibrary.org/b/isbn/9780691137209-L.jpg",
+    googleBooks: "https://www.google.com/search?q=Princeton+Field+Guide+Dinosaurs+Gregory+Paul",
+    paginas: [
+      { titulo: "La guía de referencia definitiva", contenido: "<p class='drop-cap'>Gregory S. Paul lleva décadas produciendo las reconstrucciones esqueléticas más precisas de dinosaurios del mundo. Sus siluetas en escala son la referencia estándar que usan los paleontólogos para comparar tamaños.</p><p>Esta guía cubre más de 700 especies con datos de tamaño, peso, período y localización geográfica. Es el libro que todo amante de los dinosaurios debería tener.</p>" }
+    ]
+  },
+  {
+    id: 13, titulo: "En Busca de los Dinosaurios", autor: "José Luis Sanz", tipo: "recomendado",
+    descripcion: "El paleontólogo español más reconocido repasa la historia de los descubrimientos de dinosaurios en España y el mundo.",
+    categoria: "Paleontología", emoji: "🇪🇸",
+    portada: "https://covers.openlibrary.org/b/isbn/9788420647494-L.jpg",
+    googleBooks: "https://www.google.com/search?q=En+Busca+Dinosaurios+Jose+Luis+Sanz",
+    paginas: [
+      { titulo: "Los dinosaurios de España", contenido: "<p class='drop-cap'>España es uno de los países europeos con mayor riqueza paleontológica. Desde los yacimientos de Teruel hasta los de Cuenca, pasando por las huellas de La Rioja, la Península Ibérica guarda un tesoro de fósiles que pocos conocen.</p><p>José Luis Sanz ha dedicado su vida a desenterrar y estudiar estos animales, y este libro es su relato personal de esa búsqueda.</p>" }
+    ]
+  },
+  {
+    id: 14, titulo: "Biodiversity Heritage Library", autor: "biodiversitylibrary.org", tipo: "digital",
+    descripcion: "Millones de páginas de publicaciones científicas históricas de libre acceso sobre historia natural.",
+    categoria: "Archivo digital", emoji: "🌐",
+    portada: "",
+    googleBooks: "https://www.biodiversitylibrary.org",
+    paginas: [
+      { titulo: "Sobre esta biblioteca", contenido: "<p class='drop-cap'>La Biodiversity Heritage Library es el mayor archivo digital de literatura científica sobre biodiversidad del mundo. Contiene más de 60 millones de páginas de libros, revistas y manuscritos sobre historia natural, paleontología y biología.</p><p>Todo el contenido es de acceso libre y gratuito. Visita biodiversitylibrary.org para explorar la colección completa.</p>" }
+    ]
+  },
+  {
+    id: 15, titulo: "Palaeontologia Electronica", autor: "palaeo-electronica.org", tipo: "digital",
+    descripcion: "Revista científica de paleontología de acceso completamente libre con artículos revisados por pares.",
+    categoria: "Revista científica", emoji: "🔓",
+    portada: "",
+    googleBooks: "https://palaeo-electronica.org",
+    paginas: [
+      { titulo: "Sobre esta revista", contenido: "<p class='drop-cap'>Palaeontologia Electronica es una revista científica de paleontología de acceso completamente libre. Fue una de las primeras revistas científicas en existir únicamente en formato digital, desde 1998.</p><p>Todos los artículos están revisados por pares y son descargables gratuitamente en PDF. Visita palaeo-electronica.org para acceder a todos los artículos.</p>" }
+    ]
   }
 ];
 
