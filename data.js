@@ -695,7 +695,195 @@ const NOTICIAS = [
     categoria: "descubrimiento",
     imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Morrison_Formation_layers.jpg/480px-Morrison_Formation_layers.jpg",
     resumen: "En Teruel, el yacimiento de Riodeva amplía su catálogo con nuevos restos de al menos seis especies distintas, consolidando la región como uno de los mayores tesoros paleontológicos de Europa."
-  }
+  },
+  {
+    id: 14,
+    titulo: "Los saurópodos usaban el cuello de forma lateral, no vertical",
+    fecha: "Noviembre 2024",
+    categoria: "curiosidad",
+    resumen: "Un nuevo estudio biomecánico sugiere que los dinosaurios de cuello largo alcanzaban vegetación a los lados, no en lo alto de los árboles como se creía.",
+    fuente: null
+    },
+    {
+    id: 15,
+    titulo: "Fósiles de tiburón de 6 metros del Oligoceno hallados en Marruecos",
+    fecha: "Octubre 2024",
+    categoria: "descubrimiento",
+    resumen: "La nueva especie llena un hueco evolutivo entre los tiburones blancos modernos y sus parientes extintos del Eoceno.",
+    fuente: null
+    },
+    {
+      id: 16,
+      titulo: "Reconstruyen el color de un pterosaurio por primera vez",
+      fecha: "Septiembre 2024",
+      categoria: "ciencia",
+      resumen: "Melanosomas en fósiles de Tupuxuara revelan una coloración rojiza en la cresta, posiblemente usada para señalización visual entre individuos.",
+      fuente: null
+    },
+    {
+      id: 17,
+      titulo: "¿Por qué los insectos del Carbonífero eran gigantes?",
+      fecha: "Agosto 2024",
+      categoria: "curiosidad",
+      resumen: "Con un 35% de oxígeno atmosférico, los insectos podían crecer sin límite. Las libélulas llegaban a 70 cm de envergadura.",
+      fuente: null
+    },
+    {
+      id: 18,
+      titulo: "Koleken inakayali: el nuevo carnívoro patagónico con brazos aún más cortos que el T. rex",
+      fecha: "Mayo 2024",
+      categoria: "descubrimiento",
+      resumen: "Descubierto en la Formación La Colonia de Argentina, este abelisáurido es una especie completamente nueva. Sus extremidades anteriores apenas sobresalían del cuerpo, incluso menos que las del tiranosaurio.",
+      fuente: "https://www.nationalgeographic.com/premium/article/new-carnivorous-dinosaur-patagonia-argentina"
+    },
+    {
+      id: 19,
+      titulo: "Titanomachya gimenezi: el titanosaurio enano del fin del Cretácico",
+      fecha: "Abril 2024",
+      categoria: "descubrimiento",
+      resumen: "Hallado en Patagonia, este saurópodo sorprendentemente pequeño podría haber reducido su tamaño para adaptarse a la reducción de tierra firme por la transgresión del océano Atlántico.",
+      fuente: "https://www.nationalgeographic.com/science/article/new-dinosaur-titanosaur-patagonia-fossils"
+    },
+    {
+      id: 20,
+      titulo: "Fona herzogae: el dinosaurio que cavaba su propia madriguera",
+      fecha: "Julio 2024",
+      categoria: "descubrimiento",
+      resumen: "Este herbívoro del Cretácico de Utah vivía en madrigueras subterráneas. Gracias a ese hábito, sus fósiles se conservaron en cantidad inusual: varios esqueletos completos en la misma capa rocosa.",
+      fuente: "https://www.nationalgeographic.com/science/article/dinosaur-burrow-fossil-new-species"
+    },
+    {
+      id: 21,
+      titulo: "Spinosaurus mirabilis: nueva especie del depredador más largo de la historia",
+      fecha: "Febrero 2025",
+      categoria: "descubrimiento",
+      resumen: "Una cresta ósea en forma de cimitarra encontrada en Níger pertenece a una especie completamente nueva de Spinosaurus. El animal superaba los 15 metros de longitud y habitaba ecosistemas fluviales hace 95 millones de años.",
+      fuente: "https://www.nationalgeographic.com/science/article/spinosaurus-scimitar-head-crest"
+    },
+    {
+      id: 22,
+      titulo: "Chadititan calvoi: un nuevo titanosaurio de 78 millones de años en Patagonia",
+      fecha: "Marzo 2025",
+      categoria: "descubrimiento",
+      resumen: "Descubierto en una cantera de Neuquén junto a más de 400 fósiles de tortugas, peces y cocodrilos, este titanosaurio de 7 metros arroja nueva luz sobre la biodiversidad del Cretácico tardío en el hemisferio sur.",
+      fuente: "https://www.nationalgeographic.com/science/article/new-titanosaur-dinosaur-fossils-patagonia"
+    },
+    {
+      id: 23,
+      titulo: "Confirmado: Nanotyrannus era una especie real, no un T. rex joven",
+      fecha: "Enero 2026",
+      categoria: "ciencia",
+      resumen: "Después de 40 años de debate, una nueva investigación aporta la evidencia más sólida hasta la fecha de que Nanotyrannus lancensis era una especie independiente de tiranosáurido y no simplemente un Tyrannosaurus rex juvenil.",
+      fuente: "https://www.nationalgeographic.com/history/article/dead-world-nanotyrannus-video"
+    },
+    {
+      id: 24,
+      titulo: "Se descubren más de 50 nuevas especies de dinosaurio al año — y el ritmo no para",
+      fecha: "2024",
+      categoria: "curiosidad",
+      resumen: "Gracias a la apertura de países como China, Argentina y Mongolia a la paleontología, el ritmo de descubrimientos no tiene precedentes: una especie nueva cada semana de media.",
+      fuente: "https://www.nationalgeographic.com/science/article/why-now-is-the-best-time-ever-for-dinosaur-discoveries"
+    },  
+    {
+      id: 14,
+      titulo: "Descubren en Argentina un dinosaurio con piel preservada en 3D",
+      fecha: "Febrero 2025",
+      fuente: "Nature",
+      url: "https://www.nature.com",
+      categoria: "descubrimiento",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Argentinosaurus_BW.jpg/480px-Argentinosaurus_BW.jpg",
+      resumen: "Un hadrosáurido del Cretácico tardío hallado en Neuquén presenta impresiones de piel tridimensionales que revelan patrones de escamas nunca vistos antes en dinosaurios sudamericanos."
+    },
+    {
+      id: 15,
+      titulo: "El Mosasaurus tenía aletas caudales similares a los tiburones, confirma nuevo fósil",
+      fecha: "Febrero 2025",
+      fuente: "Science Advances",
+      url: "https://www.science.org/journal/sciadv",
+      categoria: "ciencia",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Mosasaur_BW.jpg/480px-Mosasaur_BW.jpg",
+      resumen: "Un espécimen excepcionalmente bien preservado de Platecarpus hallado en Kansas muestra tejidos blandos que confirman que los mosasaurios tenían una aleta caudal bilobulada, haciéndolos nadadores mucho más eficientes de lo que se creía."
+    },
+    {
+      id: 16,
+      titulo: "Huellas de dinosaurios del Cretácico emergen en Texas tras sequía extrema",
+      fecha: "Enero 2025",
+      fuente: "BBC Science",
+      url: "https://www.bbc.com/news/science-environment",
+      categoria: "descubrimiento",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Dinosaur_footprints_trackway.jpg/480px-Dinosaur_footprints_trackway.jpg",
+      resumen: "La bajada extrema del nivel del río Paluxy en el Parque Estatal Dinosaur Valley expuso más de 60 huellas de Acrocanthosaurus y saurópodos que llevaban décadas sumergidas bajo el agua."
+    },
+    {
+      id: 17,
+      titulo: "Nuevo estudio revela que el Triceratops y el Torosaurus eran la misma especie",
+      fecha: "Diciembre 2024",
+      fuente: "Journal of Vertebrate Paleontology",
+      url: "https://www.tandfonline.com/journals/ujvp20",
+      categoria: "ciencia",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Triceratops_liveDB.jpg/480px-Triceratops_liveDB.jpg",
+      resumen: "Un análisis de 50 cráneos confirma que el Torosaurus no es una especie distinta sino un Triceratops adulto maduro cuya gola ósea se transformaba con la edad, reabriendo uno de los debates más polémicos de la paleontología."
+    },
+    {
+      id: 18,
+      titulo: "Hallan en Marruecos el trilobite más grande jamás descubierto: 45 cm",
+      fecha: "Noviembre 2024",
+      fuente: "Scientific Reports",
+      url: "https://www.nature.com/srep/",
+      categoria: "descubrimiento",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Trilobite_Paradoxides.jpg/480px-Trilobite_Paradoxides.jpg",
+      resumen: "Un ejemplar de Paradoxides destouches hallado en el Anti-Atlas marroquí mide 45 centímetros de longitud, convirtiéndose en el trilobite más grande conocido del registro fósil del Cámbrico."
+    },
+    {
+      id: 19,
+      titulo: "El Velociraptor cazaba de noche, sugieren nuevos análisis de sus órbitas oculares",
+      fecha: "Octubre 2024",
+      fuente: "PLOS ONE",
+      url: "https://journals.plos.org/plosone/",
+      categoria: "ciencia",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Velociraptor_dinoguy2.jpg/480px-Velociraptor_dinoguy2.jpg",
+      resumen: "Mediciones de las cavidades orbitales de dromaeosáuridos indican que el Velociraptor y sus parientes tenían ojos grandes adaptados a la visión nocturna, lo que sugiere que eran depredadores crepusculares o nocturnos."
+    },
+    {
+      id: 20,
+      titulo: "Descubierto en España el cocodrilo terrestre del Jurásico más completo de Europa",
+      fecha: "Septiembre 2024",
+      fuente: "Palaeontologia Electronica",
+      url: "https://palaeo-electronica.org",
+      categoria: "descubrimiento",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Morrison_Formation_layers.jpg/480px-Morrison_Formation_layers.jpg",
+      resumen: "Investigadores del CSIC describen un nuevo cocodrilomorfo terrestre del Jurásico tardío hallado en Teruel con el 80% del esqueleto completo, el más completo de este tipo encontrado en Europa hasta la fecha."
+    },
+    {
+      id: 21,
+      titulo: "El Smilodon no rugía: tenía vocalizaciones similares a los felinos modernos",
+      fecha: "Agosto 2024",
+      fuente: "Current Biology",
+      url: "https://www.cell.com/current-biology/home",
+      categoria: "ciencia",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Smilodon_fatalis_Sergiodlarosa.jpg/480px-Smilodon_fatalis_Sergiodlarosa.jpg",
+      resumen: "Análisis del hueso hioides de Smilodon fatalis indica que carecía de la anatomía necesaria para rugir como leones y tigres, produciendo en cambio sonidos más similares a los guepardos o pumas actuales."
+    },
+    {
+      id: 22,
+      titulo: "Nuevo pterosaurio gigante descubierto en Chile con envergadura de 7 metros",
+      fecha: "Julio 2024",
+      fuente: "Nature Communications",
+      url: "https://www.nature.com/ncomms/",
+      categoria: "descubrimiento",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Pteranodon_longiceps_mmartyniuk_wiki.png/480px-Pteranodon_longiceps_mmartyniuk_wiki.png",
+      resumen: "Fragmentos de huesos hallados en la Formación Quebrada Morada de Chile corresponden a un pterosaurio azdárquido del Cretácico tardío con una envergadura estimada de 7 metros, el mayor encontrado en Sudamérica."
+    },
+    {
+      id: 23,
+      titulo: "El Carnotaurus podía correr a 48 km/h, el dinosaurio carnívoro más rápido conocido",
+      fecha: "Junio 2024",
+      fuente: "PLOS ONE",
+      url: "https://journals.plos.org/plosone/",
+      categoria: "ciencia",
+      imagen: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Carnotaurus_DB.jpg/480px-Carnotaurus_DB.jpg",
+      resumen: "Un modelo biomecánico basado en la musculatura de la cola del Carnotaurus sastrei sugiere que este abelisáurido podía alcanzar velocidades de hasta 48 km/h, siendo el dinosaurio carnívoro grande más veloz conocido hasta la fecha."
+    }
 ];
 
 // ============================================
