@@ -132,74 +132,7 @@
 
   <script src="../data.js"></script>
   <script>
-    const LIBROS_DATA = [
-      {
-        id: 1, titulo: "The Rise and Fall of the Dinosaurs", autor: "Steve Brusatte", tipo: "recomendado",
-        descripcion: "La historia definitiva del ascenso y caída de los dinosaurios, narrada por uno de los paleontólogos más importantes del mundo.",
-        categoria: "Paleontología", emoji: "🦖",
-        portada: "https://covers.openlibrary.org/b/isbn/9780062490421-L.jpg",
-        googleBooks: "https://books.google.com/books?id=aOMtDwAAQBAJ",
-        paginas: [
-          { titulo: "Prólogo: El mundo de los dinosaurios", contenido: "<p class='drop-cap'>Durante 180 millones de años, los dinosaurios dominaron la Tierra. Eran los animales más grandes, más veloces y más fascinantes que jamás han pisado este planeta. Y luego, en un instante geológico, desaparecieron.</p><p>Pero la historia de los dinosaurios no es solo una historia de extinción. Es una historia de origen, de evolución, de supervivencia contra todo pronóstico. Es la historia de cómo un grupo de reptiles poco prometedores del Triásico se convirtió en los amos del mundo.</p><p>He tenido la suerte de dedicar mi vida a estudiar estos animales extraordinarios. He excavado fósiles en los desiertos de Mongolia, en las llanuras de Polonia, en los barrancos de Escocia. Y cada vez que sostengo un hueso de dinosaurio en mis manos, siento lo mismo: asombro.</p>" },
-          { titulo: "Capítulo 1: Los orígenes", contenido: "<h3>El mundo del Triásico</h3><p class='drop-cap'>Hace 250 millones de años, la vida en la Tierra estuvo a punto de desaparecer. La Gran Extinción del Pérmico eliminó el 96% de todas las especies marinas y el 70% de los vertebrados terrestres. El mundo que quedó era árido, caluroso y casi vacío.</p><p>Fue en este mundo devastado donde surgieron los dinosaurios. No de golpe, no como los gigantes que conocemos, sino como criaturas pequeñas y ágiles que corrían sobre dos patas por los márgenes del supercontinente Pangea.</p><p>Los primeros dinosaurios tenían el tamaño de un perro. Vivían a la sombra de reptiles mucho más grandes y formidables. Nadie, observando aquellos animales diminutos hace 230 millones de años, habría predicho lo que estaba a punto de ocurrir.</p>" },
-          { titulo: "Capítulo 2: La conquista del mundo", contenido: "<h3>La revolución jurásica</h3><p class='drop-cap'>El Jurásico fue el período de los gigantes. Los saurópodos alcanzaron tamaños que desafían la imaginación. El Brachiosaurus podía elevar su cabeza a 13 metros de altura. El Argentinosaurus pesaba más que diez elefantes africanos juntos.</p><p>Los dinosaurios tenían un sistema respiratorio de flujo continuo con sacos aéreos que se extendían por todo el cuerpo, incluso dentro de los huesos. Este diseño era tan eficiente que permitía a los saurópodos mantener el metabolismo necesario para sostener cuerpos de decenas de toneladas.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
-        ]
-      },
-      {
-        id: 2, titulo: "Prehistoric Life", autor: "Douglas Palmer", tipo: "recomendado",
-        descripcion: "Enciclopedia visual definitiva de la evolución de la vida en la Tierra, desde los primeros microbios hasta los humanos modernos.",
-        categoria: "Enciclopedia", emoji: "🌍",
-        portada: "https://covers.openlibrary.org/b/isbn/9780756662295-L.jpg",
-        googleBooks: "https://www.google.com/search?q=Prehistoric+Life+Douglas+Palmer+book",
-        paginas: [
-          { titulo: "Introducción: 4.000 millones de años de vida", contenido: "<p class='drop-cap'>La historia de la vida en la Tierra es la historia más larga y más extraordinaria que existe. Comenzó hace aproximadamente 3.800 millones de años con organismos unicelulares invisibles al ojo humano, y ha dado lugar a todo lo que vemos hoy: las ballenas azules, los bosques de secuoyas, los arrecifes de coral, los seres humanos.</p><p>Esta enciclopedia es una ventana a ese pasado profundo. A través de fósiles, reconstrucciones científicas y el trabajo de generaciones de paleontólogos, podemos ver cómo fue cambiando la vida a lo largo del tiempo geológico.</p>" },
-          { titulo: "Era Paleozoica: El amanecer de los animales", contenido: "<h3>La explosión cámbrica</h3><p class='drop-cap'>Hace 541 millones de años ocurrió algo extraordinario: en un período de apenas 20 millones de años, aparecieron casi todos los grandes grupos de animales que conocemos hoy. Los científicos llaman a este evento la Explosión Cámbrica.</p><p>Los mares del Cámbrico eran un mundo alien. Trilobites, anomalócaris, crinoídeos… formas de vida que no se parecen a nada que exista hoy. Los fósiles de Burgess Shale en Canadá nos han dado una ventana única a este mundo extraordinario.</p>" }
-        ]
-      },
-      {
-        id: 3, titulo: "Your Inner Fish", autor: "Neil Shubin", tipo: "recomendado",
-        descripcion: "Cómo el cuerpo humano guarda vestigios evolutivos de peces, reptiles y mamíferos primitivos. Ciencia narrativa magistral.",
-        categoria: "Evolución", emoji: "🐟",
-        portada: "https://covers.openlibrary.org/b/isbn/9780307277459-L.jpg",
-        googleBooks: "https://books.google.com/books?id=7sxT1OvRk2EC",
-        paginas: [
-          { titulo: "Capítulo 1: Encontrando tu pez interior", contenido: "<p class='drop-cap'>Mira tu mano. Cinco dedos, una palma, una muñeca. Ahora mira la aleta de un pez. Parece completamente diferente. Sin embargo, bajo la piel, los huesos cuentan una historia sorprendente: tú y ese pez compartís el mismo plano estructural básico, heredado de un ancestro común que vivió hace 375 millones de años.</p><p>En 2004, mi equipo encontró en el Ártico canadiense un fósil que cambiaría nuestra comprensión de cómo los vertebrados conquistaron la tierra. Lo llamamos Tiktaalik roseae, y es el eslabón que une los peces con los primeros tetrápodos.</p>" },
-          { titulo: "Capítulo 2: Construyendo cabezas", contenido: "<h3>Los genes que compartimos con los tiburones</h3><p class='drop-cap'>Uno de los descubrimientos más sorprendentes de la biología moderna es que todos los animales con cabeza, desde los tiburones hasta los humanos, construyen esa cabeza usando prácticamente los mismos genes.</p><p>Los genes Hox controlan el desarrollo de los ejes corporales en prácticamente todos los animales. Un gen Hox de ratón puede sustituir al gen equivalente de una mosca y funcionar perfectamente. Somos más parecidos de lo que creemos.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
-        ]
-      },
-      {
-        id: 4, titulo: "Otherlands", autor: "Thomas Halliday", tipo: "recomendado",
-        descripcion: "Viaje literario por 16 ecosistemas extintos, desde el Ediacárico hasta la época de los mamuts. Escritura científica extraordinaria.",
-        categoria: "Divulgación", emoji: "🌿",
-        portada: "https://covers.openlibrary.org/b/isbn/9780525559504-L.jpg",
-        googleBooks: "https://books.google.com/books?id=03WXEAAAQBAJ",
-        paginas: [
-          { titulo: "Prólogo: Otros mundos", contenido: "<p class='drop-cap'>La extinción no es el fin de una historia. Es el comienzo de otra. Cada vez que un mundo desaparece, deja rastros en las rocas, en los genes de los sobrevivientes, en la forma de los continentes. Los paleontólogos somos detectives que interrogamos a esos rastros.</p><p>Este libro es un viaje a dieciséis mundos que ya no existen. Cada capítulo es un ecosistema completo: los olores, los sonidos, la textura del suelo, la temperatura del aire.</p>" },
-          { titulo: "La estepa de los mamuts — Siberia, hace 20.000 años", contenido: "<h3>Un mundo de hierba y hielo</h3><p class='drop-cap'>Es medianoche en Siberia, pero el sol no se ha puesto. En verano, a estas latitudes, la luz dura casi todo el día. Una manada de mamuts lanudos avanza lentamente hacia el este, siguiendo el corredor de hierba que se extiende desde Europa hasta Alaska.</p><p>El mamut lanudo no era un elefante con abrigo. Era una especie completamente diferente, perfectamente adaptada al frío extremo: grasa subcutánea de 10 centímetros, pelo de hasta un metro de longitud.</p><p class='nota'>Fragmento resumido con fines divulgativos. Para leer el texto completo, haz clic en Leer completo.</p>" }
-        ]
-      },
-      {
-        id: 5, titulo: "Biodiversity Heritage Library", autor: "biodiversitylibrary.org", tipo: "digital",
-        descripcion: "Millones de páginas de publicaciones científicas históricas de libre acceso sobre historia natural.",
-        categoria: "Archivo digital", emoji: "🌐",
-        portada: "",
-        googleBooks: "https://www.biodiversitylibrary.org",
-        paginas: [
-          { titulo: "Sobre esta biblioteca", contenido: "<p class='drop-cap'>La Biodiversity Heritage Library es el mayor archivo digital de literatura científica sobre biodiversidad del mundo. Contiene más de 60 millones de páginas de libros, revistas y manuscritos sobre historia natural, paleontología y biología.</p><p>Todo el contenido es de acceso libre y gratuito. Puedes descargar ediciones originales de obras de Darwin, Cuvier, y cientos de naturalistas históricos.</p><p>Visita biodiversitylibrary.org para explorar la colección completa.</p>" }
-        ]
-      },
-      {
-        id: 6, titulo: "Palaeontologia Electronica", autor: "palaeo-electronica.org", tipo: "digital",
-        descripcion: "Revista científica de paleontología de acceso completamente libre con artículos revisados por pares.",
-        categoria: "Revista científica", emoji: "🔓",
-        portada: "",
-        googleBooks: "https://palaeo-electronica.org",
-        paginas: [
-          { titulo: "Sobre esta revista", contenido: "<p class='drop-cap'>Palaeontologia Electronica es una revista científica de paleontología de acceso completamente libre. Fue una de las primeras revistas científicas en existir únicamente en formato digital, desde 1998.</p><p>Todos los artículos están revisados por pares y son descargables gratuitamente en PDF. Cubre todos los campos de la paleontología, desde la micropaleontología hasta los vertebrados.</p><p>Visita palaeo-electronica.org para acceder a todos los artículos.</p>" }
-        ]
-      }
-    ];
-
+    
     const RECURSOS = [
       { icono: "🎥", titulo: "PBS Eons", url: "youtube.com/@eons", desc: "Canal de divulgación paleontológica con episodios sobre todos los períodos.", tipo: "YouTube" },
       { icono: "🏛️", titulo: "Smithsonian NMNH", url: "naturalhistory.si.edu", desc: "Colecciones digitales del museo de historia natural más importante del mundo.", tipo: "Museo digital" },
