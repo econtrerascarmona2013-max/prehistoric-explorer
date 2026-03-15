@@ -1371,7 +1371,7 @@ const LIBROS_DATA = [
     id: 2, titulo: "Prehistoric Life", autor: "DK Publishing", tipo: "recomendado",
     descripcion: "Enciclopedia visual definitiva de la evolución de la vida en la Tierra, desde los primeros microbios hasta los humanos modernos.",
     categoria: "Enciclopedia", emoji: "🌍",
-    portada: "https://covers.openlibrary.org/b/isbn/9780756662295-L.jpg",
+    portada: "https://covers.openlibrary.org/b/isbn/9780756655730-L.jpg",
     googleBooks: "https://www.google.com/search?q=Prehistoric+Life+DK+Publishing+book",
     paginas: [
       { titulo: "Introducción: 4.000 millones de años de vida", contenido: "<p class='drop-cap'>La historia de la vida en la Tierra es la historia más larga y más extraordinaria que existe. Comenzó hace aproximadamente 3.800 millones de años con organismos unicelulares invisibles al ojo humano.</p><p>Esta enciclopedia es una ventana a ese pasado profundo. A través de fósiles, reconstrucciones científicas y el trabajo de generaciones de paleontólogos, podemos ver cómo fue cambiando la vida a lo largo del tiempo geológico.</p>" },
@@ -1393,7 +1393,7 @@ const LIBROS_DATA = [
     id: 4, titulo: "The Dinosaur Artist", autor: "Paige Williams", tipo: "recomendado",
     descripcion: "La increíble historia del tráfico ilegal de fósiles y la batalla por preservar el patrimonio paleontológico del Gobi.",
     categoria: "Historia", emoji: "🦴",
-    portada: "https://covers.openlibrary.org/b/isbn/9780316382044-L.jpg",
+    portada: "https://books.google.com/books/content?id=YtkrDwAAQBAJ&printsec=frontcover&img=1&zoom=1",
     googleBooks: "https://www.google.com/search?q=The+Dinosaur+Artist+Paige+Williams",
     paginas: [
       { titulo: "El mercado negro de fósiles", contenido: "<p class='drop-cap'>En 2012, un esqueleto casi completo de Tarbosaurus bataar apareció en una subasta en Nueva York con un precio inicial de un millón de dólares. El problema: era ilegal. Mongolia prohibió la exportación de fósiles en 1924.</p><p>Este libro sigue el caso de Eric Prokopi, el paleontólogo comercial que excavó, preparó y vendió el esqueleto, y la batalla diplomática y legal que desencadenó.</p>" },
@@ -1424,7 +1424,7 @@ const LIBROS_DATA = [
     id: 7, titulo: "Dinosaurios de la Patagonia", autor: "Fernando Novas", tipo: "recomendado",
     descripcion: "La guía definitiva sobre los gigantes de Patagonia, escrita por el principal paleontólogo argentino especializado en dinosaurios.",
     categoria: "Paleontología", emoji: "🦕",
-    portada: "https://m.media-amazon.com/images/I/51QxRMqFMeL._SY466_.jpg",
+    portada: "",
     googleBooks: "https://www.google.com/search?q=Dinosaurios+Patagonia+Fernando+Novas",
     paginas: [
       { titulo: "La tierra de los gigantes", contenido: "<p class='drop-cap'>Ningún lugar en la Tierra ha producido más dinosaurios gigantes que la Patagonia argentina. En los últimos 30 años, esta región semiárida ha entregado al mundo el mayor carnívoro conocido, el mayor herbívoro conocido, y decenas de especies nuevas.</p><p>Fernando Novas ha pasado su carrera excavando estos monstruos bajo el sol patagónico, y este libro es el resultado de décadas de trabajo de campo.</p>" }
@@ -1445,7 +1445,7 @@ const LIBROS_DATA = [
     id: 9, titulo: "The Feathered Dragon", autor: "Alan Feduccia", tipo: "recomendado",
     descripcion: "Análisis detallado de la evolución de las aves desde los dinosaurios emplumados, con especial atención a los fósiles de Liaoning.",
     categoria: "Evolución", emoji: "🐦",
-    portada: "https://covers.openlibrary.org/b/isbn/9781421438221-L.jpg",
+    portada: "https://books.google.com/books/content?id=feathered-dragon&printsec=frontcover&img=1&zoom=1",
     googleBooks: "https://www.google.com/search?q=The+Feathered+Dragon+Feduccia",
     paginas: [
       { titulo: "El origen de las aves", contenido: "<p class='drop-cap'>Durante más de un siglo, la pregunta de cómo evolucionaron las aves dividió a los paleontólogos. ¿Descendían de dinosaurios terópodos, o de reptiles arcosaurios más primitivos? Los fósiles de Liaoning resolvieron el debate de manera definitiva.</p><p>Las pizarras volcánicas del Cretácico inferior de China preservaron decenas de especies de dinosaurios con plumas en un estado de conservación extraordinario.</p>" }
@@ -1455,7 +1455,7 @@ const LIBROS_DATA = [
     id: 10, titulo: "Paleoart: Visions of the Prehistoric Past", autor: "Zoë Lescaze", tipo: "recomendado",
     descripcion: "El libro más completo sobre arte paleontológico histórico, desde las primeras reconstrucciones del siglo XIX hasta las ilustraciones científicas modernas.",
     categoria: "Arte", emoji: "🎨",
-    portada: "https://covers.openlibrary.org/b/isbn/9783791356006-L.jpg",
+    portada: "https://books.google.com/books/content?id=paleoart-lescaze&printsec=frontcover&img=1&zoom=1",
     googleBooks: "https://www.google.com/search?q=Paleoart+Visions+Prehistoric+Past+Lescaze",
     paginas: [
       { titulo: "El arte de reconstruir el pasado", contenido: "<p class='drop-cap'>Antes de que existieran las películas, antes de los museos modernos, los artistas del siglo XIX se enfrentaron a un reto imposible: dar vida a criaturas que nadie había visto jamás, basándose únicamente en huesos fragmentados y la imaginación.</p><p>Este libro reúne más de 200 años de arte paleontológico, desde las primeras reconstrucciones especulativas de Duria Antiquior hasta las ilustraciones hiperrealistas de los artistas contemporáneos.</p>" }
