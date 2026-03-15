@@ -1371,7 +1371,7 @@ const LIBROS_DATA = [
     id: 2, titulo: "Prehistoric Life", autor: "DK Publishing", tipo: "recomendado",
     descripcion: "Enciclopedia visual definitiva de la evolución de la vida en la Tierra, desde los primeros microbios hasta los humanos modernos.",
     categoria: "Enciclopedia", emoji: "🌍",
-    portada: "https://covers.openlibrary.org/b/isbn/9780756682347-L.jpg",
+    portada: "https://covers.openlibrary.org/b/isbn/9780756662295-L.jpg",
     googleBooks: "https://www.google.com/search?q=Prehistoric+Life+DK+Publishing+book",
     paginas: [
       { titulo: "Introducción: 4.000 millones de años de vida", contenido: "<p class='drop-cap'>La historia de la vida en la Tierra es la historia más larga y más extraordinaria que existe. Comenzó hace aproximadamente 3.800 millones de años con organismos unicelulares invisibles al ojo humano.</p><p>Esta enciclopedia es una ventana a ese pasado profundo. A través de fósiles, reconstrucciones científicas y el trabajo de generaciones de paleontólogos, podemos ver cómo fue cambiando la vida a lo largo del tiempo geológico.</p>" },
@@ -1393,7 +1393,7 @@ const LIBROS_DATA = [
     id: 4, titulo: "The Dinosaur Artist", autor: "Paige Williams", tipo: "recomendado",
     descripcion: "La increíble historia del tráfico ilegal de fósiles y la batalla por preservar el patrimonio paleontológico del Gobi.",
     categoria: "Historia", emoji: "🦴",
-    portada: "https://covers.openlibrary.org/b/isbn/9780316382076-L.jpg",
+    portada: "https://covers.openlibrary.org/b/isbn/9780316382044-L.jpg",
     googleBooks: "https://www.google.com/search?q=The+Dinosaur+Artist+Paige+Williams",
     paginas: [
       { titulo: "El mercado negro de fósiles", contenido: "<p class='drop-cap'>En 2012, un esqueleto casi completo de Tarbosaurus bataar apareció en una subasta en Nueva York con un precio inicial de un millón de dólares. El problema: era ilegal. Mongolia prohibió la exportación de fósiles en 1924.</p><p>Este libro sigue el caso de Eric Prokopi, el paleontólogo comercial que excavó, preparó y vendió el esqueleto, y la batalla diplomática y legal que desencadenó.</p>" },
@@ -1424,7 +1424,7 @@ const LIBROS_DATA = [
     id: 7, titulo: "Dinosaurios de la Patagonia", autor: "Fernando Novas", tipo: "recomendado",
     descripcion: "La guía definitiva sobre los gigantes de Patagonia, escrita por el principal paleontólogo argentino especializado en dinosaurios.",
     categoria: "Paleontología", emoji: "🦕",
-    portada: "https://covers.openlibrary.org/b/isbn/9789871256419-L.jpg",
+    portada: "https://m.media-amazon.com/images/I/51QxRMqFMeL._SY466_.jpg",
     googleBooks: "https://www.google.com/search?q=Dinosaurios+Patagonia+Fernando+Novas",
     paginas: [
       { titulo: "La tierra de los gigantes", contenido: "<p class='drop-cap'>Ningún lugar en la Tierra ha producido más dinosaurios gigantes que la Patagonia argentina. En los últimos 30 años, esta región semiárida ha entregado al mundo el mayor carnívoro conocido, el mayor herbívoro conocido, y decenas de especies nuevas.</p><p>Fernando Novas ha pasado su carrera excavando estos monstruos bajo el sol patagónico, y este libro es el resultado de décadas de trabajo de campo.</p>" }
@@ -1465,7 +1465,7 @@ const LIBROS_DATA = [
     id: 11, titulo: "Dinosaur Odyssey", autor: "Scott Sampson", tipo: "recomendado",
     descripcion: "Una visión ecosistémica de los dinosaurios como parte de ecosistemas complejos, no como monstruos aislados.",
     categoria: "Paleontología", emoji: "🌿",
-    portada: "https://covers.openlibrary.org/b/isbn/9780520246164-L.jpg",
+    portada: "https://m.media-amazon.com/images/I/81aSjOHRNtL._SY466_.jpg",
     googleBooks: "https://www.google.com/search?q=Dinosaur+Odyssey+Scott+Sampson",
     paginas: [
       { titulo: "Los dinosaurios en su ecosistema", contenido: "<p class='drop-cap'>Durante demasiado tiempo hemos pensado en los dinosaurios como criaturas aisladas: el T. rex aquí, el Triceratops allá. Pero los animales no existen en el vacío. Viven en ecosistemas, interactúan con plantas, con insectos, con el clima.</p><p>Este libro reconstruye los ecosistemas completos del Mesozoico, situando a los dinosaurios en su contexto ecológico real.</p>" }
