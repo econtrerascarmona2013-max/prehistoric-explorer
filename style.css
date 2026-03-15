@@ -259,3 +259,11 @@ footer {
   color: var(--acento);
   margin-bottom: 0.5rem;
 }
+
+/* ── VALORACIONES ── */
+.valoracion-widget { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.val-estrellas { display: flex; gap: 0.2rem; }
+.estrella { font-size: 1.4rem; cursor: pointer; color: var(--acento); transition: transform 0.1s; }
+.estrella:hover { transform: scale(1.2); }
+.estrella.llena { color: var(--acento); }
+.val-info { font-size: 0.78rem; color: var(--texto-apagado); }

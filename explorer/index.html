@@ -112,7 +112,8 @@
     <div class="footer-logo">🦕 Edu's Prehistoric Explorer</div>
     <p id="footer-copy"></p>
   </footer>
-
+  
+  <script src="../supabase.js"></script>
   <script src="../data.js"></script>
   <script>
     // Clasificación de períodos por animal (basado en data.js)
@@ -283,9 +284,10 @@
             ${a.clasificacion.map(tag => `<span class="tag-clasificacion">${tag}</span>`).join('')}
           </div>
         </div>
+        ${widgetEstrellas('animal', a.id, `animal-${a.id}`)}
       `;
+      cargarWidget('animal', a.id, `animal-${a.id}`);
     }
-
     function cerrarDetalle() {
       document.getElementById('vistaLista').classList.remove('oculta');
       document.getElementById('vistaDetalle').classList.remove('visible');
