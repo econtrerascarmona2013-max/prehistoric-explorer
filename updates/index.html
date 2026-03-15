@@ -72,35 +72,101 @@
   <script src="../data.js"></script>
   <script>
     const CONTENIDO = {
-      es: {
-        updates: [
-          { fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Nueva versión", titulo: "v1.0 — Lanzamiento oficial", desc: "Primera versión pública con todas las secciones operativas.", items: ["Animal Explorer con 15 animales y buscador", "Ancient Landscapes con 6 biomas", "Fossil Science con línea de tiempo", "Illustration Gallery con filtros", "Science News con 6 noticias", "Books & Resources con 3 pestañas", "Size Comparator interactivo"] },
-          { fecha: "Feb 2025", badge: "badge-contenido", badgeText: "Contenido", titulo: "15 animales añadidos", desc: "Base de datos inicial con T. rex, Mamut, Megalodón, Triceratops y más.", items: [] },
-          { fecha: "Ene 2025", badge: "badge-nuevo", badgeText: "Inicio", titulo: "Inicio del proyecto", desc: "Diseño de la estructura, paleta de colores y tipografía.", items: [] }
-        ],
-        proximas: [
-          { titulo: "Soporte completo en francés", desc: "Traducción de todo el contenido al francés.", estado: "En desarrollo" },
-          { titulo: "+20 animales nuevos", desc: "Expansión de la base de datos con más especies.", estado: "Planificado" },
-          { titulo: "Comparador de tamaños mejorado", desc: "Visualización con siluetas reales en lugar de emojis.", estado: "Planificado" },
-          { titulo: "Mapa de yacimientos", desc: "Mapa interactivo con los principales yacimientos paleontológicos del mundo.", estado: "Idea" }
-        ],
-        proximas_titulo: "Próximamente"
+  es: {
+    updates: [
+      {
+        fecha: "Mar 2026", badge: "badge-nuevo", badgeText: "Nueva versión", titulo: "v1.2 — Backend y valoraciones",
+        desc: "Integración con Supabase para valoraciones en tiempo real.",
+        items: ["Sistema de valoraciones con estrellas en Animal Explorer", "Base de datos en Supabase", "Las valoraciones persisten entre sesiones y usuarios"]
       },
-      fr: {
-        updates: [
-          { fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Nouvelle version", titulo: "v1.0 — Lancement officiel", desc: "Première version publique avec toutes les sections opérationnelles.", items: ["Explorateur d'animaux avec 15 animaux", "Paysages anciens avec 6 biomes", "Science des fossiles avec chronologie", "Galerie d'illustrations avec filtres", "Actualités scientifiques avec 6 articles", "Livres & Ressources avec 3 onglets", "Comparateur de tailles interactif"] },
-          { fecha: "Fév 2025", badge: "badge-contenido", badgeText: "Contenu", titulo: "15 animaux ajoutés", desc: "Base de données initiale avec T. rex, Mammouth, Mégalodon, Tricératops et plus.", items: [] },
-          { fecha: "Jan 2025", badge: "badge-nuevo", badgeText: "Début", titulo: "Début du projet", desc: "Conception de la structure, palette de couleurs et typographie.", items: [] }
-        ],
-        proximas: [
-          { titulo: "Support complet en français", desc: "Traduction de tout le contenu en français.", estado: "En développement" },
-          { titulo: "+20 nouveaux animaux", desc: "Expansion de la base de données avec plus d'espèces.", estado: "Planifié" },
-          { titulo: "Comparateur de tailles amélioré", desc: "Visualisation avec de vraies silhouettes au lieu d'emojis.", estado: "Planifié" },
-          { titulo: "Carte des gisements", desc: "Carte interactive des principaux gisements paléontologiques mondiaux.", estado: "Idée" }
-        ],
-        proximas_titulo: "Prochainement"
+      {
+        fecha: "Mar 2026", badge: "badge-contenido", badgeText: "Contenido", titulo: "Expansión masiva de contenido",
+        desc: "Gran actualización de datos en todas las secciones.",
+        items: ["32 animales (5 nuevos: Carnotaurus, Therizinosaurus, Ichthyosaurus, Pteranodon, Smilodon)", "23 yacimientos en el mapa mundial", "13 libros con portadas y lector Kindle", "23 noticias científicas con fuentes reales"]
+      },
+      {
+        fecha: "Mar 2026", badge: "badge-nuevo", badgeText: "Nueva página", titulo: "Mapa mundial de yacimientos",
+        desc: "Mapa interactivo con Leaflet.js con los yacimientos paleontológicos más importantes del mundo.",
+        items: ["23 yacimientos con foto, descripción y hallazgos", "Filtros por era geológica", "Panel lateral con detalle completo", "Marcadores de colores por era"]
+      },
+      {
+        fecha: "Feb 2026", badge: "badge-nuevo", badgeText: "Nueva página", titulo: "Timeline Geológico 3D",
+        desc: "Globo 3D interactivo con Three.js que recorre los 17 períodos de la historia de la Tierra.",
+        items: ["Globo 3D con Three.js rotable con el ratón", "17 períodos geológicos con fauna y eventos clave", "Slider inferior con segmentos de colores", "Panel lateral con información detallada"]
+      },
+      {
+        fecha: "Feb 2026", badge: "badge-contenido", badgeText: "Contenido", titulo: "Comparador de tamaños mejorado",
+        desc: "Siluetas reales desde PhyloPic API en lugar de emojis.",
+        items: ["Siluetas reales para todos los animales", "Escala proporcional con humano de referencia", "32 animales comparables"]
+      },
+      {
+        fecha: "Ene 2026", badge: "badge-nuevo", badgeText: "Nueva versión", titulo: "v1.1 — Publicación en GitHub Pages",
+        desc: "El sitio está disponible públicamente en internet.",
+        items: ["Publicado en GitHub Pages", "Panel de administración para añadir contenido", "Modo claro/oscuro en todas las páginas", "Sistema de idiomas ES/FR completo"]
+      },
+      {
+        fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Inicio", titulo: "v1.0 — Lanzamiento inicial",
+        desc: "Primera versión con todas las secciones operativas.",
+        items: ["Animal Explorer con buscador y filtros", "Ancient Landscapes", "Fossil Science", "Illustration Gallery", "Science News", "Books & Resources con lector Kindle", "Size Comparator"]
       }
-    };
+    ],
+    proximas: [
+      { titulo: "Valoraciones en yacimientos", desc: "Extender el sistema de estrellas al mapa de yacimientos.", estado: "En desarrollo" },
+      { titulo: "Quiz de paleontología", desc: "Preguntas generadas automáticamente sobre los animales del Explorer.", estado: "Planificado" },
+      { titulo: "Buscador global", desc: "Buscar en todas las secciones desde un único campo.", estado: "Planificado" },
+      { titulo: "Más animales", desc: "Llegar a 50 animales con fichas completas.", estado: "Planificado" },
+      { titulo: "Versión móvil mejorada", desc: "Optimización del diseño para pantallas pequeñas.", estado: "Idea" }
+    ],
+    proximas_titulo: "Próximamente"
+  },
+  fr: {
+    updates: [
+      {
+        fecha: "Mar 2026", badge: "badge-nuevo", badgeText: "Nouvelle version", titulo: "v1.2 — Backend et évaluations",
+        desc: "Intégration avec Supabase pour les évaluations en temps réel.",
+        items: ["Système d'évaluation par étoiles dans l'Explorateur", "Base de données Supabase", "Les évaluations persistent entre les sessions"]
+      },
+      {
+        fecha: "Mar 2026", badge: "badge-contenido", badgeText: "Contenu", titulo: "Expansion massive du contenu",
+        desc: "Grande mise à jour des données dans toutes les sections.",
+        items: ["32 animaux (5 nouveaux: Carnotaurus, Therizinosaurus, Ichthyosaurus, Pteranodon, Smilodon)", "23 sites sur la carte mondiale", "13 livres avec couvertures et lecteur Kindle", "23 actualités scientifiques avec sources réelles"]
+      },
+      {
+        fecha: "Mar 2026", badge: "badge-nuevo", badgeText: "Nouvelle page", titulo: "Carte mondiale des sites fossiles",
+        desc: "Carte interactive Leaflet.js avec les sites paléontologiques les plus importants du monde.",
+        items: ["23 sites avec photo, description et découvertes", "Filtres par ère géologique", "Panneau latéral avec détail complet", "Marqueurs colorés par ère"]
+      },
+      {
+        fecha: "Fév 2026", badge: "badge-nuevo", badgeText: "Nouvelle page", titulo: "Chronologie Géologique 3D",
+        desc: "Globe 3D interactif Three.js parcourant les 17 périodes de l'histoire de la Terre.",
+        items: ["Globe 3D Three.js rotatif à la souris", "17 périodes géologiques avec faune et événements", "Curseur inférieur avec segments colorés", "Panneau latéral avec informations détaillées"]
+      },
+      {
+        fecha: "Fév 2026", badge: "badge-contenido", badgeText: "Contenu", titulo: "Comparateur de tailles amélioré",
+        desc: "Silhouettes réelles depuis l'API PhyloPic au lieu d'emojis.",
+        items: ["Silhouettes réelles pour tous les animaux", "Échelle proportionnelle avec humain de référence", "32 animaux comparables"]
+      },
+      {
+        fecha: "Jan 2026", badge: "badge-nuevo", badgeText: "Nouvelle version", titulo: "v1.1 — Publication sur GitHub Pages",
+        desc: "Le site est disponible publiquement sur internet.",
+        items: ["Publié sur GitHub Pages", "Panneau d'administration", "Mode clair/sombre sur toutes les pages", "Système de langues ES/FR complet"]
+      },
+      {
+        fecha: "Mar 2025", badge: "badge-nuevo", badgeText: "Début", titulo: "v1.0 — Lancement initial",
+        desc: "Première version avec toutes les sections opérationnelles.",
+        items: ["Explorateur d'animaux avec recherche et filtres", "Paysages anciens", "Science des fossiles", "Galerie d'illustrations", "Actualités scientifiques", "Livres & Ressources avec lecteur Kindle", "Comparateur de tailles"]
+      }
+    ],
+    proximas: [
+      { titulo: "Évaluations sur les sites fossiles", desc: "Étendre le système d'étoiles à la carte des sites.", estado: "En développement" },
+      { titulo: "Quiz de paléontologie", desc: "Questions générées automatiquement sur les animaux.", estado: "Planifié" },
+      { titulo: "Recherche globale", desc: "Rechercher dans toutes les sections depuis un seul champ.", estado: "Planifié" },
+      { titulo: "Plus d'animaux", desc: "Atteindre 50 animaux avec fiches complètes.", estado: "Planifié" },
+      { titulo: "Version mobile améliorée", desc: "Optimisation du design pour les petits écrans.", estado: "Idée" }
+    ],
+    proximas_titulo: "Prochainement"
+  }
+};
 
     function renderPagina() {
       const lang = getLang();
